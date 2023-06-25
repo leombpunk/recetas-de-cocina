@@ -1,6 +1,5 @@
 import { DataTypes, Op } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
-//importar la conexion mysql
 
 const Usuario = sequelize.define('usuarios',{
     usuario: {
@@ -16,5 +15,9 @@ const Usuario = sequelize.define('usuarios',{
         allowNull: false
     }
 })
+
+//asocianciones
+
+//metodos personalizados
 
 export default Usuario
