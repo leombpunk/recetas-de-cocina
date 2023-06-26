@@ -13,8 +13,12 @@ const Usuario = sequelize.define('usuarios',{
     mail: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    imagen: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
-})
+}, { timestamps: false })
 
 //asocianciones
 

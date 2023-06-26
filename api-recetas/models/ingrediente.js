@@ -26,7 +26,7 @@ const Ingrediente = sequelize.define('ingredientes',{
         type: DataTypes.INTEGER,
         allowNull: false
     }
-})
+}, { timestamp: false })
 
 //asocianciones
 

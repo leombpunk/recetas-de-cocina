@@ -14,7 +14,7 @@ const getAll = async (req, res) => {
 const createUnidadMedida = async (req, res) => {
     try {
         // console.log(req)
-        req = matchedData(req)
+        req = matchedData(req) //devuelve el body sanitizado
         // console.log(req)
         const { nombre } = req //req.body
         UnidadMedida.create({ nombre }).then(result => {
