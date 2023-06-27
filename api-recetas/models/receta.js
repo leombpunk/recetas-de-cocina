@@ -1,5 +1,8 @@
 import { DataTypes, Op } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
+import Usuario from './usuario.js'
+import Ingrediente from './ingrediente.js'
+import UnidadMedida from './unidadesMedidas.js'
 
 const Receta = sequelize.define('recetas',{
     nombre: {
@@ -21,7 +24,21 @@ const Receta = sequelize.define('recetas',{
 }, { timestamps: false })
 
 //asocianciones
+Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas
+Receta.belongsTo(Usuario, { foreignKey: 'idUsuario' }) //una receta pertenece a un usuario
+
+Receta.hasMany(Ingrediente, { foreignKey: 'idReceta' }) //una receta tiene muchos ingredientes
+Ingrediente.belongsTo(Receta, { foreignKey: 'id' }) //un ingrediente pertenece a una receta
+
+Ingrediente.belongsTo(UnidadMedida, { foreignKey: 'idUnidadMedida' }) //un ingrediente pertenece a una unidad de medida
+UnidadMedida.hasMany(Ingrediente, { foreignKey: 'id' }) //una unidad de medida tiene muchos ingredientes
 
 //metodos personalizados
+Receta.getFullRecetaById = async (id) => {
+    return await Receta.findOne({
+        where: { id }, 
+        include: [{ model:Usuario, required: true },{ model:Ingrediente, include: { model: UnidadMedida, required: true }, required: true }],
+    })
+}
 
 export default Receta

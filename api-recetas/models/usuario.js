@@ -1,5 +1,6 @@
 import { DataTypes, Op } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
+import Receta from './receta.js'
 
 const Usuario = sequelize.define('usuarios',{
     usuario: {
@@ -21,7 +22,7 @@ const Usuario = sequelize.define('usuarios',{
 }, { timestamps: false })
 
 //asocianciones
-
+// Usuario.hasMany(Receta, { foreignKey: 'idUsuario' }) //un usuario tiene muchas recetas
 //metodos personalizados
 
 export default Usuario
