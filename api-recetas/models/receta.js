@@ -24,14 +24,16 @@ const Receta = sequelize.define('recetas',{
 }, { timestamps: false })
 
 //asocianciones
-Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas
+//no entiendo como hace las asociaciones
+//o el problema vendra porque es include esta mal planteado
+Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas //no se puede poner en el modelo correspondiente
 Receta.belongsTo(Usuario, { foreignKey: 'idUsuario' }) //una receta pertenece a un usuario
 
 Receta.hasMany(Ingrediente, { foreignKey: 'idReceta' }) //una receta tiene muchos ingredientes
-Ingrediente.belongsTo(Receta, { foreignKey: 'id' }) //un ingrediente pertenece a una receta
+// Ingrediente.belongsTo(Receta, { foreignKey: 'id' }) //un ingrediente pertenece a una receta //no es necesario
 
 Ingrediente.belongsTo(UnidadMedida, { foreignKey: 'idUnidadMedida' }) //un ingrediente pertenece a una unidad de medida
-UnidadMedida.hasMany(Ingrediente, { foreignKey: 'id' }) //una unidad de medida tiene muchos ingredientes
+// UnidadMedida.hasMany(Ingrediente, { foreignKey: 'id' }) //una unidad de medida tiene muchos ingredientes //no es necesario
 
 //metodos personalizados
 Receta.getFullRecetaById = async (id) => {

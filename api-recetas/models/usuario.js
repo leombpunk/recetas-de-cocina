@@ -22,7 +22,11 @@ const Usuario = sequelize.define('usuarios',{
 }, { timestamps: false })
 
 //asocianciones
-// Usuario.hasMany(Receta, { foreignKey: 'idUsuario' }) //un usuario tiene muchas recetas
+// Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas
+
 //metodos personalizados
+Usuario.getRecetasByUserId = async (id) => {
+    return await Usuario.findOne({ where: { id }, include: Receta})
+}
 
 export default Usuario

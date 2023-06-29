@@ -1,4 +1,4 @@
-import { DataTypes, Op } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
 
 const Ingrediente = sequelize.define('ingredientes',{
