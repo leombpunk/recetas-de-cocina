@@ -9,7 +9,7 @@ router.get('/usuario/:nombreUsuario')
 router.get('/receta/:nombreReceta')
 router.get('/:id', getFullRecetaById)
 router.post('/', validateReceta, createReceta)
-router.patch('/:id', updateReceta)
+router.patch('/:id',validateReceta, updateReceta)
 router.delete('/:id', deleteReceta)
 
 export { router }
