@@ -22,7 +22,7 @@ const verifyToken = async (token) => {
 }
 
 const decodeSign = async (token) => {
-
+    
 }
 
 export { tokenSign, verifyToken, decodeSign }

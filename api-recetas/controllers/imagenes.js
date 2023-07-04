@@ -2,6 +2,10 @@ import { httpError } from '../helpers/handleErrors.js'
 import Usuario from '../models/usuario.js'
 import Receta from '../models/receta.js'
 import fs from 'fs'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+
+const publicPath = join(dirname(fileURLToPath(import.meta.url)),'../public/images')
 
 // Usuarios
 const uploadProfileImg = async (req, res) => {
@@ -15,7 +19,6 @@ const uploadProfileImg = async (req, res) => {
                 res.status(200).send({ message: 'Imagen guardada', result: result })
             }
             else {
-                //borrar el archivo
                 fs.unlink(file.path, (error)=>{
                     if(error) throw error
                     else console.log('cb: mensaje del metodo fs.unlink')
@@ -26,6 +29,33 @@ const uploadProfileImg = async (req, res) => {
             console.log(error)
             res.status(500).send({errors: error.errors})
         })
+    } catch (error) {
+        httpError(res, error)
+    }
+}
+
+const deleteProfileImg = async (req, res) => {
+    try {
+        const idUsuario = req.params.id
+        const usuario = await Usuario.findOne({ where: { id: idUsuario } })
+        if (usuario) {
+            const { imagen } = usuario
+            if (imagen) {
+                console.log('equisde')
+                fs.unlink(`${publicPath}/${imagen}`, (error) => {
+                    if (error) throw error
+                    else console.log('cb: mensaje del metodo fs.unlink')
+                })     
+                res.status(200).send({ message: 'Imagen eliminada' })
+            }
+            else {
+                console.log('no equisde')
+                res.status(404).send({ message: 'Imagen no encontrada' })
+            }
+        }
+        else {
+            res.status(404).send({ message: 'El usuario no existe' })
+        }
     } catch (error) {
         httpError(res, error)
     }
@@ -43,7 +73,6 @@ const uploadRecetaImg = async (req, res) => {
                 res.status(200).send({ message: 'Imagen guardada', result: result })
             }
             else {
-                //borrar el archivo
                 fs.unlink(file.path, (error)=>{
                     if(error) throw error
                     else console.log('cb: mensaje del metodo fs.unlink')
@@ -59,4 +88,31 @@ const uploadRecetaImg = async (req, res) => {
     }
 }
 
-export { uploadProfileImg, uploadRecetaImg }
+const deleteRecetaImg = async (req, res) => {
+    try {
+        const idReceta = req.params.id
+        const receta = await Receta.findOne({ where: { id: idReceta } })
+        if (receta) {
+            const { imagen } = receta
+            if (imagen) {
+                console.log('equisde')
+                fs.unlink(`${publicPath}/${imagen}`, (error) => {
+                    if (error) throw error
+                    else console.log('cb: mensaje del metodo fs.unlink')
+                })     
+                res.status(200).send({ message: 'Imagen eliminada' })
+            }
+            else {
+                console.log('no equisde')
+                res.status(404).send({ message: 'Imagen no encontrada' })
+            }
+        }
+        else {
+            res.status(404).send({ message: 'La receta no existe' })
+        }
+    } catch (error) {
+        httpError(res, error)
+    }
+}
+
+export { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg }

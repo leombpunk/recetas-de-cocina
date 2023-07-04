@@ -1,4 +1,5 @@
 import express from 'express'
+import { router as authRouter } from './auth.js'
 import { router as recetasRouter } from './recetas.js'
 import { router as usuariosRouter } from './usuarios.js'
 import { router as unidadesMedidasRouter } from './unidadesMedidas.js'
@@ -6,6 +7,7 @@ import { router as imagenesRouter } from './imagenes.js'
 
 const router = express.Router()
 
+router.use('/auth', authRouter)
 router.use('/recetas', recetasRouter)
 router.use('/usuarios', usuariosRouter)
 router.use('/unidadesMedidas', unidadesMedidasRouter)
