@@ -1,4 +1,7 @@
 #api-recetas
 api-recetas/.env
 api-recetas/node_modules
+api-recetas/public/images/*.webp
+api-recetas/public/images/*.jpg
+api-recetas/public/images/*.png
 #react-recetas

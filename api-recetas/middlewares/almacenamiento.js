@@ -1,16 +1,14 @@
 import multer from 'multer'
-import { extname } from 'path'
+import { extname, join, dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-const MIMETYPES = ['imagen/jpeg','image/png','image/webp']
+const MIMETYPES = ['image/jpeg','image/png','image/webp']
+const CURRENT_DIR = dirname(fileURLToPath(import.meta.url))
 
 const almacenamiento = multer.diskStorage({
-    destination: (request, file, callback) => {
-        const { pathname } = new URL('..', import.meta.url) //direccion absoluta del directorio actual
-        const pathStorage = `${pathname}storage` //lugar donde se almacenaran las imagenes
-        callback(null, pathStorage)
-    },
+    destination: join(CURRENT_DIR, '../public/images'), //direccion absoluta del directorio actual
     filename: (request, file, callback) => {
-        const extension = extname(file) //extrae la extension del archivo
+        const extension = extname(file.originalname) //extrae la extension del archivo
         const filename = `file-${Date.now()}.${extension}` //nombre del archivo
         callback(null, filename)
     }

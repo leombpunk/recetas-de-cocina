@@ -9,7 +9,7 @@ const router = express.Router()
 router.use('/recetas', recetasRouter)
 router.use('/usuarios', usuariosRouter)
 router.use('/unidadesMedidas', unidadesMedidasRouter)
-router.use('/iamgenes', imagenesRouter)
+router.use('/imagenes', imagenesRouter)
 
 router.get('*', (request, response) => {
     response.status(404)
