@@ -2,6 +2,7 @@ import { verifyToken } from "../helpers/generateToken.js"
 
 const checkAuth = async (request, response, next) => {
     try {
+        // console.log(request.headers.authorization)
         const token = request.headers.authorization.split(' ').pop()
         const tokenData = await verifyToken(token)
         console.log(tokenData)
@@ -14,13 +15,14 @@ const checkAuth = async (request, response, next) => {
             response.send({ error: 'No posees permisos suficientes para realizar esta operacion' })
         }
     } catch (error) {
-        console.log('/* checkAuth middleware */')
+        console.log('/* checkAuth middleware (catch) */')
         console.log(error)
         response.status(401)
-        response.send({ error: 'No posees permisos suficientes para realizar esta operacion' })
+        response.send({ message: 'No posees permisos suficientes para realizar esta operacion', error: error })
     }
 }
 
+// me gustaria hacerlo de otra manera
 const checkCoherence = async (request, response, next) => {
     try {
         const token = request.headers.authorization.split(' ').pop()
@@ -33,10 +35,10 @@ const checkCoherence = async (request, response, next) => {
             response.send({ error: 'No posees permisos suficientes para realizar esta operacion' })
         }
     } catch (error) {
-        console.log('/* checkCoherence middleware */')
+        console.log('/* checkCoherence middleware (catch) */')
         console.log(error)
         response.status(401)
-        response.send({ error: 'No posees permisos suficientes para realizar esta operacion' })
+        response.send({ message: 'No posees permisos suficientes para realizar esta operacion', error: error })
     }
 }
 

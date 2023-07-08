@@ -4,7 +4,7 @@ const tokenSign = async (user) => {
     return jwt.sign(
         {
             id: user.id,
-            username: user.usuario,
+            usuario: user.usuario,
         },
         process.env.JWT_SECRET,{
             expiresIn: "10h",
