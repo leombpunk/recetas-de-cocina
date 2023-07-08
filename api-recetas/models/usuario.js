@@ -33,12 +33,18 @@ const Usuario = sequelize.define('usuarios', {
     timestamps: false 
 })
 
-Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas //no se puede poner en el modelo correspondiente
+Usuario.hasMany(Receta, { foreignKey: 'idUsuario' }) //un usuario tiene muchas recetas
 Receta.belongsTo(Usuario, { foreignKey: 'idUsuario' }) //una receta pertenece a un usuario
 
 //metodos personalizados
+//retorna un usuario y todas sus recetas -> para usar en el perfil logeado
 Usuario.getRecetasByUserId = async (id) => {
     return await Usuario.findOne({ where: { id }, include: Receta })
+}
+
+//retorna un usuario y las recetas visibles solamente -> para ver las recetas de un usuario cualquiera distinto del logeado
+Usuario.getRecetasVisiblesByUserId = async (id) => {
+    return await Usuario.findOne({ where: { id }, include: { model: Receta, where: { visibilidad: 1 }, required: false }})
 }
 
 Usuario.getUsuarioByUsername = async (username) => {

@@ -4,8 +4,11 @@ import Receta from '../models/receta.js'
 import fs from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
+import express from 'express'
 
 const publicPath = join(dirname(fileURLToPath(import.meta.url)),'../public/images')
+
+const publicFolder = express.static(join(dirname(fileURLToPath(import.meta.url)),'../public/images'))
 
 // Usuarios
 const uploadProfileImg = async (req, res) => {
@@ -115,4 +118,4 @@ const deleteRecetaImg = async (req, res) => {
     }
 }
 
-export { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg }
+export { publicFolder, uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg }

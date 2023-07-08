@@ -17,6 +17,10 @@ const Receta = sequelize.define('recetas',{
         type: DataTypes.STRING,
         allowNull: true
     },
+    visibilidad: {
+        type: DataTypes.TINYINT,
+        allowNull: false
+    },
     idUsuario: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -26,7 +30,7 @@ const Receta = sequelize.define('recetas',{
 //asocianciones
 //no entiendo como hace las asociaciones
 //o el problema vendra porque es include esta mal planteado
-// Usuario.hasMany(Receta, { foreignKey: 'id' }) //un usuario tiene muchas recetas //no se puede poner en el modelo correspondiente
+// Usuario.hasMany(Receta, { foreignKey: 'idUsuario' }) //un usuario tiene muchas recetas
 // Receta.belongsTo(Usuario, { foreignKey: 'idUsuario' }) //una receta pertenece a un usuario
 
 Receta.hasMany(Ingrediente, { foreignKey: 'idReceta' }) //una receta tiene muchos ingredientes

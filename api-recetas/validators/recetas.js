@@ -18,6 +18,11 @@ const validateReceta = [
     check('imagen')
         .exists()
         .isLength({ max: 100 }),
+    check('visibilidad')
+        .exists()
+        .not().isEmpty()
+        .isNumeric()
+        .isLength({ max: 1 }),
     check('ingredientes.*.nombre')
         .exists()
         .isLength({ max: 50 })

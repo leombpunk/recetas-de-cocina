@@ -1,19 +1,18 @@
 import { Router } from 'express'
 import { upload } from '../middlewares/almacenamiento.js'
-import { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg } from '../controllers/imagenes.js'
+import { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg, publicFolder } from '../controllers/imagenes.js'
+import { checkAuth, checkCoherence } from '../middlewares/auth.js'
 
 const router = Router()
 
 //para recetas
-router.get('/receta/') //desabilitar el getAll
-router.get('/receta/:id') //renombrear a receta/public/:id
-router.post('/receta/:id', upload.single('file'), uploadRecetaImg)
-router.delete('/receta/:id',deleteRecetaImg)
+router.use('/public', publicFolder) //TESTEADO
+
+router.post('/receta/:idReceta/:idUsuario', checkAuth, upload.single('file'), uploadRecetaImg) //TESTEAR
+router.delete('/receta/:idReceta/:idUsuario', checkAuth, deleteRecetaImg) //TESTEAR
 
 //para perfil de usuario
-router.get('/usuario/') //desabilitar el getAll
-router.get('/usuario/:id') //renombrear a usuario/public/:id o este quizar no
-router.post('/usuario/:id', upload.single('file'), uploadProfileImg)
-router.delete('/usuario/:id', deleteProfileImg)
+router.post('/usuario/:id', checkAuth, upload.single('file'), uploadProfileImg) //TESTEAR
+router.delete('/usuario/:id', checkAuth, deleteProfileImg) //TESTEAR
 
 export { router }

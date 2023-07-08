@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { getRecetasByUserId } from '../controllers/usuarios.js'
+import { getUsuario, getRecetasByUserId, getRecetasVisiblesByUserId } from '../controllers/usuarios.js'
+import { checkAuth, checkCoherence } from '../middlewares/auth.js'
 
 const router = Router()
 
@@ -9,11 +10,15 @@ const router = Router()
 //editar perfil (id)
 //eliminar perfil (id)
 
-router.get('/:id') //ver perfil de un usuario cualquiera
-router.get('/perfil/:id') //muestra los datos del perfil (logeado)
-router.get('/allRecetas/:id', getRecetasByUserId) //mejorar nombre del endpoint, buscar de caulquier usuario
-router.get('/perfil/allRecetas/:id', getRecetasByUserId) //las recetas propias (logeado)
-router.patch('/perfil/:id') //actualzia el perfil (logeado)
-router.delete('/perfil/:id') //borra el perfil, que pasa con las recetas? (logeado)
+// retorna solo las recetas visibles de un usuario
+router.get('/allRecetas/:id', getRecetasVisiblesByUserId) //listar recetas de cualquier usuario -> retorna el usuario sin la pass y la lista de recetas
+
+router.get('/perfil/:id', getUsuario) //muestra los datos del perfil (logeado) -> es redundante
+
+//retorna todas las recetas del usuario logeado (incluso las no visibles/publicas)
+router.get('/perfil/allRecetas/:id', checkAuth, checkCoherence, getRecetasByUserId) //las recetas propias (logeado) -> es redundante
+router.patch('/perfil/:id', checkAuth, checkCoherence) //actualzia el perfil (logeado)
+router.patch('perfil/changePass/', checkAuth, checkCoherence) //actualizar la contraseña
+router.delete('/perfil/:id', checkAuth, checkCoherence) //borra el perfil, que pasa con las recetas? (logeado)
 
 export { router }
