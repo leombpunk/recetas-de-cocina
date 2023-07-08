@@ -2,15 +2,11 @@ import { verifyToken } from "../helpers/generateToken.js"
 
 const checkAuth = async (request, response, next) => {
     try {
-        // console.log(request.headers.authorization)
         const token = request.headers.authorization.split(' ').pop()
         const tokenData = await verifyToken(token)
-        console.log(tokenData)
         if(tokenData.usuario) {
             next()
         } else{
-            console.log('/* checkAuth middleware */')
-            console.log(error)
             response.status(401)
             response.send({ error: 'No posees permisos suficientes para realizar esta operacion' })
         }
@@ -27,8 +23,10 @@ const checkCoherence = async (request, response, next) => {
     try {
         const token = request.headers.authorization.split(' ').pop()
         const tokenData = await verifyToken(token)
-        const data = request.body
-        if (tokenData.id === data.id) {
+        // const data = request.body
+        const id = request.params.id || request.body.idUsuario || request.body.id //testear esto
+        console.log({ id: id })
+        if (tokenData.id == id) {
             next()
         } else {
             response.status(401)

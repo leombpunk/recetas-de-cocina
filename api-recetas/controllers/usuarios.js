@@ -32,4 +32,28 @@ const getRecetasVisiblesByUserId = async (req, res) => {
     }
 }
 
-export { getUsuario, getRecetasByUserId, getRecetasVisiblesByUserId }
+const updateUsuario = async (req, res) => {
+    try {
+        const id = req.params.id
+        req = matchedData(req)
+        const { usuario, mail } = req
+        await Usuario.update({ usuario, mail }, { where: { id: id }}).then(result => {
+            console.log(result)
+        }).catch(error => {
+            console.log(error)
+        })
+        res.send(req)
+    } catch (error) {
+        httpError(res, error)
+    }   
+}
+
+const deleteUsuario = async (req, res) => {
+    try {
+        const id = req.params.id
+    } catch (error) {
+        httpError(res, error)
+    }
+}
+
+export { getUsuario, getRecetasByUserId, getRecetasVisiblesByUserId, updateUsuario, deleteUsuario }
