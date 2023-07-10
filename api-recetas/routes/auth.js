@@ -4,8 +4,8 @@ import { login, registro, logout } from '../controllers/auth.js'
 
 const router = Router()
 
-router.post('/login', validateAuth, login)
-router.post('/registro', validateRegistro, registro)
-router.post('/logout')
+router.post('/login', validateAuth, login) //TESTEADO
+router.post('/registro', validateRegistro, registro) //TESTEAR ENDPOINT
+// router.post('/logout') //ELIMINAR
 
 export { router }

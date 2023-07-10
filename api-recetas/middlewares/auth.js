@@ -25,7 +25,7 @@ const checkCoherence = async (request, response, next) => {
         const tokenData = await verifyToken(token)
         // const data = request.body
         const id = request.params.id || request.body.idUsuario || request.body.id //testear esto
-        console.log({ id: id })
+        // console.log({ id: id })
         if (tokenData.id == id) {
             next()
         } else {
