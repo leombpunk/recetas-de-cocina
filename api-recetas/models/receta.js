@@ -43,7 +43,7 @@ Ingrediente.belongsTo(UnidadMedida, { foreignKey: 'idUnidadMedida' }) //un ingre
 Receta.getFullRecetaById = async (id) => {
     return await Receta.findOne({
         where: { id }, 
-        include: [{ model:Usuario, required: true },{ model:Ingrediente, include: { model: UnidadMedida, required: true }, required: true }],
+        include: [{ model: Usuario, required: true },{ model: Ingrediente, include: { model: UnidadMedida, required: true }, required: true }],
     })
 }
 
