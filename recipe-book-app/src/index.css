@@ -2,17 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+body {
+  /* margin: 0; */
+  /* height: 100%; */
+  /* width: 100%; */
+  background-color: rgb(229, 229, 229);
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    sans-serif; */
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+
+.background-searchbar {
+  background-image: url('D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/nota-receta-dibujos-animados-ingredientes_52683-73977.avif');
+  /* position: relative; */
+  /* opacity: 0.50; */
+}
+
+/* .background-searchbar::before {
+  position: absolute;
+  opacity: 0.50;
 } */
 
