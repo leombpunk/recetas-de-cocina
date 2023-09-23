@@ -32,13 +32,13 @@ const Header2 = () => {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
+                <a className="flex flex-shrink-0 items-center" href="#home">
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    className="h-8 w-auto hover:scale-125 duration-500"
+                    src={require('D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/cooking-book-logo (8).png')}
+                    alt="Cooking Book App"
                   />
-                </div>
+                </a>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
@@ -47,7 +47,7 @@ const Header2 = () => {
                         href={item.href}
                         className={classNames(
                           item.current ? 'bg-orange-700 text-black' : 'text-gray-900 hover:bg-orange-700 hover:text-black',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          'rounded-md px-3 py-2 text-base font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -60,7 +60,7 @@ const Header2 = () => {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative rounded-full hover:scale-125 duration-500 bg-orange-500 p-1 text-gray-900 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Ver notificaciones</span>
@@ -70,7 +70,7 @@ const Header2 = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button className="relative flex rounded-full hover:scale-125 duration-500 bg-orange-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Abrir menu de usuario</span>
                       <img
