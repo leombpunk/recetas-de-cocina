@@ -21,7 +21,7 @@ const Header2 = () => {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-900 hover:bg-orange-700 hover:text-black focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black">
+                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-900 hover:bg-orange-600 hover:text-black focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Abrir menú principal</span>
                   {open ? (
@@ -46,7 +46,7 @@ const Header2 = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-orange-700 text-black' : 'text-gray-900 hover:bg-orange-700 hover:text-black',
+                          item.current ? 'bg-orange-600 text-black' : 'text-gray-900 hover:bg-orange-600 hover:text-black',
                           'rounded-md px-3 py-2 text-base font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}

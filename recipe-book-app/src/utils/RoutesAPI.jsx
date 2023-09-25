@@ -1,9 +1,11 @@
+const urlAPI = 'localhost:3001';
+
 const RoutesAPI = {
-    Login: '',
-    Register: '',
-    Profile: '',
-    Recipes: '',
-    Recipe: '',
+    login: `${urlAPI}/login`,
+    register: `${urlAPI}/registro`,
+    profile: `${urlAPI}/usuarios`,
+    recipes: `${urlAPI}/recetas`,
+    // recipe: `${urlAPI}/receta`, //no existe este endpoint
 }
 
-export default RoutesAPI;
+export { RoutesAPI };
