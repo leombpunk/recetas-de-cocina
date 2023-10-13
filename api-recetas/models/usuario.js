@@ -28,7 +28,8 @@ const Usuario = sequelize.define('usuarios', {
     scopes: {
         withPassword: {
             attributes: {},
-        }
+        },
+        withoutUserData: { attributes : { exclude: ['id', 'usuario', 'contrasena', 'mail', 'imagen'] }, },
     },
     timestamps: false 
 })

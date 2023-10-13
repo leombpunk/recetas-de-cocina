@@ -14,10 +14,10 @@ const getRecipes = (search, page, order) => {
 }
 
 const getRecipesByUser = (username) => {
-    //testear
-    const url = `${RoutesAPI.recipes}/recetas/${username}`
+    //testear -> ya funciona
+    const url = `${RoutesAPI.recipes}/usuario/${username}`
     const request = axios.get(url)
-    return request.then(response => response)
+    return request//.then(response => response)
 }
 
 const getRecipe = (id) => {

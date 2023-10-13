@@ -3,6 +3,7 @@ import { sequelize } from '../config/mysql.js'
 import Usuario from './usuario.js'
 import Ingrediente from './ingrediente.js'
 import UnidadMedida from './unidadesMedidas.js'
+import { getRecetasByUsername } from '../controllers/recetas.js'
 
 const Receta = sequelize.define('recetas',{
     nombre: {
@@ -25,7 +26,7 @@ const Receta = sequelize.define('recetas',{
         type: DataTypes.INTEGER,
         allowNull: false
     }
-}, { timestamps: false })
+}, { timestamps: false, })
 
 //asocianciones
 //no entiendo como hace las asociaciones
@@ -44,6 +45,13 @@ Receta.getFullRecetaById = async (id) => {
     return await Receta.findOne({
         where: { id }, 
         include: [{ model: Usuario, required: true },{ model: Ingrediente, include: { model: UnidadMedida, required: true }, required: true }],
+    })
+}
+
+Receta.getFullRecetaByUsername = async (username) => {
+    return await Receta.findAll({
+        // where: { username }, 
+        include: [{ model: Usuario.scope('withoutUserData'), required: true, where: { usuario: username } }/*,{ model: Ingrediente, include: { model: UnidadMedida, required: true }, required: true }*/],
     })
 }
 

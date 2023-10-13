@@ -5,15 +5,14 @@ const SearchBar = () => {
         <>
             <div className="flex basis-96 flex-col justify-center">
                 <div className="background-searchbar bg-cover bg-no-repeat bg-center h-[32rem]">
-                    {/*envolver el label y el input de buscar*/}
                     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                        <div className="sm:mx-auto sm:w-full sm:max-w-3xl">
                             <h2 className="mt-10 text-center text-5xl font-bold leading-9 tracking-tight text-gray-900">
                                 Buscador de Recetas
                             </h2>
                         </div>
 
-                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-3xl">
                             <form className="space-y-6" action="#" method="POST">
                                 <div>
                                     <div className="relative mt-10 rounded-md shadow-sm">

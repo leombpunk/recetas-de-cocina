@@ -20,6 +20,20 @@ const getFullRecetaById = async (req, res) => {
     }
 }
 
+const getRecetasByUsername = async (req, res) => {
+    try {
+        const nombreUsuario = req.params.nombreUsuario
+        await Receta.getFullRecetaByUsername(nombreUsuario).then(result => {
+            res.send(result)
+        }).catch(error => {
+            res.status(500)
+            res.send({ errors: error.erros })
+        })
+    } catch (error) {
+        httpError(res, error)
+    }
+}
+
 const createReceta = async (req, res) => {
     try {
         req = matchedData(req)
@@ -77,4 +91,4 @@ const deleteReceta = async (req, res) => {
     }
 }
 
-export { getFullRecetaById, createReceta, updateReceta, deleteReceta }
+export { getFullRecetaById, getRecetasByUsername, createReceta, updateReceta, deleteReceta }
