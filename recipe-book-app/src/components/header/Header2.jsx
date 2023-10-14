@@ -1,20 +1,19 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Link } from "react-router-dom"
 import NavigationRoutes from "../../utils/NavigationRoutes"
-
-const navigation = [
-  { name: "Inicio", href: `${NavigationRoutes.Home}`, current: true },
-  { name: "Top Semanal", href: `${NavigationRoutes.Recipes}`, current: false },
-  { name: "Mis Recetas", href: `${NavigationRoutes.Recipes}`, current: false },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
 const Header2 = () => {
+  const [ menu, setMenu ] = useState([
+    { name: "Inicio", href: `${NavigationRoutes.Home}`, current: true },
+    { name: "Top Semanal", href: `${NavigationRoutes.TopOfTheWeek}`, current: false },
+  ])
+
   return (
     <Disclosure as='nav' className='bg-orange-500'>
       {({ open }) => (
@@ -34,7 +33,10 @@ const Header2 = () => {
                 </Disclosure.Button>
               </div>
               <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
-                <Link className='flex flex-shrink-0 items-center' to={NavigationRoutes.Home}>
+                <Link
+                  className='flex flex-shrink-0 items-center'
+                  to={NavigationRoutes.Home}
+                >
                   <img
                     className='h-8 w-auto hover:scale-125 duration-500'
                     src={require("D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/cooking-book-logo (8).png")}
@@ -43,8 +45,9 @@ const Header2 = () => {
                 </Link>
                 <div className='hidden sm:ml-6 sm:block'>
                   <div className='flex space-x-4'>
-                    {navigation.map((item) => (
-                      <Link key={item.name}
+                    {menu.map((item) => (
+                      <Link
+                        key={item.name}
                         className={classNames(
                           item.current
                             ? "bg-orange-600 text-black"
@@ -108,15 +111,15 @@ const Header2 = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#asd'
+                          <Link
+                            to={NavigationRoutes.Recipes}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Configuracion
-                          </a>
+                            Mis Recetas
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
@@ -141,7 +144,7 @@ const Header2 = () => {
 
           <Disclosure.Panel className='sm:hidden'>
             <div className='space-y-1 px-2 pb-3 pt-2'>
-              {navigation.map((item) => (
+              {menu.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as='a'
