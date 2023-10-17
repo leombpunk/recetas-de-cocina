@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import NavigationRoutes from "../../utils/NavigationRoutes"
 
 function classNames(...classes) {
@@ -13,7 +13,16 @@ const Header2 = () => {
     { name: "Inicio", href: `${NavigationRoutes.Home}`, current: true },
     { name: "Top Semanal", href: `${NavigationRoutes.TopOfTheWeek}`, current: false },
   ])
+  
+  const location = useLocation()
 
+  
+  useEffect(() => {
+    setMenu(menu.map(item => {
+      return {...item, current: item.href === location.pathname ? true : false}
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[location])
   return (
     <Disclosure as='nav' className='bg-orange-500'>
       {({ open }) => (

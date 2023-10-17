@@ -1,17 +1,5 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
+import Pagination from "../pagination/Pagination"
+
 const products = [
     {
       id: 1,
@@ -69,6 +57,7 @@ const products = [
               </a>
             ))}
           </div>
+          <Pagination />
         </div>
       </div>
     )
