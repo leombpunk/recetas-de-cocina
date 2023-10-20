@@ -4,6 +4,7 @@ import { httpError } from '../helpers/handleErrors.js'
 import { tokenSign } from '../helpers/generateToken.js'
 import { encrypt, compare } from '../helpers/handleBcrypt.js'
 import { sequelize } from '../config/mysql.js'
+import { handleResponse } from '../helpers/handleResponse.js'
 
 const login = async (req, res) => {
     try {
@@ -11,19 +12,23 @@ const login = async (req, res) => {
         const { usuario, contrasena } = req
         const result = await Usuario.getUsuarioByUserwPass(usuario)
         console.log(result)
+        if (!result){
+            const status = 404
+            const message = 'User not found'
+            handleResponse(res, status, message)
+        }
         const checkPass = await compare(contrasena, result.contrasena)
         if (result && checkPass) {
-            console.log('si')
             const token = await tokenSign(result)
-            res.send({...result.dataValues, token:token, contrasena: ''})
-            return
+            const status = 200
+            const message = ''
+            const data = {...result.dataValues, token:token, contrasena: ''}
+            handleResponse(res, status, message, data)
         }
         else {
-            res.status(404)
-            res.send({
-                error: 'User not found'
-            })
-            return
+            const status = 404
+            const message = 'Credentials not valid'
+            handleResponse(res, status, message)    
         }
     } catch (error) {
         httpError(res, error)
@@ -39,7 +44,10 @@ const registro = async (req, res) => {
             const { id } = await Usuario.create({ usuario, contrasena: contraHash, mail }, { transaction: t })
             return await Usuario.findOne({ where: { id: id }})
         })
-        res.status(201).send(result)
+        const status = 201
+        const message = 'User registrer done'
+        const data = result
+        handleResponse(res, status, message, data)
     } catch (error) {
         httpError(res, error)
     }
