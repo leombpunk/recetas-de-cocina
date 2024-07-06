@@ -7,6 +7,7 @@ const NavigationRoutes = {
     Register: '/register',
     Notifications: '/notifications',
     TopOfTheWeek: '/topOfTheWeek',
+    Search: '/search',
 }
 
 export default NavigationRoutes

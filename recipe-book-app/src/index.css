@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Niconne&family=Pacifico&display=swap');
+
 body {
   /* margin: 0; */
   /* height: 100%; */
@@ -30,3 +32,8 @@ body {
   opacity: 0.50;
 } */
 
+.pacifico-regular {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}

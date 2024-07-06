@@ -1,0 +1,32 @@
+{
+  "name": "recetas-de-cocina",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "mono": "cd api-recetas && npm start & cd ../recipe-book-app && npm start",
+    "start": "npm-run-all --parallel start:api start:app",
+    "start:api": "cd api-recetas && npm start",
+    "start:app": "cd recipe-book-app && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leombpunk/recetas-de-cocina.git"
+  },
+  "keywords": [],
+  "author": "Leandro Boos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leombpunk/recetas-de-cocina/issues"
+  },
+  "homepage": "https://github.com/leombpunk/recetas-de-cocina#readme",
+  "workspaces": [
+    "api-recetas",
+    "recipe-book-app"
+  ],
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

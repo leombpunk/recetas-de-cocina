@@ -1,13 +1,5 @@
-import RecipeCard from "../components/recipe-card/RecipeCard";
-import SearchBar from "../components/search-bar/Searrch-bar";
-
 const HomePage = () => {
-    return (
-        <>
-            <SearchBar />
-            <RecipeCard />  
-        </>
-    )
+  return <>ola k ase!</>
 }
 
-export default HomePage;
+export default HomePage

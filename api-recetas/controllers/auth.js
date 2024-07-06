@@ -17,8 +17,9 @@ const login = async (req, res) => {
             const message = 'User not found'
             handleResponse(res, status, message)
         }
+        
         const checkPass = await compare(contrasena, result.contrasena)
-        if (result && checkPass) {
+        if (checkPass) {
             const token = await tokenSign(result)
             const status = 200
             const message = ''
