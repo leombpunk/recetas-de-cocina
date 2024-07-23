@@ -6,3 +6,8 @@ api-recetas/public/images/*.webp
 api-recetas/public/images/*.jpg
 api-recetas/public/images/*.png
 #react-recetas
+*.jpg
+*.webp
+*.png
+*.svg
+*.zip
