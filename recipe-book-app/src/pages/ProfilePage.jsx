@@ -3,6 +3,8 @@ import { UserCircleIcon } from "@heroicons/react/24/solid"
 // import RecipesServices from "../services/Recipes"
 // import { useEffect, useState } from "react"
 
+import { Tab } from "@headlessui/react"
+
 const ProfilePage = () => {
   // const [recetas, setRecetas] = useState([])
 
@@ -18,16 +20,137 @@ const ProfilePage = () => {
 
   return (
     <>
-      <div className='bg-orange-300'>
-        <form className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-18 lg:max-w-7xl lg:px-8">
+      <section className='bg-orange-300'>
+        <div className='mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-18 md:px-2 md:max-w-3xl lg:max-w-7xl lg:px-8'>
           <div className='space-y-12'>
             <div className='border-b border-gray-900/10 pb-12'>
               <h2 className='text-2xl font-semibold leading-7 text-gray-900'>
-                Perfil
+                Configuracion de cuenta
               </h2>
-              <p className='mt-1 text-sm leading-6 text-gray-600'>
-                Esta información será mostrada públicamente, tenga cuidado con lo que comparte.
+              <p className='mt-1 text-base leading-6 text-gray-600'>
+                Esta información será mostrada públicamente, tenga cuidado con
+                lo que comparte.
               </p>
+
+              <Tab.Group>
+                <div className='flex flex-row items-start divide-x-2 mt-2'>
+                  <Tab.List className='flex flex-row md:flex-col min-w-[15vw]'>
+                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
+                      Personal
+                    </Tab>
+                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
+                      Seguridad
+                    </Tab>
+                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
+                      Cuenta
+                    </Tab>
+                  </Tab.List>
+                  <Tab.Panels className='flex flex-row md:flex-col w-full min-h-[75vh] rounded-xl bg-orange-200 overflow-y-auto shadow-black/20 shadow-md'>
+                    <Tab.Panel className='w-full px-5 pt-4'>
+                      <div className='divide-y-2'>
+                        <div className='mb-3'>
+                          <form id='avatarForm'>
+                            <label>Avatar</label>
+                            <picture>
+                              <img src='' alt='' />
+                            </picture>
+                            <input hidden />
+                          </form>
+                        </div>
+                        <div className='pt-4'>
+                          <form id='dataForm'>
+                            <div className='grid grid-cols-12 w-full my-3'>
+                              <label
+                                className='text-lg font-semibold col-span-3'
+                                htmlFor='username'
+                              >
+                                Usuario
+                              </label>
+                              <input
+                                className='rounded-lg w-full col-span-9'
+                                type='text'
+                                id='username'
+                                name='username'
+                                placeholder='Nombre de usuario'
+                              />
+                            </div>
+                            <div className='grid grid-cols-12 w-full my-3'>
+                              <label
+                                className='text-lg font-semibold col-span-3'
+                                htmlFor='name'
+                              >
+                                Nombre
+                              </label>
+                              <input
+                                className='rounded-lg w-full col-span-9'
+                                type='text'
+                                id='name'
+                                name='name'
+                                placeholder='Tu nombre'
+                              />
+                            </div>
+                            <div className='grid grid-cols-12 w-full my-3'>
+                              <label
+                                className='text-lg font-semibold col-span-3'
+                                htmlFor='surname'
+                              >
+                                Apellido
+                              </label>
+                              <input
+                                className='rounded-lg w-full col-span-9'
+                                type='text'
+                                id='surname'
+                                name='surname'
+                                placeholder='Tu apellido'
+                              />
+                            </div>
+                            <div className='grid grid-cols-12 w-full my-3'>
+                              <label
+                                className='text-lg font-semibold col-span-3 w-32'
+                                htmlFor='nationality'
+                              >
+                                Nacionalidad
+                              </label>
+                              <input
+                                className='rounded-lg w-full col-span-9'
+                                type='text'
+                                id='nationality'
+                                name='nationality'
+                                placeholder='Nacionalidad'
+                              />
+                            </div>
+                            <div className='grid grid-cols-12 w-full my-3'>
+                              <label
+                                className='text-lg font-semibold col-span-3'
+                                htmlFor='sex'
+                              >
+                                Sexo
+                              </label>
+                              <input
+                                className='rounded-lg w-full col-span-9'
+                                type='text'
+                                id='sex'
+                                name='sex'
+                                placeholder='No sos traba verdad?'
+                              />
+                            </div>
+                            <div className='flex flex-row justify-end gap-4 w-full my-3'>
+                              <button type="submit" className="text-lg font-semibold w-28 px-4 py-2 rounded-md bg-green-500">Actualizar</button>
+                              <button type="button" className="text-lg font-semibold w-28 px-4 py-2 rounded-md bg-red-600">Cancelar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </Tab.Panel>
+                    <Tab.Panel className='w-full pl-5 pt-4'>
+                      correo y cambio de contraseña
+                    </Tab.Panel>
+                    <Tab.Panel className='w-full pl-5 pt-4'>
+                      vincular/desvincular cuenta de google
+                    </Tab.Panel>
+                  </Tab.Panels>
+                </div>
+              </Tab.Group>
 
               <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-5'>
                 <div className='col-span-full'>
@@ -49,7 +172,12 @@ const ProfilePage = () => {
                       Cambiar
                     </button>
                   </div>
-                  <input id='photo' name='photo' className='invisible' type='file' />
+                  <input
+                    id='photo'
+                    name='photo'
+                    className='invisible'
+                    type='file'
+                  />
                 </div>
 
                 <div className='sm:col-span-3'>
@@ -170,7 +298,7 @@ const ProfilePage = () => {
                         </p>
                       </div>
                     </div>
-                    
+
                     {/* <div className='relative flex gap-x-3'>
                       <div className='flex h-6 items-center'>
                         <input
@@ -195,7 +323,6 @@ const ProfilePage = () => {
                     </div> */}
                   </div>
                 </fieldset>
-                
               </div>
             </div>
           </div>
@@ -214,8 +341,8 @@ const ProfilePage = () => {
               Guardar
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </section>
     </>
   )
 }
