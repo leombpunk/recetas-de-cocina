@@ -7,12 +7,15 @@ const router = Router()
 
 //para recetas
 router.use('/public', publicFolder) //TESTEADO
-
 router.post('/receta/:idReceta/:idUsuario', checkAuth, upload.single('file'), uploadRecetaImg) //TESTEAR
 router.delete('/receta/:idReceta/:idUsuario', checkAuth, deleteRecetaImg) //TESTEAR
+
+//para pasos de las recetas
 
 //para perfil de usuario
 router.post('/usuario/:id', checkAuth, upload.single('file'), uploadProfileImg) //TESTEAR
 router.delete('/usuario/:id', checkAuth, deleteProfileImg) //TESTEAR
+
+//establecer una esctructura para almacenar las imagenes en local
 
 export { router }

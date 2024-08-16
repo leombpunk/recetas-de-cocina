@@ -5,7 +5,7 @@ import { getAll, createUnidadMedida, deleteUnidadMedida } from '../controllers/u
 
 const router = Router()
 
-router.get('/', checkAuth, getAll) //testear
+router.get('/', checkAuth, getAll) //testeado
 router.post('/', checkAuth, validateCreate, createUnidadMedida) //testeado, a medias
 router.delete('/:id', checkAuth, deleteUnidadMedida) //testear
 
