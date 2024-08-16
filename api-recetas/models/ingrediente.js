@@ -1,31 +1,20 @@
 import { DataTypes } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
 
+//actualizado -> necesita ser testeado
 const Ingrediente = sequelize.define('ingredientes',{
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    cantidad: {
-        type: DataTypes.DECIMAL,
-        allowNull: false
-    },
-    detalle: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    imagen: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     idReceta: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    idUnidadMedida: {
-        type: DataTypes.INTEGER,
+    lista_ingredientes: {
+        type: DataTypes.JSON,
         allowNull: false
-    }
+    }, 
+    lista_pasos: {
+        type: DataTypes.JSON,
+        allowNull: false
+    },
 }, { timestamps: false })
 
 //asocianciones

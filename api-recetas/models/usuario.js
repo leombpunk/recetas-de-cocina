@@ -2,7 +2,16 @@ import { DataTypes, Op } from 'sequelize'
 import { sequelize } from '../config/mysql.js'
 import Receta from './receta.js'
 
+//actualizado
 const Usuario = sequelize.define('usuarios', {
+    nombres: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    apellidos: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     usuario: {
         type: DataTypes.STRING,
         allowNull: false,
