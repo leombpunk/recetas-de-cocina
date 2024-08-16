@@ -2,6 +2,14 @@ import { check } from 'express-validator'
 import { validateResult } from '../helpers/validateResult.js'
 
 const validateUsuario = [
+    check('nombres')
+        .exists()
+        .not().isEmpty()
+        .isLength({ min:2, max:100 }),
+    check('apellidos')
+        .exists()
+        .not().isEmpty()
+        .isLength({ min:2, max:100 }),
     check('usuario')
         .exists()
         .not().isEmpty()
