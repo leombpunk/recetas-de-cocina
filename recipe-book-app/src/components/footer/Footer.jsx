@@ -25,7 +25,7 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-800">
-                            <p className="order-2 md:order-1 mt-8 md:mt-0"> &copy; CookingBook App, 2023. </p>
+                            <p className="order-2 md:order-1 mt-8 md:mt-0">Recipe App</p>
                             <div className="order-1 md:order-2">
                                 <span className="px-2">Acerca de</span>
                                 <span className="px-2 border-l border-black">Contactanos</span>
