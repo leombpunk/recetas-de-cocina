@@ -39,10 +39,10 @@ const login = async (req, res) => {
 const registro = async (req, res) => {
     try {
         req = matchedData(req)
-        const { usuario, contrasena, mail } = req
+        const { nombres, apellidos, usuario, contrasena, mail } = req
         const contraHash = await encrypt(contrasena)
         const result = await sequelize.transaction(async (t) => {
-            const { id } = await Usuario.create({ usuario, contrasena: contraHash, mail }, { transaction: t })
+            const { id } = await Usuario.create({ nombres, apellidos, usuario, contrasena: contraHash, mail }, { transaction: t })
             return await Usuario.findOne({ where: { id: id }})
         })
         const status = 201
@@ -53,6 +53,8 @@ const registro = async (req, res) => {
         httpError(res, error)
     }
 }
+
+const registroGoogle = async (req, res) => {} 
 
 const logout = async (req, res) => {
     // nones
