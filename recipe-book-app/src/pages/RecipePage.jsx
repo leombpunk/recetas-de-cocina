@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline"
 import IngredientsList from "../components/dragableLists/ingredientsList"
 import StepsList from "../components/dragableLists/stepsList"
+import Dropzone from "../components/dropzone/Dropzone"
 
 const RecipePage = () => {
   return (
@@ -56,7 +57,7 @@ const RecipePage = () => {
               id='recipeImageForm'
               name='recipeImageForm'
             >
-              <figure className='w-full'>
+              {/* <figure className='w-full'>
                 {false ? (
                   <img
                     alt='imagen descriptiva del paso'
@@ -74,6 +75,8 @@ const RecipePage = () => {
                   </div>
                 )}
               </figure>
+              <input type="file" id="filePortada" name="filePortada" hidden/> */}
+              <Dropzone isMultiple={false} />
             </form>
             <form
               autoComplete='off'
