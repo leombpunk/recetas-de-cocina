@@ -67,7 +67,7 @@ const IngredientsList = ({ ingredients = [] }) => {
                       <input
                         type='text'
                         placeholder='Ingresa un ingrediente'
-                        value={index}
+                        // value={index}
                         onBlur={(event) => { console.log(event.target.value) }}
                         className='rounded-lg placeholder:font-semibold placeholder:text-lg text-lg bg-orange-100 w-full border-transparent'
                       />

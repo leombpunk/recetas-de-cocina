@@ -1,68 +1,21 @@
-// import { useRef, useState } from "react"
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import useDropzone from "./useDropzone"
 
 //manejar el tamaño del dropzone
 
 const Dropzone = ({ isMultiple = false }) => {
-  // const [inputFile, setInputFile] = useState(null)
-  // const fileRef = useRef(null)
   const {
     ref,
     files,
+    errors,
     changeInputFile,
     deleteFile,
-    dragover,
+    dragOver,
     dropInDropzone,
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  // const handleClickDropzone = () => {
-  //   fileRef.current.click()
-  // }
-  // const handleChangeInputFiles = (event) => {
-  //   isMultiple
-  //     ? setInputFile([...inputFile, event.target.files[0]])
-  //     : setInputFile(event.target.files[0])
-  // }
-  // const handleDropInDropzone = (event) => {
-  //   event.preventDefault()
-
-  //   if (event.dataTransfer.items) {
-  //     // Use DataTransferItemList interface to access the file(s)
-  //     // console.log(event.dataTransfer.items[0]) //kind:"file", type:"image/png"
-  //     ;[...event.dataTransfer.items].forEach((item, i) => {
-  //       // If dropped items aren't files, reject them
-  //       if (item.kind === "file") {
-  //         const file = item.getAsFile()
-
-  //         // Create a data transfer object. Similar to what you get from a `drop` event as `event.dataTransfer`
-  //         const dataTransfer = new DataTransfer()
-  //         // Add your file to the file list of the object
-  //         dataTransfer.items.add(file)
-  //         // Set your input `files` to the file list
-  //         fileRef.files = dataTransfer.files
-
-  //         console.log(file)
-  //         setInputFile(file)
-  //       }
-  //     })
-  //   } else {
-  //     // Use DataTransfer interface to access the file(s)
-  //     ;[...event.dataTransfer.files].forEach((file, i) => {
-  //       console.log(`… file[${i}].name = ${file.name}`)
-  //     })
-  //   }
-  // }
-  // const handlerDragOver = (event) => {
-  //   event.preventDefault()
-  // }
-  // const handleClickDeleteFile = () => {
-  //   //modal de confirmacion de borrar la wea
-  //   setInputFile(null)
-  //   fileRef.current.value = null
-  // }
-  // const validFile = (file) => {}
+  console.log(errors)
 
   return (
     <>
@@ -94,7 +47,7 @@ const Dropzone = ({ isMultiple = false }) => {
               className='flex flex-col items-center border border-gray-500 w-9/12 h-96 p-6 rounded-lg border-dashed hover:cursor-pointer'
               onClick={() => openDropzone()}
               onDrop={(e) => dropInDropzone(e)}
-              onDragOver={(e) => dragover(e)}
+              onDragOver={(e) => dragOver(e)}
             >
               <CameraIcon className='h-36 w-36 text-gray-500 m-auto' />
               <p className='italic text-gray-500 font-semibold text-base text-center'>
