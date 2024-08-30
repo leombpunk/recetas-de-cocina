@@ -6,7 +6,7 @@ const MIMETYPES = ['image/jpeg','image/png','image/webp']
 const CURRENT_DIR = dirname(fileURLToPath(import.meta.url))
 
 const almacenamiento = multer.diskStorage({
-    destination: join(CURRENT_DIR, '../public/images'), //direccion absoluta del directorio actual
+    destination: join(CURRENT_DIR, '../public/images/recipes'), //direccion absoluta del directorio actual
     filename: (req, file, callback) => {
         const extension = extname(file.originalname) //extrae la extension del archivo
         const filename = `file-${Date.now()}.${extension}` //nombre del archivo
