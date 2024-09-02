@@ -9,14 +9,14 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm()
 
-  const { handleToastPromise } = useContextNotification()
+  const { addNotification } = useContextNotification()
 
   const { login } = useLogin()
 
   const onSubmit = (data) => {
     console.log(data)
-    // login({user: data.username, pass: data.password})
-    handleToastPromise(login({user: data.username, pass: data.password}))
+    login({user: data.username, pass: data.password})
+    addNotification({ message: '', tyoe: '' })
   }
 
   return (
