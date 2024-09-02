@@ -1,14 +1,22 @@
 import { Fragment } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline"
-import { Link } from "react-router-dom"
 import NavigationRoutes from "../../utils/NavigationRoutes"
+import { useContextUser } from "../../providers/UserProvider"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
 const Header = () => {
+  const navigate = useNavigate()
+  const { handleLogout } = useContextUser()
+  const handleClickEndSesion = (e) => {
+    e.preventDefault()
+    handleLogout()
+    navigate(NavigationRoutes.Login)
+  }
   return (
     <Disclosure as='nav' className='bg-orange-500'>
       {({ open }) => (
@@ -37,7 +45,7 @@ const Header = () => {
                           type='text'
                           name='searchBar'
                           id='searchBar'
-                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-100 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-500 placeholder:text-gray-500 sm:text-sm sm:leading-6'
                           placeholder='Buscar'
                         />
                         <button className='absolute inset-y-0 right-2 text-gray-500 flex items-center'>
@@ -109,15 +117,29 @@ const Header = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#asd'
+                          <Link
+                            to={NavigationRoutes.Recipe}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Salir
-                          </a>
+                            Nueva Receta
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            type="button"
+                            onClick={(e) => handleClickEndSesion(e)}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block w-full px-4 py-2 text-sm text-left text-gray-700"
+                            )}
+                          >
+                            Cerrar sesión
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>
