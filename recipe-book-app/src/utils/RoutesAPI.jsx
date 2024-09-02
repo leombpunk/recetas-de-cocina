@@ -4,6 +4,7 @@ const RoutesAPI = {
     auth: `${urlAPI}/auth`,
     profile: `${urlAPI}/usuarios`,
     recipes: `${urlAPI}/recetas`,
+    images: `${urlAPI}/imagenes`,
 }
 
 export { RoutesAPI };
