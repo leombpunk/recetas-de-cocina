@@ -1,28 +1,26 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken"
 
 const tokenSign = async (user) => {
-    return jwt.sign(
-        {
-            id: user.id,
-            usuario: user.usuario,
-        },
-        process.env.JWT_SECRET,{
-            expiresIn: "10h",
-        }
-    )
-    
+  return jwt.sign(
+    {
+      id: user.id,
+      usuario: user.usuario,
+    },
+    process.env.JWT_SECRET
+    // {
+    //   expiresIn: "10h",
+    // }
+  )
 }
 
 const verifyToken = async (token) => {
-    try {
-        return jwt.verify(token, process.env.JWT_SECRET)
-    } catch(error) {
-        return null
-    }
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET)
+  } catch (error) {
+    return null
+  }
 }
 
-const decodeSign = async (token) => {
-    
-}
+const decodeSign = async (token) => {}
 
 export { tokenSign, verifyToken, decodeSign }
