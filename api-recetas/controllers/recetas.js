@@ -36,6 +36,38 @@ const getRecetasByUsername = async (req, res) => {
   }
 }
 
+// const createReceta = async (req, res) => {
+//   try {
+//     const body = matchedData(req)
+//     const {
+//       idUsuario,
+//       titulo,
+//       detalle,
+//       duracion,
+//       comensales,
+//       visibilidad,
+//       ingredientes,
+//       pasos,
+//     } = body //omito el campo imagen
+//     const result = await sequelize.transaction(async (t) => {
+//       const receta = await Receta.create(
+//         { titulo, detalle, idUsuario, duracion, comensales, visibilidad },
+//         { transaction: t }
+//       )
+//       const idReceta = receta.dataValues.id
+//       await Ingrediente.create(
+//         { lista_ingredientes: ingredientes, lista_pasos: pasos, idReceta },
+//         { transaction: t }
+//       )
+//       return Receta.getFullRecetaById(idReceta)
+//     })
+//     res.status(201) //el codigo http 201 no retorna ningún dato
+//     res.send(result)
+//   } catch (error) {
+//     httpError(res, error)
+//   }
+// }
+
 const createReceta = async (req, res) => {
   try {
     const body = matchedData(req)
@@ -49,20 +81,35 @@ const createReceta = async (req, res) => {
       ingredientes,
       pasos,
     } = body //omito el campo imagen
-    const result = await sequelize.transaction(async (t) => {
-      const receta = await Receta.create(
-        { titulo, detalle, idUsuario, duracion, comensales, visibilidad },
-        { transaction: t }
-      )
-      const idReceta = receta.dataValues.id
-      await Ingrediente.create(
-        { lista_ingredientes: ingredientes, lista_pasos: pasos, idReceta },
-        { transaction: t }
-      )
-      return Receta.getFullRecetaById(idReceta)
-    })
-    res.status(201) //el codigo http 201 no retorna ningún dato
-    res.send(result)
+    //antes de crear una nueva entrada, verificar que no exista una receta sin
+    //terminar, o sea con los campos en blanco, así en la db no dejo los campos nulos,
+    //solo la validacion en el controlador acepataria campos vacios
+    const check = await Receta.findOne({ where: { idUsuario: idUsuario, checked: 0 } })
+    if (check) {
+      console.log(check)
+      res.status(200)
+      res.send(check)
+    } else {
+      //crear la entrada de la receta con los datos recibidos
+      console.log(check)
+      // const result = await sequelize.transaction(async (t) => {
+      //   const receta = await Receta.create(
+      //     { titulo, detalle, idUsuario, duracion, comensales, visibilidad },
+      //     { transaction: t }
+      //   )
+      //   const idReceta = receta.dataValues.id
+      //   await Ingrediente.create(
+      //     { lista_ingredientes: ingredientes, lista_pasos: pasos, idReceta },
+      //     { transaction: t }
+      //   )
+      //   return Receta.getFullRecetaById(idReceta)
+      // })
+      // res.status(201) //el codigo http 201 no retorna ningún dato
+      // res.send(result)
+      res.status(500)
+      res.send(check)
+    }
+
   } catch (error) {
     httpError(res, error)
   }

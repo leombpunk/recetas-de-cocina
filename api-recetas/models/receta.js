@@ -33,6 +33,10 @@ const Receta = sequelize.define('recetas',{
         type: DataTypes.STRING,
         allowNull: false
     },
+    checked: {
+        type: DataTypes.TINYINT,
+        allowNull: false
+    }
 }, { timestamps: false, })
 
 //asocianciones
