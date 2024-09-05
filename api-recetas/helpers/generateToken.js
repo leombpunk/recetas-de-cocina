@@ -6,10 +6,10 @@ const tokenSign = async (user) => {
       id: user.id,
       usuario: user.usuario,
     },
-    process.env.JWT_SECRET
-    // {
-    //   expiresIn: "10h",
-    // }
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30d",
+    }
   )
 }
 
@@ -17,6 +17,7 @@ const verifyToken = async (token) => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET)
   } catch (error) {
+    console.log(error)
     return null
   }
 }
