@@ -2,7 +2,7 @@ import axios from 'axios'
 import { RoutesAPI } from '../utils/RoutesAPI'
 import { getToken } from '../utils/Token'
 
-const getRecipes = (search, page, order) => {
+const getRecipes = async (search, page, order) => {
     //ejemplo con fetch
     // fetch
 
@@ -13,20 +13,20 @@ const getRecipes = (search, page, order) => {
     return request.then(response => response)
 }
 
-const getRecipesByUser = (username) => {
+const getRecipesByUser = async (username) => {
     //testear -> ya funciona
     const url = `${RoutesAPI.recipes}/usuario/${username}`
     const request = axios.get(url)
     return request//.then(response => response)
 }
 
-const getRecipe = (id) => {
+const getRecipe = async (id) => {
     const url = `${RoutesAPI.recipes}/${id}`
     const request = axios.get(url)
     return request.then(response => response)
 }
 
-const createRecipe = (recipe) => {
+const createRecipe = async (recipe) => {
     const token = getToken()
     const config = {
         headers: {
@@ -37,7 +37,7 @@ const createRecipe = (recipe) => {
     return request.then(response => response)
 }
 
-const updateRecipe = (id, recipe) => {
+const updateRecipe = async (id, recipe) => {
     const token = getToken()
     const config = {
         headers: {
@@ -49,7 +49,7 @@ const updateRecipe = (id, recipe) => {
     return request.then(response => response)
 }
 
-const deleteRecipe = (id) => {
+const deleteRecipe = async (id) => {
     const token = getToken()
     const config = {
         headers: {
