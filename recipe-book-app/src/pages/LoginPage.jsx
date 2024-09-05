@@ -16,7 +16,7 @@ const LoginPage = () => {
   const onSubmit = (data) => {
     console.log(data)
     login({user: data.username, pass: data.password})
-    addNotification({ message: '', tyoe: '' })
+    addNotification({ message: `Bienvenido/a ${data.username}!`, type: 'success' })
   }
 
   return (
@@ -148,7 +148,6 @@ const LoginPage = () => {
             </form>
           </div>
         </div>
-        {/* <ToastContainer /> */}
       </div>
     </>
   )
