@@ -23,6 +23,7 @@ const login = async (req, res) => {
       const token = await tokenSign(result)
       const status = 200
       const message = ""
+      delete result.dataValues.id
       delete result.dataValues.contrasena
       const data = { ...result.dataValues, token: token }
       handleResponse(res, status, message, data)
@@ -76,6 +77,7 @@ const refreshUserData = async (req, res) => {
       const newToken = await tokenSign(result)
       const status = 200
       const message = ""
+      delete result.dataValues.id
       const data = { ...result.dataValues, token: newToken }
       handleResponse(res, status, message, data)
     }

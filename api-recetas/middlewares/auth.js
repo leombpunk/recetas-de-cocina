@@ -4,7 +4,7 @@ const checkAuth = async (request, response, next) => {
   try {
     const token = request.headers.authorization.split(" ").pop()
     const tokenData = await verifyToken(token)
-    // console.log({tokenData: tokenData})
+    // console.log({tokenData: request.headers.authorization})
     if (tokenData.usuario) {
       next()
     } else {
