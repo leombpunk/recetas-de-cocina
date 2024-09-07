@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd"
 import { Bars4Icon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline"
 
-const IngredientsList = ({ ingredients = [] }) => {
+const IngredientsList = ({ ingredients = [], control, register, errors }) => {
   const [ingredientsArray, setIngredientsArray] = useState(
     ingredients.length ? ingredients : [{ order: 1, content: "", cantidad: "" }]
   )
@@ -38,7 +38,7 @@ const IngredientsList = ({ ingredients = [] }) => {
     )
     setIngredientsArray(quotes)
   }
-  console.log({datos: ingredientsArray})
+  // console.log({datos: ingredientsArray})
   return (
     <div className='flex flex-col items-start w-full gap-2'>
       <h3 className='text-lg font-semibold'>Ingredientes:</h3>

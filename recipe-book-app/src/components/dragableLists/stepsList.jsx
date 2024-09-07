@@ -7,7 +7,7 @@ import {
   CameraIcon,
 } from "@heroicons/react/24/outline"
 
-const StepsList = ({ steps = [] }) => {
+const StepsList = ({ steps = [], control, register, errors }) => {
   const [stepsArray, setStepesArray] = useState(
     steps.length ? steps : [{ order: "", content: "", image: "" }]
   )
@@ -44,7 +44,7 @@ const StepsList = ({ steps = [] }) => {
     )
     setStepesArray(quotes)
   }
-  console.log({ datos: stepsArray })
+  // console.log({ datos: stepsArray })
 
   return (
     <div className='flex flex-col items-start w-full gap-2'>

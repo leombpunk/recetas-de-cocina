@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 
-const useDropzone = ({ isMultiple }) => {
+const useDropzone = ({ isMultiple = false }) => {
   const validData = ["image/png", "image/jpeg", "image/webp"]
   const [inputFile, setInputFile] = useState(null)
   const [errors, setErrors] = useState(null)
@@ -30,7 +30,7 @@ const useDropzone = ({ isMultiple }) => {
             ])
       })
     } else {
-      console.log(event.target.files[0])
+      // console.log(event.target.files[0])
       validFile(event.target.files[0])
         ? setInputFile(event.target.files[0])
         : setErrors([
@@ -41,10 +41,6 @@ const useDropzone = ({ isMultiple }) => {
             },
           ])
     }
-    // validFile(event.target.files[0])
-    // isMultiple
-    //   ? setInputFile([...inputFile, event.target.files[0]])
-    //   : setInputFile(event.target.files[0])
   }
   //captura  el archivo cuando se suelta sobre el elemento html
   const handleDropInDropzone = (event) => {
@@ -134,7 +130,7 @@ const useDropzone = ({ isMultiple }) => {
   }
   //valida el tipo de archivos
   const validFile = (file) => {
-    console.log(file)
+    // console.log(file)
     // console.log(validData)
     return validData.includes(file.type)
   }
