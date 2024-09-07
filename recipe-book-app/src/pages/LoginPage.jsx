@@ -1,10 +1,10 @@
 // import { useEffect } from 'react'
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import useLogin from "../hooks/useLogin"
 import { useContextNotification } from "../providers/NotificationProvider"
-import { useContextUser } from "../providers/UserProvider"
-import NavigationRoutes from "../utils/NavigationRoutes"
+// import { useContextUser } from "../providers/UserProvider"
+// import NavigationRoutes from "../utils/NavigationRoutes"
 
 const LoginPage = () => {
   const {
@@ -30,9 +30,7 @@ const LoginPage = () => {
   //   navigate(NavigationRoutes.Home)
   // }
   // useEffect(() => {
-
   // },[user])
-
   return (
     <>
       <div className='h-screen bg-gradient-to-tl from-orange-300 to-orange-700 w-full py-16 px-4'>

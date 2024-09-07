@@ -18,8 +18,8 @@ const UserProvider = ({ children }) => {
     //se revisa que exista un token guardado en localStorage
     else {
       const userToken = getToken() //contiene el token de sesion
-      //hace una peticion al servidor para verificar el token -> si no expiró
       console.log(userToken)
+      //hace una peticion al servidor para verificar el token -> si no expiró
       if (userToken){
         const result = await verifyToken(userToken)
         console.log(result)
@@ -27,12 +27,13 @@ const UserProvider = ({ children }) => {
         //retorna los datos del usuario
         //se setea en setUser
         //puede retornar el resultado o un mansaje
-        if (result.status >= 200 & result.status < 300) {
-          setToken(result.data.token)
-          setUser(result.data)
+        if (result?.status >= 200 & result?.status < 300) {
+          console.log("oh oh")
+          setToken(result.data.data.token)
+          setUser(result.data.data)
           return {type:'success', message:'Sesión correcta'}
         }else {
-          return {type:'error', message:'La sesión a expirado'}
+          return {type:'error', message:'Tu sesión a expirado'}
         }
       } else {
         return {type:'info', message:'No hay token'}
@@ -43,11 +44,11 @@ const UserProvider = ({ children }) => {
     //si expiro -> informa con una notificacion y redireccional al login
   }
 
-  const handleLogin = (user) => {
+  const handleLogin = (userData) => {
     console.log("provider")
-    console.log(user)
-    setToken(user.token)
-    setUser(user)
+    console.log(userData)
+    setToken(userData.token)
+    setUser(userData)
   }
 
   const handleLogout = () => {
