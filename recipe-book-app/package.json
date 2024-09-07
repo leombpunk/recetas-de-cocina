@@ -2,7 +2,7 @@
   "name": "recipe-book-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "./home",
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",

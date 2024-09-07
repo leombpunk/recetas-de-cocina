@@ -1,6 +1,10 @@
-import useLogin from '../hooks/useLogin'
-import { useForm } from 'react-hook-form'
-import { useContextNotification } from '../providers/NotificationProvider'
+// import { useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import useLogin from "../hooks/useLogin"
+import { useContextNotification } from "../providers/NotificationProvider"
+import { useContextUser } from "../providers/UserProvider"
+import NavigationRoutes from "../utils/NavigationRoutes"
 
 const LoginPage = () => {
   const {
@@ -8,16 +12,26 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm()
-
   const { addNotification } = useContextNotification()
-
   const { login } = useLogin()
-
   const onSubmit = (data) => {
-    console.log(data)
-    login({user: data.username, pass: data.password})
-    addNotification({ message: `Bienvenido/a ${data.username}!`, type: 'success' })
+    // console.log(data)
+    login({ user: data.username, pass: data.password })
+    addNotification({
+      message: `Bienvenido/a ${data.username}!`,
+      type: "success",
+    })
   }
+  //en ves de hacer esto, revisar que exista un token alamcenado
+  // const navigate = useNavigate()
+  // const { user } = useContextUser()
+  // console.log({ user: user })
+  // if (user) {
+  //   navigate(NavigationRoutes.Home)
+  // }
+  // useEffect(() => {
+
+  // },[user])
 
   return (
     <>
@@ -89,7 +103,7 @@ const LoginPage = () => {
               </p>
               <hr className='w-full bg-gray-400' />
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete='false'>
               <div>
                 <label
                   htmlFor='username'
@@ -101,10 +115,15 @@ const LoginPage = () => {
                   id='username'
                   type='text'
                   className='bg-gray-200 border rounded  text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
-                  {...register('username', { required: 'Usuario requerido', maxLength: {value:16, message:'Máximo 16 caractéres'} })}
+                  {...register("username", {
+                    required: "Usuario requerido",
+                    maxLength: { value: 16, message: "Máximo 16 caractéres" },
+                  })}
                   aria-invalid={errors.username ? "true" : "false"}
                 />
-                {errors.username && <p className="text-red-700">{errors.username.message}</p>}
+                {errors.username && (
+                  <p className='text-red-700'>{errors.username.message}</p>
+                )}
               </div>
               <div className='mt-6  w-full'>
                 <label
@@ -118,7 +137,10 @@ const LoginPage = () => {
                     id='password'
                     type='password'
                     className='bg-gray-200 border rounded  text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
-                    {...register('password', { required: 'Contraseña requerida', maxLength: { value:16, message:'Máximo 16 caractéres' } })}
+                    {...register("password", {
+                      required: "Contraseña requerida",
+                      maxLength: { value: 16, message: "Máximo 16 caractéres" },
+                    })}
                   />
                   <div className='absolute right-0 mt-2 mr-3 cursor-pointer'>
                     <svg
@@ -135,11 +157,13 @@ const LoginPage = () => {
                     </svg>
                   </div>
                 </div>
-                {errors.password && <p className="text-red-700">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className='text-red-700'>{errors.password.message}</p>
+                )}
               </div>
               <div className='mt-8'>
-                <button 
-                  type="submit"
+                <button
+                  type='submit'
                   className='focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-sm font-semibold leading-none text-black focus:outline-none bg-orange-600 border rounded hover:bg-orange-500 py-4 w-full'
                 >
                   Iniciar Sesión

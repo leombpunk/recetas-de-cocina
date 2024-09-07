@@ -1,5 +1,5 @@
 const NavigationRoutes = {
-    Home: '/',
+    Home: '/home',
     Profile: '/profile',
     Recipes: '/recipes',
     Recipe: '/recipe',

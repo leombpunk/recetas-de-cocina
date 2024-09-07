@@ -1,12 +1,36 @@
-import { Navigate, Outlet } from "react-router-dom"
+import { useEffect } from "react"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useContextUser } from "../providers/UserProvider"
 import NavigationRoutes from "../utils/NavigationRoutes"
+import { useContextNotification } from "../providers/NotificationProvider"
+
+const protectedLocations = [
+  NavigationRoutes.Profile,
+  NavigationRoutes.Recipe,
+  NavigationRoutes.Recipes,
+]
 
 const ProtectedRoutes = () => {
-  const { user } = useContextUser()
+  const location = useLocation()
+  const { user, handleInitUserProvider } = useContextUser()
+  const { addNotification } = useContextNotification()
 
-  if (!user) {
-    return <Navigate to={NavigationRoutes.Login} replace />
+  //comprobar si el token guardado está firmado y no ha expirado
+  //si no es valido, informar al usuario
+  const check = async () => {
+    const result = await handleInitUserProvider()
+    if (result.type === "error") {
+      addNotification({ message: result.message, type: result.type })
+    }
+  }
+
+  useEffect(() => {
+    check()
+  }, [])
+
+  if (protectedLocations.includes(location.pathname) & !user) {
+    console.log({ protected: user })
+    return <Navigate to={NavigationRoutes.Home} replace />
   }
 
   return <Outlet />

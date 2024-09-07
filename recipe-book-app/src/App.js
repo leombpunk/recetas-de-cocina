@@ -14,17 +14,17 @@ const App = () => {
       <NotificationProvider>
         <BrowserRouter>
           <Routes>
-            <Route path={NavigationRoutes.Login} element={<LoginPage />} />
-            <Route path={NavigationRoutes.Register} element={<RegisterPage />} />
             <Route element={<ProtectedRoutes />} >
-              <Route element={<AppContainer />}>
-                <Route path={NavigationRoutes.Home} element={<HomePage />} />
-                <Route path={NavigationRoutes.Profile} element={<ProfilePage />} />
-                <Route path={NavigationRoutes.Recipe} element={<RecipePage />} />
-                <Route path={NavigationRoutes.Search} element={<SearchPage />} />
+              <Route path={NavigationRoutes.Login} element={<LoginPage />} />
+              <Route path={NavigationRoutes.Register} element={<RegisterPage />} />
+                <Route element={<AppContainer />}>
+                  <Route path={NavigationRoutes.Home} element={<HomePage />} />
+                    <Route path={NavigationRoutes.Profile} element={<ProfilePage />} />
+                    <Route path={NavigationRoutes.Recipe} element={<RecipePage />} />
+                  <Route path={NavigationRoutes.Search} element={<SearchPage />} />
+                  <Route path={"*"} element={<NotFoundPage/>}/>
               </Route>
             </Route>
-            <Route path={"*"} element={<NotFoundPage/>}/>
           </Routes>
         </BrowserRouter>
       </NotificationProvider>
