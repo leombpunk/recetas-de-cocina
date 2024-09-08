@@ -22,16 +22,15 @@ const ProtectedRoutes = () => {
     if (result.type === "error") {
       addNotification({ message: result.message, type: result.type })
     }
+    if (protectedLocations.includes(location.pathname) & !user) { //revisar porque usuario es null
+      console.log({ protected: user })
+      // return <Navigate to={NavigationRoutes.Home} replace />
+    }
   }
 
   useEffect(() => {
     check()
   }, [])
-
-  if (protectedLocations.includes(location.pathname) & !user) {
-    console.log({ protected: user })
-    return <Navigate to={NavigationRoutes.Home} replace />
-  }
 
   return <Outlet />
 }
