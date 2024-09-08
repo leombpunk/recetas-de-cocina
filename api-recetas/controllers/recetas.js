@@ -9,16 +9,22 @@ import { httpError } from "../helpers/handleErrors.js"
 const getFullRecetaById = async (req, res) => {
   try {
     const id = req.params.id
-    await Receta.getFullRecetaById(id)
-      .then((result) => {
-        res.send(result)
-      })
-      .catch((error) => {
-        res.status(500)
-        res.send({ errors: error.erros })
-      })
+    const result = await Receta.getFullRecetaById(id)
+    if (result) {
+      const status = 200
+      const message = ''
+      handleResponse(res, status, message, result)
+      return
+    } 
+    else {
+      const status = 404
+      const message = 'La receta solicitada no existe'
+      handleResponse(res, status, message, null)
+      return
+    }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 

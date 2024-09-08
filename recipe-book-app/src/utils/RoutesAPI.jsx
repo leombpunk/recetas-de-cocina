@@ -1,4 +1,5 @@
-const urlAPI = 'http://localhost:3001';
+const urlAPI = 'http://localhost:3001'
+// const urlAPI = ''
 
 const RoutesAPI = {
     auth: `${urlAPI}/auth`,
