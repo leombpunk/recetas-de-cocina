@@ -18,17 +18,17 @@ const UserProvider = ({ children }) => {
     //se revisa que exista un token guardado en localStorage
     else {
       const userToken = getToken() //contiene el token de sesion
-      console.log(userToken)
+      // console.log(userToken)
       //hace una peticion al servidor para verificar el token -> si no expiró
       if (userToken){
         const result = await verifyToken(userToken)
-        console.log(result)
+        // console.log(result)
         //analizar el result y
         //retorna los datos del usuario
         //se setea en setUser
         //puede retornar el resultado o un mansaje
         if (result?.status >= 200 & result?.status < 300) {
-          console.log("oh oh")
+          // console.log("oh oh")
           setToken(result.data.data.token)
           setUser(result.data.data)
           return {type:'success', message:'Sesión correcta'}
@@ -45,8 +45,8 @@ const UserProvider = ({ children }) => {
   }
 
   const handleLogin = (userData) => {
-    console.log("provider")
-    console.log(userData)
+    // console.log("provider")
+    // console.log(userData)
     setToken(userData.token)
     setUser(userData)
   }
@@ -55,17 +55,6 @@ const UserProvider = ({ children }) => {
     deleteToken()
     setUser(null)
   }
-
-  // const userLocalData = getToken()
-
-  // if (!user && userLocalData) {
-  //   try {
-  //     const userData = JSON.parse(userLocalData)
-  //     setUser(userData)
-  //   } catch (error) {
-  //     console.log({ error: error })
-  //   }
-  // }
 
   return (
     <UserContext.Provider value={{ user, handleInitUserProvider, handleLogin, handleLogout }}>
