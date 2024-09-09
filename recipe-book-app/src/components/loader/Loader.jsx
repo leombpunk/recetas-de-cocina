@@ -1,7 +1,9 @@
 const Loader = () => {
   return (
     <>
-      <div className="loader"></div>
+      <div className='w-full h-[80vh]'>
+        <div className='loader'></div>
+      </div>
     </>
   )
 }
