@@ -1,7 +1,6 @@
 import { matchedData } from "express-validator"
 import Receta from "../models/receta.js"
 import { sequelize } from "../config/mysql.js"
-import Ingrediente from "../models/ingrediente.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
@@ -31,16 +30,22 @@ const getFullRecetaById = async (req, res) => {
 const getRecetasByUsername = async (req, res) => {
   try {
     const nombreUsuario = req.params.nombreUsuario
-    await Receta.getFullRecetaByUsername(nombreUsuario)
-      .then((result) => {
-        res.send(result)
-      })
-      .catch((error) => {
-        res.status(500)
-        res.send({ errors: error.erros })
-      })
+    const result = await Receta.getFullRecetaByUsername(nombreUsuario)
+    if (result) {
+      const status = 200
+      const message = ''
+      handleResponse(res, status, message, result)
+      return
+    } 
+    else {
+      const status = 404
+      const message = 'La receta solicitada no existe'
+      handleResponse(res, status, message, null)
+      return
+    }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 
@@ -78,7 +83,6 @@ const getRecetasByUsername = async (req, res) => {
 
 const createReceta = async (req, res) => {
   try {
-    //sacar idUsuario del token
     const token = req.headers.authorization.split(" ").pop()
     const tokenData = await verifyToken(token)
     const body = matchedData(req)
@@ -91,33 +95,19 @@ const createReceta = async (req, res) => {
       ingredientes = [],
       pasos = [],
       imagen = "",
+      checked = "",
     } = body
-    // console.log({
-    //   titulo,
-    //   detalle,
-    //   duracion,
-    //   comensales,
-    //   visibilidad,
-    //   ingredientes,
-    //   imagen,
-    //   pasos,
-    // })
-    //antes de crear una nueva entrada, verificar que no exista una receta sin
-    //terminar, o sea con los campos en blanco, así en la db no dejo los campos nulos,
-    //solo la validacion en el controlador acepataria campos vacios
-    const check = await Receta.findOne({
+    const receta = await Receta.findOne({
       where: { idUsuario: tokenData.id, checked: 0 },
-      include: { model: Ingrediente, required: true },
     })
-    if (check) {
-      // console.log(check)
+    if (receta) {
       const status = 200
       const message = ""
-      handleResponse(res, status, message, check)
+      receta.ingredientes = JSON.parse(receta.ingredientes);
+      receta.pasos = JSON.parse(receta.pasos);
+      handleResponse(res, status, message, receta)
       return
     } else {
-      //crear la entrada de la receta con los datos recibidos
-      // console.log(check)
       const result = await sequelize.transaction(async (t) => {
         const receta = await Receta.create(
           {
@@ -129,22 +119,19 @@ const createReceta = async (req, res) => {
             visibilidad,
             imagen,
             checked: 0,
+            ingredientes,
+            pasos
           },
           { transaction: t }
         )
-        const idReceta = receta.dataValues.id
-        const ingrediente = await Ingrediente.create(
-          { lista_ingredientes: ingredientes, lista_pasos: pasos, idReceta },
-          { transaction: t }
-        )
-        // console.log({receta:receta, ingredientes:ingrediente})
-        return { ...receta.dataValues, ingredientes: ingrediente }
+        return receta
       })
       const status = 200
       const message = ""
+      result.ingredientes = JSON.parse(result.ingredientes);
+      result.pasos = JSON.parse(result.pasos);
       handleResponse(res, status, message, result)
       return
-      // res.send({ message: "ola k ase!" })
     }
   } catch (error) {
     httpError(res, error)
@@ -156,28 +143,20 @@ const updateReceta = async (req, res) => {
     const idReceta = req.params.id
     const body = matchedData(req)
     const {
-      idUsuario,
-      titulo,
-      detalle,
-      visibilidad,
-      comensales,
-      duracion,
-      ingredientes,
-      pasos,
+      titulo = "",
+      detalle = "",
+      duracion = "",
+      comensales = "",
+      visibilidad = 0,
+      ingredientes = [],
+      pasos = [],
+      imagen = "",
+      checked = "",
     } = body //omito el campo imagen
     const result = await sequelize.transaction(async (t) => {
       await Receta.update(
         { titulo, detalle, idUsuario, visibilidad, comensales, duracion },
         { transaction: t, where: { id: idReceta } }
-      )
-      // await Ingrediente.destroy({
-      //   transaction: t,
-      //   where: { idReceta: idReceta },
-      //   force: true,
-      // }) //sin la prop 'force' hace un soft-delete por defecto
-      await Ingrediente.update(
-        { lista_ingredientes: ingredientes, lista_pasos: pasos },
-        { transaction: t, where: { idReceta: idReceta } }
       )
       return Receta.getFullRecetaById(idReceta)
     })
@@ -190,13 +169,9 @@ const updateReceta = async (req, res) => {
 
 const deleteReceta = async (req, res) => {
   try {
+    //borrar tambien las imágenes relacionadas
     const idReceta = req.params.id
     const result = await sequelize.transaction(async (t) => {
-      await Ingrediente.destroy({
-        transaction: t,
-        where: { idReceta: idReceta },
-        force: true,
-      })
       await Receta.destroy({
         transaction: t,
         where: { id: idReceta },

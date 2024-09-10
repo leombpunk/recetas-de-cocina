@@ -1,63 +1,77 @@
-import { DataTypes, Op } from 'sequelize'
-import { sequelize } from '../config/mysql.js'
-import Usuario from './usuario.js'
-import Ingrediente from './ingrediente.js'
+import { DataTypes, Op } from "sequelize"
+import { sequelize } from "../config/mysql.js"
+import Usuario from "./usuario.js"
+// import Ingrediente from "./ingrediente.js"
 
 //actualizar
-const Receta = sequelize.define('recetas',{
+const Receta = sequelize.define(
+  "recetas",
+  {
     titulo: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     detalle: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     imagen: {
-        type: DataTypes.STRING,
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     visibilidad: {
-        type: DataTypes.TINYINT,
-        allowNull: false
+      type: DataTypes.TINYINT,
+      allowNull: false,
     },
     idUsuario: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     comensales: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     duracion: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ingredientes: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
+    pasos: {
+      type: DataTypes.JSON,
+      allowNull: false,
     },
     checked: {
-        type: DataTypes.TINYINT,
-        allowNull: false
-    }
-}, { timestamps: false, })
-
-//asocianciones
-Receta.hasMany(Ingrediente, { foreignKey: 'idReceta' }) //una receta tiene muchos ingredientes
-// Ingrediente.belongsTo(Receta, { foreignKey: 'id' }) //un ingrediente pertenece a una receta //no es necesario
-
-// UnidadMedida.hasMany(Ingrediente, { foreignKey: 'id' }) //una unidad de medida tiene muchos ingredientes //no es necesario
+      type: DataTypes.TINYINT,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+    defaultScope: { attributes: { exclude: ["idUsuario"] } },
+  }
+)
 
 //metodos personalizados
 Receta.getFullRecetaById = async (id) => {
-    return await Receta.findOne({
-        where: { id }, 
-        include: [{ model: Usuario, required: true },{ model: Ingrediente, required: true }],
-    })
+  return await Receta.findOne({
+    where: { id },
+    include: [{ model: Usuario.scope("basicUserData"), required: true }],
+  })
 }
 
 Receta.getFullRecetaByUsername = async (username) => {
-    return await Receta.findAll({
-        // where: { username }, 
-        include: [{ model: Usuario.scope('withoutUserData'), required: true, where: { usuario: username } }],
-    })
+  return await Receta.findAll({
+    include: [
+      {
+        model: Usuario.scope("basicUserData"),
+        required: true,
+        where: { usuario: username },
+      },
+    ],
+  })
 }
 
 export default Receta
