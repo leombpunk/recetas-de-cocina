@@ -22,21 +22,6 @@ const setToken = (userToken) => {
     }
 }
 
-// const getUserLocalStorage = () => {
-//     try {
-//         const userLocalData = localStorage.getItem('RecipeAppToken')
-//         console.log(userLocalData)
-//         if (userLocalData) {
-//             const user = JSON.parse(userLocalData)
-//             return user
-//         }
-//         // return JSON.parse(userLocalData)
-//     } catch (error) {
-//         console.log("Error", error)
-//         return { 'error': error }
-//     }
-// }
-
 const deleteToken = () => {
     try {
         localStorage.removeItem('RecipeAppToken')
