@@ -11,13 +11,12 @@ const getFullRecetaById = async (req, res) => {
     const result = await Receta.getFullRecetaById(id)
     if (result) {
       const status = 200
-      const message = ''
+      const message = ""
       handleResponse(res, status, message, result)
       return
-    } 
-    else {
+    } else {
       const status = 404
-      const message = 'La receta solicitada no existe'
+      const message = "La receta solicitada no existe"
       handleResponse(res, status, message, null)
       return
     }
@@ -33,13 +32,12 @@ const getRecetasByUsername = async (req, res) => {
     const result = await Receta.getFullRecetaByUsername(nombreUsuario)
     if (result) {
       const status = 200
-      const message = ''
+      const message = ""
       handleResponse(res, status, message, result)
       return
-    } 
-    else {
+    } else {
       const status = 404
-      const message = 'La receta solicitada no existe'
+      const message = "La receta solicitada no existe"
       handleResponse(res, status, message, null)
       return
     }
@@ -48,38 +46,6 @@ const getRecetasByUsername = async (req, res) => {
     return
   }
 }
-
-// const createReceta = async (req, res) => {
-//   try {
-//     const body = matchedData(req)
-//     const {
-//       idUsuario,
-//       titulo,
-//       detalle,
-//       duracion,
-//       comensales,
-//       visibilidad,
-//       ingredientes,
-//       pasos,
-//     } = body //omito el campo imagen
-//     const result = await sequelize.transaction(async (t) => {
-//       const receta = await Receta.create(
-//         { titulo, detalle, idUsuario, duracion, comensales, visibilidad },
-//         { transaction: t }
-//       )
-//       const idReceta = receta.dataValues.id
-//       await Ingrediente.create(
-//         { lista_ingredientes: ingredientes, lista_pasos: pasos, idReceta },
-//         { transaction: t }
-//       )
-//       return Receta.getFullRecetaById(idReceta)
-//     })
-//     res.status(201) //el codigo http 201 no retorna ningún dato
-//     res.send(result)
-//   } catch (error) {
-//     httpError(res, error)
-//   }
-// }
 
 const createReceta = async (req, res) => {
   try {
@@ -103,8 +69,8 @@ const createReceta = async (req, res) => {
     if (receta) {
       const status = 200
       const message = ""
-      receta.ingredientes = JSON.parse(receta.ingredientes);
-      receta.pasos = JSON.parse(receta.pasos);
+      receta.ingredientes = JSON.parse(receta.ingredientes)
+      receta.pasos = JSON.parse(receta.pasos)
       handleResponse(res, status, message, receta)
       return
     } else {
@@ -120,7 +86,7 @@ const createReceta = async (req, res) => {
             imagen,
             checked: 0,
             ingredientes,
-            pasos
+            pasos,
           },
           { transaction: t }
         )
@@ -128,8 +94,8 @@ const createReceta = async (req, res) => {
       })
       const status = 200
       const message = ""
-      result.ingredientes = JSON.parse(result.ingredientes);
-      result.pasos = JSON.parse(result.pasos);
+      result.ingredientes = JSON.parse(result.ingredientes)
+      result.pasos = JSON.parse(result.pasos)
       handleResponse(res, status, message, result)
       return
     }
@@ -140,6 +106,7 @@ const createReceta = async (req, res) => {
 
 const updateReceta = async (req, res) => {
   try {
+    //tiene que si o si validar que todos los cmapos esten correctos
     const idReceta = req.params.id
     const body = matchedData(req)
     const {
@@ -152,7 +119,7 @@ const updateReceta = async (req, res) => {
       pasos = [],
       imagen = "",
       checked = "",
-    } = body //omito el campo imagen
+    } = body
     const result = await sequelize.transaction(async (t) => {
       await Receta.update(
         { titulo, detalle, idUsuario, visibilidad, comensales, duracion },
