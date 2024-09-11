@@ -8,7 +8,7 @@ const useRecipe = () => {
   const getRecipe = async (id) => {
     try {
       const result = await RecipesServices.getRecipe(id)
-      console.log(result)
+      // console.log(result)
       setRecipe(result.data.data)
     } catch (error) {
       console.log(error)
@@ -19,7 +19,7 @@ const useRecipe = () => {
   const createRecipe = async (recipe) => {
     try {
       const result = await RecipesServices.createRecipe(recipe)
-      console.log(result)
+      // console.log(result)
       setRecipe(result.data.data)
     } catch (error) {
       console.log(error)
