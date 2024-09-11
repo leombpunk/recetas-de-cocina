@@ -18,6 +18,7 @@ const Dropzone = ({
   handleUpload,
   handleError,
   handleFiles,
+  disabled,
 }) => {
   const {
     ref,
@@ -90,10 +91,10 @@ const Dropzone = ({
         ) : (
           <div className='flex flex-row items-center justify-center w-full'>
             <div
-              className='flex flex-col items-center border border-gray-500 w-9/12 h-96 p-6 rounded-lg border-dashed hover:cursor-pointer'
-              onClick={() => openDropzone()}
-              onDrop={(e) => dropInDropzone(e)}
-              onDragOver={(e) => dragOver(e)}
+              className={`${!disabled?'hover:cursor-pointer':'hover:cursor-not-allowed'} flex flex-col items-center border border-gray-500 w-9/12 h-96 p-6 rounded-lg border-dashed `}
+              onClick={() => { if (!disabled) {openDropzone()}}}
+              onDrop={(e) => { if (!disabled) {dropInDropzone(e)}}}
+              onDragOver={(e) => { if (!disabled) {dragOver(e)}}}
             >
               <p className='w-full text-right text-gray-500'>
                 <b>
@@ -121,6 +122,7 @@ const Dropzone = ({
         {...(isMultiple ? "multiple" : "")}
         onChange={(e) => changeInputFile(e)}
         ref={ref}
+        disabled={disabled}
       />
     </>
   )

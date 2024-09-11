@@ -1,3 +1,6 @@
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
 import {
   BookOpenIcon,
   CheckIcon,
@@ -5,20 +8,63 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
 import IngredientsList from "../dragableLists/ingredientsList"
 import StepsList from "../dragableLists/stepsList"
 import Dropzone from "../../components/dropzone/Dropzone"
 import useFiles from "../../hooks/useFiles"
-import { getUserLocalStorage } from "../../utils/Token"
 import { getRecipeLocal } from "../../utils/RecipeLocal"
+import recipeSchema from "../../utils/RecipeResolver"
 
-const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUpdate, handleDelete }) => {
+const RecipeForm = ({
+  title = "",
+  handleNotification = null,
+  data = null,
+  handleSave,
+  handleDelete,
+}) => {
   const { files, uploadFiles, deleteFiles } = useFiles()
   const [editMode, setEditMode] = useState(false)
   const [portada, setPortada] = useState(null)
-  // console.log({ portada: portada })
+  const [pasosImg, setPasosImg] = useState(null)
+
+  const {
+    control,
+    register,
+    formState: { errors },
+    handleSubmit,
+    getValues,
+    setError,
+    reset,
+    watch,
+  } = useForm({
+    defaultValues: {
+      id: 0,
+      titulo: "",
+      imagen: "",
+      detalle: "",
+      comensales: "",
+      duracion: "",
+      ingredientes: [{name:""}], //[{ orden: 0, ingrediente: "", cantidad: "" }]
+      pasos: [{ paso: "", imagen: "" }], //[{ orden: 0, paso: "", imagen: "" }]
+      checked: 0,
+      visibilidad: 0,
+    },
+    values: {
+      id: data.id,
+      titulo: data.titulo,
+      imagen: data.imagen,
+      detalle: data.detalle,
+      comensales: data.comensales,
+      duracion: data.duracion,
+      ingredientes: data.ingredientes, 
+      pasos: data.pasos, 
+      checked: data.checked,
+      visibilidad: data.visibilidad,
+    },
+    resolver: yupResolver(recipeSchema),
+  })
+
+  console.log(watch())
 
   const handlePortadaUpload = async (file) => {
     if (file) {
@@ -42,20 +88,20 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
       const recipe = JSON.parse(getRecipeLocal())
       // console.log(recipe)
       // if (token & recipe) {
-        // alert("ola k ase!")
-        const result = await uploadFiles(recipe.id, file) //ponele
-        console.log(result)
-        return result
+      // alert("ola k ase!")
+      const result = await uploadFiles(recipe.id, file) //ponele
+      console.log(result)
+      return result
       // }
     }
   }
-  
+
   //que mierda hace esto?
   //recibe un mensaje, tipo y detalle para mostrar una notificacion al usuario
   //por si algo sale mal, ej el usuario quiere subir un documento de texto
   //pero el dropzone solo acepta imagenes, le informaria el error
   const handleErrorFile = (error) => {
-    if (error){
+    if (error) {
       handleNotification({
         message: `${error[0]?.message}. Archivo: ${
           error[0]?.filename
@@ -64,28 +110,6 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
       })
     }
   }
-
-  const [pasosImg, setPasosImg] = useState(null)
-
-  const {
-    control,
-    register,
-    formState: { errors },
-    handleSubmit,
-    getValues,
-    setError,
-    watch,
-  } = useForm({
-    defaultValues: {
-      titulo: "",
-      descripcion: "",
-      portada: "",
-      comensales: "",
-      duracion: "",
-      ingredientes: [{ orden: "", ingrediente: "", cantidad: "" }],
-      pasos: [{ orden: "", paso: "", imagen: "" }],
-    },
-  })
 
   const handleClickEditBtn = (event) => {
     event.preventDefault()
@@ -115,7 +139,7 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
             style={{ display: `${!editMode ? "none" : ""}` }}
             className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
             type='button'
-            title='Guardar'
+            title='Guardar receta'
             onClick={(e) => handleClickSaveBtn(e)}
           >
             <CheckIcon className='h-7 w-7' />
@@ -124,7 +148,7 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
             style={{ display: `${editMode ? "none" : ""}` }}
             className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
             type='button'
-            title='Editar'
+            title='Editar receta'
             onClick={(e) => handleClickEditBtn(e)}
           >
             <PencilSquareIcon className='h-7 w-7' />
@@ -133,7 +157,7 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
             style={{ display: `${!editMode ? "none" : ""}` }}
             className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
             type='button'
-            title='Cancelar'
+            title='Cancelar acción'
             onClick={(e) => handleClickCancelBtn(e)}
           >
             <NoSymbolIcon className='h-7 w-7' />
@@ -146,7 +170,7 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
                 : "bg-orange-500 hover:scale-105"
             } rounded-lg p-1.5  duration-500`}
             type='button'
-            title='Borrar'
+            title='Borrar receta'
             onClick={(e) => handleClickDeleteBtn(e)}
           >
             <TrashIcon className='h-7 w-7' />
@@ -156,9 +180,10 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
       <div className='bg-orange-200 rounded-lg mt-4'>
         <form
           autoComplete='off'
-          className='flex flex-col gap-2 items-center p-4 w-full'
-          id='recipeImageForm'
-          name='recipeImageForm'
+          className='flex flex-col gap-3 items-center p-4 w-full'
+          id='recipeForm'
+          name='recipeForm'
+          onSubmit={() => handleSubmit()}
         >
           <Dropzone
             isMultiple={false}
@@ -166,51 +191,48 @@ const RecipeForm = ({ title = "", handleNotification, data, handleSave, handleUp
             handleFiles={setPortada}
             handleUpload={handleUploadFile}
             handleError={handleErrorFile}
+            disabled={!editMode}
           />
-        </form>
-        <form
-          autoComplete='off'
-          className='flex flex-col gap-2 items-center p-4 w-full'
-          id='recipeForm'
-          name='recipeForm'
-          onSubmit={() => handleSubmit()}
-        >
           <input
             type='text'
             placeholder='Titulo de la Receta'
-            className='rounded-lg placeholder:font-semibold placeholder:text-lg text-lg bg-orange-100 w-full'
+            className={`${!editMode?'bg-orange-200 text-gray-600 hover:cursor-not-allowed':'bg-orange-100 shadow-black/50 shadow-sm'} rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full`}
             name='titulo'
             id='titulo'
             {...register("titulo")}
+            disabled={!editMode}
           />
           <textarea
             placeholder='Descripcion de la receta...'
-            className='rounded-lg placeholder:font-semibold placeholder:text-lg text-lg bg-orange-100 w-full'
-            name='descripcion'
-            id='descripcion'
+            className={`${!editMode?'bg-orange-200 text-gray-600 hover:cursor-not-allowed':'bg-orange-100 shadow-black/50 shadow-sm'} rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full`}
+            name='detalle'
+            id='detalle'
             rows={4}
-            {...register("descripcion")}
+            {...register("detalle")}
+            disabled={!editMode}
           ></textarea>
           <div className='grid w-full gap-x-3 grid-cols-2 grid-rows-1 items-center'>
             <input
               type='text'
               placeholder='Cantidad de porciones/personas'
-              className='rounded-lg placeholder:font-semibold placeholder:text-lg text-lg bg-orange-100 w-full'
+              className={`${!editMode?'bg-orange-200 text-gray-600 hover:cursor-not-allowed':'bg-orange-100 shadow-black/50 shadow-sm'} rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full`}
               name='comensales'
               id='comensales'
               {...register("comensales")}
+              disabled={!editMode}
             />
             <input
               type='text'
               placeholder='Tiempo de preparación'
-              className='rounded-lg placeholder:font-semibold placeholder:text-lg text-lg bg-orange-100 w-full'
+              className={`${!editMode?'bg-orange-200 text-gray-600 hover:cursor-not-allowed':'bg-orange-100 shadow-black/50 shadow-sm'} rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full`}
               name='duracion'
               id='duracion'
               {...register("duracion")}
+              disabled={!editMode}
             />
           </div>
-          <IngredientsList control={control} register={register} />
-          <StepsList control={control} register={register} />
+          <IngredientsList control={control} register={register} errors={errors} editMode={editMode} />
+          <StepsList control={control} register={register} errors={errors} editMode={editMode} />
         </form>
       </div>
     </>
