@@ -6,6 +6,7 @@ const RoutesAPI = {
     profile: `${urlAPI}/usuarios`,
     recipes: `${urlAPI}/recetas`,
     images: `${urlAPI}/imagenes`,
+    staticFiles: `${urlAPI}/static`,
 }
 
 export { RoutesAPI };
