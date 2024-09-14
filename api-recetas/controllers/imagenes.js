@@ -5,6 +5,7 @@ import fs from "fs"
 import { dirname, join } from "path"
 import { fileURLToPath } from "url"
 import express from "express"
+import { handleResponse } from "../helpers/handleResponse.js"
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -78,10 +79,27 @@ const deleteProfileImg = async (req, res) => {
 //solo para la portada de la receta
 const uploadRecetaImg = async (req, res) => {
   try {
-    const file = req.file
-    // console.log(file)
-    // console.log(req.headers.authorization) //andó
-    res.status(200).send({ message: "Imagen guardada", result: file })
+    //testear
+    if (req.file) {
+      const { filename, size, mimetype, encoding } = req.file
+      const path = `http://localhost:3001/static/${filename}`
+      console.log(req.file)
+      // console.log(req.headers.authorization) //andó
+      handleResponse(res, 200, "Imagen guardada", {
+        file: { filename, size, mimetype, encoding, path },
+      })
+      return
+    } else {
+      handleResponse(res, 404, "No hay archivo")
+      return
+    }
+
+    // res
+    //   .status(200)
+    //   .send({
+    //     message: "Imagen guardada",
+    //     file: { filename, size, mimetype, encoding, path },
+    //   })
     // const idReceta = req.params.id
     // const file = req.file
     // console.log(file)
