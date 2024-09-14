@@ -7,7 +7,7 @@ const recipeSchema = yup.object({
   comensales: yup.string(),
   visibilidad: yup.number(),
   ingredientes: yup.array().of(yup.object({
-    ingrediente: yup.string().required()
+    name: yup.string().required()
   })),
   pasos: yup.array().of(yup.object({
     paso: yup.string().required(),
