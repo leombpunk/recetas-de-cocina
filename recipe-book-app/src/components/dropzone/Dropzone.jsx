@@ -1,6 +1,7 @@
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import useDropzone from "./useDropzone"
 import { useEffect } from "react"
+import { RoutesAPI } from "../../utils/RoutesAPI"
 
 //manejar el tamaño del dropzone
 /**
@@ -10,6 +11,8 @@ import { useEffect } from "react"
  * @param {*} handleUpload(function): executa la funcion para cargar archivos, recibe un array de archivos
  * @param {*} handleError(function): pasa un mensaje si algo sale mal
  * @param {*} handleFiles(function): pasa un array con los archivos del input
+ * @param {*} disabled(boolean): activa/desactiva el componente y sus metodos
+ * @param {*} filePreload(stringArray/string): pasa un archivo o varios que ya estan almacenados en algún servidor
  * @returns 
  */
 const Dropzone = ({
@@ -19,6 +22,7 @@ const Dropzone = ({
   handleError,
   handleFiles,
   disabled,
+  filePreload,
 }) => {
   const {
     ref,
@@ -31,7 +35,7 @@ const Dropzone = ({
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  // console.log(errors)
+  console.log({filePreload: filePreload})
 
   useEffect(()=> {
     handleFiles(files)
@@ -45,14 +49,14 @@ const Dropzone = ({
   return (
     <>
       <figure className='w-full'>
-        {files ? (
+        {files || filePreload ? (
           isMultiple ? null : (
             <div className='flex flex-row justify-center w-full'>
               <div
                 className='w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
                 title='Imagen descriptiva del paso'
                 style={{
-                  backgroundImage: `url(${URL.createObjectURL(files)}`,
+                  backgroundImage: `url(${RoutesAPI.staticFiles.concat('/',filePreload) || URL.createObjectURL(files)}`,
                 }}
               >
                 <div
