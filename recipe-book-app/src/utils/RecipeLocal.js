@@ -5,7 +5,7 @@ const recipeStruct = {
   detalle: "",
   comensales: "",
   duracion: "",
-  ingredientes: [], //[{ orden: 0, ingrediente: "", cantidad: "" }]
+  ingredientes: [{name:""}], //[{ orden: 0, ingrediente: "", cantidad: "" }]
   pasos: [{ paso: "", imagen: "" }], //[{ orden: 0, paso: "", imagen: "" }]
   checked: 0,
   visibilidad: 0,
