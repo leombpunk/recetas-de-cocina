@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useContextUser } from "../providers/UserProvider"
 import NavigationRoutes from "../utils/NavigationRoutes"
 import { useContextNotification } from "../providers/NotificationProvider"
+import Loader from "./loader/Loader"
 
 const protectedLocations = [
   NavigationRoutes.Profile,
@@ -21,10 +22,12 @@ const ProtectedRoutes = () => {
     const result = await handleInitUserProvider()
     if (result.type === "error") {
       addNotification({ message: result.message, type: result.type })
-    }
-    if (protectedLocations.includes(location.pathname) & !user) { //revisar porque usuario es null
-      console.log({ protected: user })
-      // return <Navigate to={NavigationRoutes.Home} replace />
+    } else {
+      if (protectedLocations.includes(location.pathname) & !user) {
+        //revisar porque usuario es null
+        console.log({ protected: user })
+        // return <Navigate to={NavigationRoutes.Home} replace />
+      }
     }
   }
 
@@ -32,7 +35,8 @@ const ProtectedRoutes = () => {
     check()
   }, [])
 
-  return <Outlet />
+  //no se si se arregló
+  return <>{protectedLocations.includes(location.pathname) & !user ? <Loader /> : <Outlet />}</>
 }
 
 export default ProtectedRoutes
