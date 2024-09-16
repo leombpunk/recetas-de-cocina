@@ -5,15 +5,16 @@ import { RoutesAPI } from "../../utils/RoutesAPI"
 
 //manejar el tamaño del dropzone
 /**
- * 
+ *
  * @param {*} isMultiple(boolean): especifíca si se quiere renderizar un 'input[type="file"]' con el atributo 'multiple' o 'single', por defecto el valor es *'false'*
  * @param {*} maxFiles(integer): establece el máximo de archivos para el input, por defecto el valor es *'1'*
  * @param {*} handleUpload(function): executa la funcion para cargar archivos, recibe un array de archivos
+ * @param {*} handleDelete(function): executa la funcion para eliminar archivos, recibe un array de archivos
  * @param {*} handleError(function): pasa un mensaje si algo sale mal
  * @param {*} handleFiles(function): pasa un array con los archivos del input
  * @param {*} disabled(boolean): activa/desactiva el componente y sus metodos
  * @param {*} filePreload(stringArray/string): pasa un archivo o varios que ya estan almacenados en algún servidor
- * @returns 
+ * @returns
  */
 const Dropzone = ({
   isMultiple = false,
@@ -21,6 +22,7 @@ const Dropzone = ({
   handleUpload,
   handleError,
   handleFiles,
+  handleDelete,
   disabled,
   filePreload,
 }) => {
@@ -35,12 +37,32 @@ const Dropzone = ({
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  console.log({filePreload: filePreload})
+  console.log({ filePreload: filePreload })
 
-  useEffect(()=> {
-    handleFiles(files)
-    handleUpload(files)
-  },[files])
+  const handleClickDelete = (e) => {
+    e.preventDefault()
+    //comprobar si filePreload es distinto de null
+    if (filePreload) {
+      console.log("estoy en filepreload")
+      // handleDelete(filePreload)
+    }
+    //o si files es distinto de null
+    else {
+      if (files) {
+        console.log("estoy en files")
+        // deleteFile()
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (files === null) {
+      handleDelete()
+    } else {
+      handleFiles(files)
+      handleUpload(files)
+    }
+  }, [files])
 
   useEffect(() => {
     handleError(errors)
@@ -56,18 +78,30 @@ const Dropzone = ({
                 className='w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
                 title='Imagen descriptiva del paso'
                 style={{
-                  backgroundImage: `url(${RoutesAPI.staticFiles.concat('/',filePreload) || URL.createObjectURL(files)}`,
+                  backgroundImage: `url(${
+                    RoutesAPI.staticFiles.concat("/", filePreload) ||
+                    URL.createObjectURL(files)
+                  }`,
+                  filter: `${!disabled ? "none" : "grayscale(100%)"}`,
                 }}
               >
-                <div
-                  className='relative flex flex-row justify-end'
-                  onClick={() => deleteFile()}
-                >
-                  <XMarkIcon
-                    className='h-8 w-8 p-0.5 text-white bg-red-500 hover:cursor-pointer hover:scale-105 duration-500 rounded-lg'
-                    title='Borrar'
-                    fontWeight={700}
-                  />
+                <div className='relative flex flex-row justify-end'>
+                  <button
+                    type='button'
+                    disabled={disabled}
+                    className={`${
+                      !disabled
+                        ? "bg-red-500 hover:cursor-pointer hover:scale-105 duration-500 rounded-lg"
+                        : "hidden"
+                    }`}
+                    onClick={(e) => handleClickDelete(e)}
+                  >
+                    <XMarkIcon
+                      className='h-8 w-8 p-0.5 text-white'
+                      title='Borrar'
+                      fontWeight={700}
+                    />
+                  </button>
                 </div>
               </div>
               {/* <div className='flex flex-row justify-center w-full'>
@@ -95,10 +129,24 @@ const Dropzone = ({
         ) : (
           <div className='flex flex-row items-center justify-center w-full'>
             <div
-              className={`${!disabled?'hover:cursor-pointer':'hover:cursor-not-allowed'} flex flex-col items-center border border-gray-500 w-9/12 h-96 p-6 rounded-lg border-dashed `}
-              onClick={() => { if (!disabled) {openDropzone()}}}
-              onDrop={(e) => { if (!disabled) {dropInDropzone(e)}}}
-              onDragOver={(e) => { if (!disabled) {dragOver(e)}}}
+              className={`${
+                !disabled ? "hover:cursor-pointer" : "hover:cursor-not-allowed"
+              } flex flex-col items-center border border-gray-500 w-9/12 h-96 p-6 rounded-lg border-dashed `}
+              onClick={() => {
+                if (!disabled) {
+                  openDropzone()
+                }
+              }}
+              onDrop={(e) => {
+                if (!disabled) {
+                  dropInDropzone(e)
+                }
+              }}
+              onDragOver={(e) => {
+                if (!disabled) {
+                  dragOver(e)
+                }
+              }}
             >
               <p className='w-full text-right text-gray-500'>
                 <b>
