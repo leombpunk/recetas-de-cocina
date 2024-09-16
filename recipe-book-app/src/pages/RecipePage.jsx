@@ -1,37 +1,13 @@
-import { useEffect } from "react"
 import RecipeForm from "../components/recipe-form/RecipeForm"
 import { useContextNotification } from "../providers/NotificationProvider"
-import {
-  saveRecipeLocal,
-  getRecipeLocal,
-  recipeStruct,
-} from "../utils/RecipeLocal"
+
 import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
 
-const RecipePage = ({ idRecipe }) => {
-  const recipeLocal = getRecipeLocal()
-  // console.log(recipeLocal)
-  //si hay, cargar los datos en el formulario
-  //si no hay nada crear el "dato" en localstorage/server
+const RecipePage = ({ idRecipe = null }) => {  
   const { addNotification } = useContextNotification()
   const { recipe, createRecipe, updateRecipe, deleteRecipe, getRecipe } =
-    useRecipe()
-
-  //al iniciar el componente verificar si existe algun dato en localstorage/server
-  useEffect(() => {
-    if (!recipeLocal) {
-      createRecipe()
-    } else {
-      // console.log(recipeLocal)
-      getRecipe(idRecipe || recipeLocal.id)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    saveRecipeLocal(recipe)
-  }, [recipe])
+    useRecipe({idRecipe})
 
   return (
     <>

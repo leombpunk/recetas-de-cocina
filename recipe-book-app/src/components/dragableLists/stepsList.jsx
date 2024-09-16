@@ -8,13 +8,13 @@ import {
   CameraIcon,
 } from "@heroicons/react/24/outline"
 
-const StepsList = ({ steps = [], control, register, errors, editMode }) => {
+const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode }) => {
   const { fields, append, remove, move } = useFieldArray({
     name: "pasos",
     control: control,
   })
 
-  console.log({ campitos: fields })
+  // console.log({ pasos: fields })
 
   const [stepsArray, setStepesArray] = useState(
     steps.length ? steps : [{ order: "", content: "", image: "" }]
@@ -68,11 +68,11 @@ const StepsList = ({ steps = [], control, register, errors, editMode }) => {
               {...provided.droppableProps}
               className='flex flex-col gap-2 w-full'
             >
-              {stepsArray.map((item, index) => (
+              {fields.map((item, index) => (
                 <Draggable
-                  draggableId={`draggable-step-${item.order}`}
+                  draggableId={`draggable-step-${index}`}
                   index={index}
-                  key={`draggable-step-${item.order}`}
+                  key={`draggable-step-${index}`}
                   isDragDisabled={!editMode}
                 >
                   {(provided) => (
@@ -85,9 +85,9 @@ const StepsList = ({ steps = [], control, register, errors, editMode }) => {
                       <div className='flex flex-row items-start rounded-lg w-full p-1'>
                         <Bars4Icon className='h-6 w-6' />
                         <textarea
+                          {...register(`pasos.${index}.paso`)}
                           type='text'
                           placeholder='Describe el proceso de preparación en pasos'
-                          // value={item.content}
                           onBlur={(event) => {
                             console.log(event.target.value)
                           }}
@@ -99,6 +99,7 @@ const StepsList = ({ steps = [], control, register, errors, editMode }) => {
                           title='Eliminar paso'
                           onClick={() => deleteItem(stepsArray, index)}
                           disabled={!editMode}
+                          className={`${!editMode ? 'text-gray-500 hover:cursor-not-allowed':''}`}
                         >
                           <TrashIcon className='w-6 h-6' />
                         </button>
