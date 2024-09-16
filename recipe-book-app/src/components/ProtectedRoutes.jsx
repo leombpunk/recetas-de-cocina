@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Navigate, Outlet, useLocation } from "react-router-dom"
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useContextUser } from "../providers/UserProvider"
 import NavigationRoutes from "../utils/NavigationRoutes"
 import { useContextNotification } from "../providers/NotificationProvider"
@@ -13,6 +13,7 @@ const protectedLocations = [
 
 const ProtectedRoutes = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const { user, handleInitUserProvider } = useContextUser()
   const { addNotification } = useContextNotification()
 
@@ -22,10 +23,16 @@ const ProtectedRoutes = () => {
     const result = await handleInitUserProvider()
     if (result.type === "error") {
       addNotification({ message: result.message, type: result.type })
-    } else {
+    } 
+    else if (result.type === "info") {
+      addNotification({ message: result.message, type: result.type })
+      navigate(NavigationRoutes.Home)
+    }
+    else {
       if (protectedLocations.includes(location.pathname) & !user) {
         //revisar porque usuario es null
         console.log({ protected: user })
+        navigate(NavigationRoutes.Home)
         // return <Navigate to={NavigationRoutes.Home} replace />
       }
     }
@@ -36,7 +43,7 @@ const ProtectedRoutes = () => {
   }, [])
 
   //no se si se arregló
-  return <>{protectedLocations.includes(location.pathname) & !user ? <Loader /> : <Outlet />}</>
+  return <Outlet />
 }
 
 export default ProtectedRoutes
