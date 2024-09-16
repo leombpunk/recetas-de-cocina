@@ -10,7 +10,8 @@ const database = process.env.DB_NAME
 
 const sequelize = new Sequelize(database, username, password, {
     host: host,
-    dialect: 'mysql'
+    dialect: 'mysql',
+    timezone: '-03:00'
 })
 
 const dbConexion = async () => {
