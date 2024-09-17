@@ -23,7 +23,7 @@ const upload = multer({
         else callback(new Error(`Solo se aceptan los siguientes formatos de imagen: ${MIMETYPES.join()}`))
     }, 
     limits: { 
-        fileSize: 1000000,
+        fileSize: 50000000, //50mb aprox
     }
 })
 
