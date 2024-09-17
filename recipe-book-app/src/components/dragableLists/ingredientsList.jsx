@@ -61,8 +61,8 @@ const IngredientsList = ({
     setIngredientsArray(quotes)
   }
   // console.log({datos: ingredientsArray})
-  console.log({errors: errors})
-  console.log({control:control})
+  console.log({ errors: errors })
+  console.log({ control: control })
   return (
     <div className='flex flex-col items-start w-full gap-2'>
       <h3 className='text-lg font-semibold'>Ingredientes:</h3>
@@ -86,10 +86,16 @@ const IngredientsList = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      className='flex flex-col gap-2'
                     >
-                      <div className={`${
-                        !editMode ? "" : "shadow-black/50 shadow-sm"
-                      } border-gray-500 border flex flex-row items-center rounded-lg w-full p-1`}>
+                      <div
+                        className={`${
+                          !editMode ? "" : "shadow-black/50 shadow-sm"
+                        } border-gray-500 border flex flex-row items-center rounded-lg w-full p-1 ${
+                          errors.ingredientes?.[index] &&
+                          "border border-red-600"
+                        }`}
+                      >
                         <Bars4Icon className='h-6 w-6' />
                         <input
                           key={`inputIngrediente-${index}`}
@@ -103,10 +109,7 @@ const IngredientsList = ({
                             !editMode
                               ? "bg-orange-200 text-gray-600 hover:cursor-not-allowed"
                               : "bg-orange-100"
-                          } rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full border-transparent ${
-                            errors?.ingredientes?.[index].name &&
-                            "border border-red-600"
-                          }`}
+                          } rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full border-transparent `}
                           disabled={!editMode}
                         />
                         <button
@@ -123,7 +126,7 @@ const IngredientsList = ({
                           <TrashIcon className='w-6 h-6' />
                         </button>
                       </div>
-                      {errors.ingredientes?.[index].name && (
+                      {errors.ingredientes?.[index] && (
                         <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>
                           <ExclamationCircleIcon className='h-6 w-6' />
                           {errors.ingredientes[index].name.message}

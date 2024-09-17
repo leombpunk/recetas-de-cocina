@@ -1,27 +1,41 @@
 import { useState } from "react"
-import { useFieldArray } from "react-hook-form"
+import { useFieldArray, useWatch } from "react-hook-form"
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd"
 import {
   Bars4Icon,
   PlusIcon,
   TrashIcon,
-  CameraIcon,
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/outline"
+import Dropzone from "../dropzone/Dropzone"
 
-const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode }) => {
+const StepsList = ({
+  steps = [],
+  fileUpload,
+  fileDelete,
+  handleErrorFile,
+  setPasosImg,
+  control,
+  register,
+  errors,
+  editMode,
+}) => {
   const { fields, append, remove, move } = useFieldArray({
     name: "pasos",
     control: control,
   })
 
-  // console.log({ pasos: fields })
+  const pasos = useWatch({ control:control, name: "pasos"})
+
+  console.log({ pasos: fields })
+  console.log({guach: pasos})
 
   const [stepsArray, setStepesArray] = useState(
     steps.length ? steps : [{ order: "", content: "", image: "" }]
   )
 
   const addItem = () => {
-    append({paso:"",imagen:""})
+    append({ paso: "", imagen: "" })
     setStepesArray([
       ...stepsArray,
       { order: stepsArray.length + 1, content: "", image: "" },
@@ -35,7 +49,7 @@ const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode
     setStepesArray(result)
   }
   const reorder = (list, startIndex, endIndex) => {
-    move(startIndex,endIndex)
+    move(startIndex, endIndex)
     const result = Array.from(list)
     const [removed] = result.splice(startIndex, 1)
     result.splice(endIndex, 0, removed)
@@ -80,18 +94,27 @@ const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className={`${!editMode ? '':'shadow-black/50 shadow-sm'} border-gray-500 border flex flex-col items-start rounded-lg w-full p-1 gap-2`}
+                      className={`${
+                        !editMode ? "" : "shadow-black/50 shadow-sm"
+                      } border-gray-500 border flex flex-col items-start rounded-lg w-full p-1 pb-2 gap-2 ${
+                        errors.pasos?.[index] && "border border-red-600"
+                      }`}
                     >
                       <div className='flex flex-row items-start rounded-lg w-full p-1'>
                         <Bars4Icon className='h-6 w-6' />
                         <textarea
                           {...register(`pasos.${index}.paso`)}
                           type='text'
+                          rows={4}
                           placeholder='Describe el proceso de preparación en pasos'
                           onBlur={(event) => {
                             console.log(event.target.value)
                           }}
-                          className={`${!editMode?'bg-orange-200 text-gray-600 hover:cursor-not-allowed':'bg-orange-100'} rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full border-transparent`}
+                          className={`${
+                            !editMode
+                              ? "bg-orange-200 text-gray-600 hover:cursor-not-allowed"
+                              : "bg-orange-100"
+                          } rounded-lg placeholder:font-semibold placeholder:text-lg text-lg w-full border-transparent`}
                           disabled={!editMode}
                         ></textarea>
                         <button
@@ -99,29 +122,33 @@ const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode
                           title='Eliminar paso'
                           onClick={() => deleteItem(stepsArray, index)}
                           disabled={!editMode}
-                          className={`${!editMode ? 'text-gray-500 hover:cursor-not-allowed':''}`}
+                          className={`${
+                            !editMode
+                              ? "text-gray-500 hover:cursor-not-allowed"
+                              : ""
+                          }`}
                         >
                           <TrashIcon className='w-6 h-6' />
                         </button>
                       </div>
-                      <figure className='w-full'>
-                        {item.image ? (
-                          <img
-                            alt='imagen descriptiva del paso'
-                            title='Imagen descriptiva del paso'
-                            src={item.image}
-                          />
-                        ) : (
-                          <div className='flex flex-row items-center justify-center w-full'>
-                            <div className='border border-gray-500 p-6 rounded-lg border-dashed hover:cursor-pointer'>
-                              <CameraIcon className='h-24 w-24 text-gray-500 m-auto' />
-                              <p className='italic text-gray-500 font-semibold text-sm'>
-                                Agrega una imagen (opcional)
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </figure>
+                      {errors.pasos?.[index] && (
+                        <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>
+                          <ExclamationCircleIcon className='h-6 w-6' />
+                          {errors.pasos[index].paso.message}
+                        </span>
+                      )}
+                      <Dropzone
+                        title="(Opcional) Agrega una imagen descriptiva del paso"
+                        isMultiple={false}
+                        maxFiles={1}
+                        handleFiles={setPasosImg}
+                        handleUpload={fileUpload}
+                        handleDelete={fileDelete}
+                        handleError={handleErrorFile}
+                        disabled={!editMode}
+                        filePreload={fields[index].imagen}
+                        index={index}
+                      />
                     </div>
                   )}
                 </Draggable>
@@ -134,7 +161,11 @@ const StepsList = ({ steps = [], fileUpload, control, register, errors, editMode
       <div className=''>
         <button
           type='button'
-          className={`${!editMode?'bg-orange-400 text-gray-600 hover:cursor-not-allowed':'bg-orange-500 shadow-black/50 shadow-sm hover:scale-105 duration-500'} rounded-lg p-1.5`}
+          className={`${
+            !editMode
+              ? "bg-orange-400 text-gray-600 hover:cursor-not-allowed"
+              : "bg-orange-500 shadow-black/50 shadow-sm hover:scale-105 duration-500"
+          } rounded-lg p-1.5`}
           title='Agregar Ingrediente'
           onClick={() => addItem()}
           disabled={!editMode}

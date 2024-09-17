@@ -108,7 +108,9 @@ const RecipeForm = ({
     }
   }
 
-  const handleUploadFileSteps = async (index, file) => {
+  //pasarle estos dos metodos al componente stepsList
+  const handleUploadFileSteps = async (file, index) => {
+    console.log({ i: index, f: file })
     if (file) {
       const recipe = getRecipeLocal()
       const result = await uploadFiles(recipe.id, file)
@@ -119,7 +121,8 @@ const RecipeForm = ({
     }
   }
 
-  const handleDeleteFilesSteps = async (index, filename) => {
+  const handleDeleteFilesSteps = async (filename, index) => {
+    console.log({ i: index, f: filename })
     if (filename) {
       const recipe = getRecipeLocal()
       const result = await deleteFiles(recipe.id, filename)
@@ -151,7 +154,7 @@ const RecipeForm = ({
   }
   const handleClickSaveBtn = (event) => {
     // event.preventDefault()
-    setEditMode(!editMode)
+    // setEditMode(!editMode)
   }
   const handleClickCancelBtn = (event) => {
     event.preventDefault()
@@ -165,6 +168,7 @@ const RecipeForm = ({
   const handleSaveForm = (data) => {
     console.log(data)
     alert("ola k ase!")
+    // setEditMode(!editMode)
   }
 
   return (
@@ -226,6 +230,7 @@ const RecipeForm = ({
         <div className='bg-orange-200 rounded-lg mt-4'>
           <div className='flex flex-col gap-3 items-center p-4 w-full'>
             <Dropzone
+              title="Agrega una imagen para la portada de la receta"
               isMultiple={false}
               maxFiles={1}
               handleFiles={setPortada}
@@ -334,6 +339,8 @@ const RecipeForm = ({
               editMode={editMode}
               fileUpload={handleUploadFileSteps}
               fileDelete={handleDeleteFilesSteps}
+              handleErrorFile={handleErrorFile}
+              setPasosImg={setPasosImg}
             />
           </div>
         </div>

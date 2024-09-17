@@ -4,10 +4,9 @@ import { useContextNotification } from "../providers/NotificationProvider"
 import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
 
-const RecipePage = ({ idRecipe = null }) => {  
+const RecipePage = ({ idRecipe = null }) => {
   const { addNotification } = useContextNotification()
-  const { recipe, createRecipe, updateRecipe, deleteRecipe, getRecipe } =
-    useRecipe({idRecipe})
+  const { recipe, updateRecipe, deleteRecipe } = useRecipe({ idRecipe })
 
   return (
     <>

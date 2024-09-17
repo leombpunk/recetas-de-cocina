@@ -17,6 +17,7 @@ import { RoutesAPI } from "../../utils/RoutesAPI"
  * @returns
  */
 const Dropzone = ({
+  title = '',
   isMultiple = false,
   maxFiles = 1,
   handleUpload,
@@ -25,6 +26,7 @@ const Dropzone = ({
   handleDelete,
   disabled,
   filePreload,
+  index = undefined,
 }) => {
   const {
     ref,
@@ -37,30 +39,32 @@ const Dropzone = ({
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  console.log({ filePreload: filePreload })
+  console.log({ filePreload: filePreload, f:files })
 
   const handleClickDelete = (e) => {
     e.preventDefault()
     //comprobar si filePreload es distinto de null
     if (filePreload) {
       console.log("estoy en filepreload")
-      // handleDelete(filePreload)
+      handleDelete(filePreload, index)
     }
     //o si files es distinto de null
     else {
       if (files) {
         console.log("estoy en files")
-        // deleteFile()
+        deleteFile()
       }
     }
   }
 
   useEffect(() => {
     if (files === null) {
-      handleDelete()
+      // handleDelete()
     } else {
       handleFiles(files)
-      handleUpload(files)
+      //funciona, pero debería comprobar si index es distinto de undefined
+      //para enviarlo o no como parámetro de la función
+      handleUpload(files, index)
     }
   }, [files])
 
@@ -78,8 +82,8 @@ const Dropzone = ({
                 className='w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
                 title='Imagen descriptiva del paso'
                 style={{
-                  backgroundImage: `url(${
-                    RoutesAPI.staticFiles.concat("/", filePreload) ||
+                  backgroundImage: `url(${filePreload ? 
+                    RoutesAPI.staticFiles.concat("/", filePreload) :
                     URL.createObjectURL(files)
                   }`,
                   filter: `${!disabled ? "none" : "grayscale(100%)"}`,
@@ -104,26 +108,6 @@ const Dropzone = ({
                   </button>
                 </div>
               </div>
-              {/* <div className='flex flex-row justify-center w-full'>
-            <div
-              className='w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
-              title='Imagen descriptiva del paso'
-              style={{
-                backgroundImage: `url(${URL.createObjectURL(files)}`,
-              }}
-            >
-              <div
-                className='relative flex flex-row justify-end'
-                onClick={() => deleteFile()}
-              >
-                <XMarkIcon
-                  className='h-8 w-8 p-0.5 text-white bg-red-500 hover:cursor-pointer hover:scale-105 duration-500 rounded-lg'
-                  title='Borrar'
-                  fontWeight={700}
-                />
-              </div>
-            </div>
-          </div> */}
             </div>
           )
         ) : (
@@ -158,7 +142,7 @@ const Dropzone = ({
               </p>
               <CameraIcon className='h-36 w-36 text-gray-500 m-auto' />
               <p className='italic text-gray-500 font-semibold text-base text-center'>
-                Agrega una imagen para la portada de la receta
+                {title}
               </p>
             </div>
           </div>
