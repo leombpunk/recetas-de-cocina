@@ -5,7 +5,7 @@ import AppContainer from './components/AppContainer'
 import NavigationRoutes from './utils/NavigationRoutes'
 import { UserProvider } from './providers/UserProvider'
 import { NotificationProvider } from './providers/NotificationProvider'
-import { HomePage, NotFoundPage, LoginPage, ProfilePage, RecipePage, RegisterPage, SearchPage } from './pages/index'
+import { HomePage, NotFoundPage, LoginPage, ProfilePage, RecipePage, RecipesPage, RegisterPage, SearchPage } from './pages/index'
 import ProtectedRoutes from './components/ProtectedRoutes'
 
 const App = () => {
@@ -19,8 +19,9 @@ const App = () => {
               <Route path={NavigationRoutes.Register} element={<RegisterPage />} />
                 <Route element={<AppContainer />}>
                   <Route path={NavigationRoutes.Home} element={<HomePage />} />
-                    <Route path={NavigationRoutes.Profile} element={<ProfilePage />} />
-                    <Route path={NavigationRoutes.Recipe} element={<RecipePage />} />
+                  <Route path={NavigationRoutes.Profile} element={<ProfilePage />} />
+                  <Route path={NavigationRoutes.Recipe} element={<RecipePage />} />
+                  <Route path={NavigationRoutes.Recipes} element={<RecipesPage />} />
                   <Route path={NavigationRoutes.Search} element={<SearchPage />} />
                   <Route path={"*"} element={<NotFoundPage/>}/>
               </Route>
