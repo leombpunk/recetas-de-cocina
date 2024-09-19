@@ -8,7 +8,7 @@ const recipeSchema = yup.object({
   imagen: yup
     .string()
     .max(100, "La imagen no es valida")
-    .required("Ponle un titulo a tu receta"),
+    .required("La imagen pra la receta es requerida"),
   detalle: yup
     .string()
     .max(500, "EL detalle no debe superar los 500 caracteres")
