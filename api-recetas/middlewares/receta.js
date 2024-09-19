@@ -12,7 +12,7 @@ const checkReceta = async (request, response, next) => {
     } else {
       response.status(401)
       response.send({
-        error: "Error al subir la imagen, la referencia a la receta no existe",
+        error: "Error, la receta solicitada no existe",
       })
     }
   } catch (error) {
