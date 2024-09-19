@@ -57,7 +57,21 @@ const useRecipe = ({ idRecipe = null }) => {
     }
   }
 
-  const deleteRecipe = async (id) => {}
+  const deleteRecipe = async (id) => {
+    try {
+      setLoading(true)
+      const result = await RecipesServices.deleteRecipe(id)
+      // console.log(result)
+      if (result){
+        setRecipe(null)
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log(error)
+      setErrors([error])
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (!recipeLocal) {
