@@ -27,8 +27,8 @@ const StepsList = ({
 
   const pasos = useWatch({ control:control, name: "pasos"})
 
-  console.log({ pasos: fields })
-  console.log({guach: pasos})
+  // console.log({ pasos: fields })
+  // console.log({guach: pasos})
 
   const [stepsArray, setStepesArray] = useState(
     steps.length ? steps : [{ order: "", content: "", image: "" }]
@@ -43,7 +43,7 @@ const StepsList = ({
   }
   const deleteItem = (list, index) => {
     remove(index)
-    console.log("quiero borrar el indice " + index)
+    // console.log("quiero borrar el indice " + index)
     const result = Array.from(list)
     result.splice(index, 1)
     setStepesArray(result)

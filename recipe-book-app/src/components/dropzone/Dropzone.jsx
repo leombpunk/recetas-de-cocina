@@ -39,19 +39,19 @@ const Dropzone = ({
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  console.log({ filePreload: filePreload, f:files })
+  // console.log({ filePreload: filePreload, f:files })
 
   const handleClickDelete = (e) => {
     e.preventDefault()
     //comprobar si filePreload es distinto de null
     if (filePreload) {
-      console.log("estoy en filepreload")
+      // console.log("estoy en filepreload")
       handleDelete(filePreload, index)
     }
     //o si files es distinto de null
     else {
       if (files) {
-        console.log("estoy en files")
+        // console.log("estoy en files")
         deleteFile()
       }
     }

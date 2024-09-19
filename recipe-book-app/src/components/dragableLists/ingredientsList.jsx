@@ -61,8 +61,8 @@ const IngredientsList = ({
     setIngredientsArray(quotes)
   }
   // console.log({datos: ingredientsArray})
-  console.log({ errors: errors })
-  console.log({ control: control })
+  // console.log({ errors: errors })
+  // console.log({ control: control })
   return (
     <div className='flex flex-col items-start w-full gap-2'>
       <h3 className='text-lg font-semibold'>Ingredientes:</h3>
