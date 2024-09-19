@@ -15,6 +15,7 @@ import Dropzone from "../../components/dropzone/Dropzone"
 import useFiles from "../../hooks/useFiles"
 import { getRecipeLocal, saveRecipeLocal } from "../../utils/RecipeLocal"
 import recipeSchema from "../../utils/RecipeResolver"
+import { useContextNotification } from "../../providers/NotificationProvider"
 
 const RecipeForm = ({
   title = "",
@@ -27,6 +28,7 @@ const RecipeForm = ({
   const [editMode, setEditMode] = useState(false)
   const [portada, setPortada] = useState(null)
   const [pasosImg, setPasosImg] = useState(null)
+  const {addNotification} = useContextNotification()
 
   // console.log({ data: data })
 
@@ -75,7 +77,7 @@ const RecipeForm = ({
   //pues naa
   const formRecipeData = useWatch({ control: control }) // only re-render at the custom hook level, when firstName changes
 
-  console.log({ watch: watch() })
+  // console.log({ watch: watch() })
 
   const handlePortadaUpload = async (file) => {
     if (file) {
@@ -86,15 +88,6 @@ const RecipeForm = ({
       saveRecipeLocal(watch())
       return result
     }
-    // file
-    //   ? handleNotification({
-    //       message: `se subió un archivo. ${file?.name}`,
-    //       type: "success",
-    //     })
-    //   : handleNotification({
-    //       message: `se eliminó el archivo.`,
-    //       type: "error",
-    //     })
   }
 
   const handlePortadaDelete = async (filename) => {
@@ -166,9 +159,14 @@ const RecipeForm = ({
   }
 
   const handleSaveForm = (data) => {
-    console.log(data)
-    alert("ola k ase!")
-    // setEditMode(!editMode)
+    // console.log({recetaPe:data})
+    handleSave(data).then((result) => {
+      console.log({resultForm:result})
+    }).finally((result) => {
+      console.log({resultFormFinally:result})
+      addNotification({message:'Receta actualizada',type:'success'})
+      setEditMode(!editMode)
+    })
   }
 
   return (
@@ -240,6 +238,12 @@ const RecipeForm = ({
               disabled={!editMode}
               filePreload={getValues("imagen")}
             />
+            {errors?.imagen && (
+              <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>
+                <ExclamationCircleIcon className='h-6 w-6' />
+                {errors.imagen.message}
+              </span>
+            )}
             <input
               type='text'
               placeholder='Titulo de la Receta'
