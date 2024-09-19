@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 const MIMETYPES = ['image/jpeg','image/png','image/webp']
 const CURRENT_DIR = dirname(fileURLToPath(import.meta.url))
 
+//agregar otro almacenamiento para guardar las weas del perfil en carpeta avatars
 const almacenamiento = multer.diskStorage({
     destination: join(CURRENT_DIR, '../public/images/recipes'), //direccion absoluta del directorio actual
     filename: (req, file, callback) => {
@@ -14,6 +15,7 @@ const almacenamiento = multer.diskStorage({
     }
 })
 
+//agregar otro upload que ocupe el otro almacenamiento y con otro limite de tamaño para los avatares de perfil
 const upload = multer({ 
     storage: almacenamiento, 
     fileFilter: (req, file, callback) => {
