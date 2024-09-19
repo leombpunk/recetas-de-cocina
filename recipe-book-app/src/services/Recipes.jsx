@@ -40,7 +40,7 @@ const updateRecipe = async (id, recipe) => {
     },
   }
   const url = `${RoutesAPI.recipes}/${id}`
-  const request = axios.put(url, recipe, config)
+  const request = axios.patch(url, recipe, config)
   return request.then((response) => response)
 }
 
