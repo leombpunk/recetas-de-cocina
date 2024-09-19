@@ -173,7 +173,9 @@ const deleteReceta = async (req, res) => {
     //capturar las imágenes
     if (receta) {
       let files = [] //archivos a borrar
-      files.push(receta.imagen)
+      if (receta.imagen !== ''){
+        files.push(receta.imagen)
+      }
       receta.pasos.forEach((value) => {
         if (value.imagen !== "") {
           files.push(value.imagen)
@@ -198,19 +200,22 @@ const deleteReceta = async (req, res) => {
         )
         console.log({arch: archivos})
       })
-    }
-    //borrar la receta
-    const result = await Receta.destroy({
-      where: { id: idReceta },
-      force: true,
-    })
-    console.log({ resultado: result })
-    //informar el resultado
-    if (result) {
-      handleResponse(res, 200, "Receta eliminada", result)
-      return
+      //borrar la receta
+      const result = await Receta.destroy({
+        where: { id: idReceta },
+        force: true,
+      })
+      console.log({ resultado: result })
+      //informar el resultado
+      if (result) {
+        handleResponse(res, 200, "Receta eliminada", result)
+        return
+      } else {
+        handleResponse(res, 404, "Algo malio sal!", result)
+        return
+      }
     } else {
-      handleResponse(res, 404, "Algo malio sal!", result)
+      handleResponse(res, 404, "La receta no existe", null)
       return
     }
   } catch (error) {
