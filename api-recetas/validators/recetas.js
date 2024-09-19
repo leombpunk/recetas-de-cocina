@@ -19,11 +19,6 @@ const validateCreate = [
     .exists()
     .isLength({ max: 500 })
     .optional(),
-  check("idUsuario")
-    .exists()
-    .isNumeric()
-    .isLength({ max: 11 })
-    .optional(),
   check("imagen")
     .exists()
     .isLength({ max: 100 })
@@ -59,8 +54,6 @@ const validateReceta = [
     .exists().isLength({ max: 20 }).not().isEmpty(),
   check("detalle")
     .exists().isLength({ max: 500 }).not().isEmpty(),
-  check("idUsuario")
-    .exists().isNumeric().isLength({ max: 11 }).not().isEmpty(),
   check("imagen")
     .exists().isLength({ max: 100 }).not().isEmpty(),
   check("visibilidad")

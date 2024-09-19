@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { validateReceta, validateCreate } from '../validators/recetas.js'
 import { getFullRecetaById, getRecetasByUsername, createReceta, updateReceta, deleteReceta } from '../controllers/recetas.js'
-import { checkAuth, checkCoherence } from '../middlewares/auth.js'
+import { checkAuth } from '../middlewares/auth.js'
+import { checkReceta } from '../middlewares/receta.js'
 
 const router = Router()
 
@@ -11,7 +12,7 @@ router.get('/:nombreReceta') //like '%nombreReceta%' -> retorna una lista de rec
 router.get('/:id', getFullRecetaById) //retorna una receta segun su ID
 
 router.post('/', checkAuth, validateCreate, createReceta)
-router.patch('/:id', checkAuth, checkCoherence, validateReceta, updateReceta)
-router.delete('/:id', checkAuth, checkCoherence, deleteReceta)
+router.patch('/:id', checkAuth, checkReceta, validateReceta, updateReceta)
+router.delete('/:id', checkAuth, checkReceta, deleteReceta)
 
 export { router }

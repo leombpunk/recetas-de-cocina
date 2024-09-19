@@ -101,12 +101,15 @@ const createReceta = async (req, res) => {
     }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 
 const updateReceta = async (req, res) => {
   try {
     //tiene que si o si validar que todos los cmapos esten correctos
+    const token = req.headers.authorization.split(" ").pop()
+    const usuario = await verifyToken(token)
     const idReceta = req.params.id
     const body = matchedData(req)
     const {
@@ -118,19 +121,25 @@ const updateReceta = async (req, res) => {
       ingredientes = [],
       pasos = [],
       imagen = "",
-      checked = "",
+      checked = 0,
     } = body
-    const result = await sequelize.transaction(async (t) => {
-      await Receta.update(
-        { titulo, detalle, idUsuario, visibilidad, comensales, duracion },
-        { transaction: t, where: { id: idReceta } }
-      )
-      return Receta.getFullRecetaById(idReceta)
-    })
-    res.status(200)
-    res.send(result)
+    const result = await Receta.update(
+      { titulo, detalle, idUsuario: usuario.id, visibilidad, comensales, duracion, ingredientes, pasos, imagen, checked: 1 },
+      { where: { id: idReceta } }
+    )
+    console.log({result: result}) //retorna 1 cuando actualizo, 0 cuando no hubo falta actaulizar
+    if (result) {
+      handleResponse(res, 200, "Receta actualizada", result)
+      return
+    }
+    else {
+      handleResponse(res, 404, "Algo malió sal!", result)
+      return
+    }
   } catch (error) {
+    console.log(error)
     httpError(res, error)
+    return
   }
 }
 
@@ -149,6 +158,7 @@ const deleteReceta = async (req, res) => {
     res.send(result) //a ver que hará
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 

@@ -5,8 +5,8 @@ const checkReceta = async (request, response, next) => {
   try {
     const token = request.headers.authorization.split(' ').pop()
     const tokenData = await verifyToken(token)
-    const {idReceta} = request.params
-    const receta = await Receta.findOne({ where: { idUsuario: tokenData.id, id: idReceta } })
+    const {idReceta, id} = request.params
+    const receta = await Receta.findOne({ where: { idUsuario: tokenData.id, id: idReceta || id } })
     if (receta) {
       next()
     } else {
