@@ -156,6 +156,10 @@ const RecipeForm = ({
   }
   const handleClickDeleteBtn = (event) => {
     event.preventDefault()
+
+    //agregar un modal de confirmación
+    //al terminar de forma correcta
+    //volver a la lista de recetas
     // setEditMode(!editMode)
   }
 
