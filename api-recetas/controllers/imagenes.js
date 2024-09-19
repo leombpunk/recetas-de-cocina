@@ -22,6 +22,7 @@ const publicFolder = express.static(
 const uploader = upload.single('file')
 
 // Usuarios
+//modificar un poco el endpoint para subir y eliminar imagenes de perfil o avatares
 const uploadProfileImg = async (req, res) => {
   try {
     const idUsuario = req.params.id
