@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import useDropzone from "./useDropzone"
 import { useEffect } from "react"

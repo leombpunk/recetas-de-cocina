@@ -3,7 +3,7 @@ import RecipesServices from "../services/Recipes"
 import {
   saveRecipeLocal,
   getRecipeLocal,
-  recipeStruct,
+  // recipeStruct,
 } from "../utils/RecipeLocal"
 
 const useRecipe = ({ idRecipe = null }) => {
@@ -70,6 +70,7 @@ const useRecipe = ({ idRecipe = null }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  //actualiza el localStorage al cambiar recipe
   useEffect(() => {
     saveRecipeLocal(recipe)
   }, [recipe])
