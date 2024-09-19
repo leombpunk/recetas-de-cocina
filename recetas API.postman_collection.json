@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "02598214-b756-4d68-b631-43315933c5b1",
+		"name": "recetas API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20593135"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"usuario123\",\r\n    \"contrasena\": \"usuario123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "registro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"usuarioTest\",\r\n    \"contrasena\": \"putoelquelolea\",\r\n    \"mail\": \"mail_equisde@testeo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/auth/registro"
+					},
+					"response": []
+				},
+				{
+					"name": "verificar token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjU0MDE5MDIsImV4cCI6MTcyNzk5MzkwMn0.OUeNDjIMw-AHDIPfrDYrz4rG_ki1IKn6MXMwWMXeUrE"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "localhost:3001/auth/verifyToken"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unidades Medida",
+			"item": [
+				{
+					"name": "unidadesMedidas GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjM2NTUyNzMsImV4cCI6MTcyMzY5MTI3M30.msXRYeOoHyrH9GSxk1Ppig2I5j1S_Emr8-N0SIFYfL4"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/unidadesMedidas/"
+					},
+					"response": []
+				},
+				{
+					"name": "unidadesMedidas Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Cucharada\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/unidadesMedidas/"
+					},
+					"response": []
+				},
+				{
+					"name": "unidadesMedidas Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:3001/unidadesMedidas/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "usuarios Get Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjM2NTUyNzMsImV4cCI6MTcyMzY5MTI3M30.msXRYeOoHyrH9GSxk1Ppig2I5j1S_Emr8-N0SIFYfL4"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/usuarios/perfil/1"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios GetAllRecetasVisible",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/usuarios/allRecetas/1"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios GetAllRecetas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE2ODg4MzgwMTMsImV4cCI6MTY4ODg3NDAxM30.-TSBlzFMRBCqtvXoRf0GUXOihmM7dbp8DrAHyH-ButQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/usuarios/perfil/allRecetas/1"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE2ODg5MzMwMjQsImV4cCI6MTY4ODk2OTAyNH0.l6BKqGuLwGz72U-3KpvNm8np396bg3l9BV5F8epnI40"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"usuario123\",\r\n    \"contrasena\": \"usuario123\",\r\n    \"mail\": \"mail_123@update.com\",\r\n    \"nombres\": \"\",\r\n    \"apellidos\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/usuarios/perfil/1"
+					},
+					"response": []
+				},
+				{
+					"name": "usuarios Update Contraseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE2ODg5MzMwMjQsImV4cCI6MTY4ODk2OTAyNH0.l6BKqGuLwGz72U-3KpvNm8np396bg3l9BV5F8epnI40"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contrasena\": \"usuario123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/usuarios/perfil/changePass/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recetas",
+			"item": [
+				{
+					"name": "recetas GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjM2NTUyNzMsImV4cCI6MTcyMzY5MTI3M30.msXRYeOoHyrH9GSxk1Ppig2I5j1S_Emr8-N0SIFYfL4"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/recetas/1"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas GetByUsername",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/recetas/usuario/usuario123"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjU4MTQ2MzksImV4cCI6MTcyODQwNjYzOX0.IEeWw4m53S8VACI1M3rqp2HSoR5KI9x4r71zzr1TEns"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"test middleware\",\r\n    \"detalle\": \"mezcla todo como venga ameo\",\r\n    \"comensales\": \"5 personas\",\r\n    \"duracion\": \"1 hora\",\r\n    \"imagen\": \"\",\r\n    \"visibilidad\": 1,\r\n    \"ingredientes\": [\r\n        {\r\n            \"ingrediente\": \"azúcar\",\r\n            \"cantidad\": \"15\",\r\n            \"orden\": 2\r\n        },\r\n        {\r\n            \"ingrediente\": \"harina leudante\",\r\n            \"cantidad\": \"15\",\r\n            \"orden\": 1\r\n        },\r\n        {\r\n            \"ingrediente\": \"huevo\",\r\n            \"cantidad\": \"1\",\r\n            \"orden\": 4\r\n        },\r\n        {\r\n            \"ingrediente\": \"margarina repostera\",\r\n            \"cantidad\": \"100\",\r\n            \"orden\": 3\r\n        },\r\n        {\r\n            \"ingrediente\": \"vainilla líquida\",\r\n            \"cantidad\": \"3\",\r\n            \"orden\": 5\r\n        },\r\n        {\r\n            \"ingrediente\": \"chocolate en polvo\",\r\n            \"cantidad\": \"5\",\r\n            \"orden\": 6\r\n        }\r\n    ],\r\n    \"pasos\": [\r\n        {\r\n            \"orden\": 2,\r\n            \"paso\": \"paso2 blabla blabla\",\r\n            \"imagen\": \"\"\r\n\r\n        },\r\n        {\r\n            \"orden\": 1,\r\n            \"paso\": \"paso1 blabla blabla\",\r\n            \"imagen\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/recetas/"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY2ODgyNjksImV4cCI6MTcyOTI4MDI2OX0.tcFBb9rEllgHgCBLTBZH-1MEz6QY4DYXJIBbhDdbwJw"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 36,\r\n    \"titulo\": \"test middleware\",\r\n    \"comensales\": \"4 personas\",\r\n    \"duracion\": \"1 hora\",\r\n    \"detalle\": \"mezcla todo como venga ameo\",\r\n    \"imagen\": \"file-1726683473740.jpg\",\r\n    \"visibilidad\": 1,\r\n    \"ingredientes\": [\r\n        {\r\n            \"name\": \"15 cucharadas de azúcar\"\r\n        },\r\n        {\r\n            \"name\": \"15 cucharadas de harina leudante\"\r\n        },\r\n        {\r\n            \"name\": \"1 huevo\"\r\n        },\r\n        {\r\n            \"name\": \"100 gramos de margarina repostera\"\r\n        },\r\n        {\r\n            \"name\": \"3 cucharaditas de vainilla líquida\"\r\n        },\r\n        {\r\n            \"name\": \"5 cucharadas de chocolate en polvo\"\r\n        }\r\n    ],\r\n    \"pasos\": [\r\n        {\r\n            \"paso\": \"paso2 blabla blabla\",\r\n            \"imagen\": \"\"\r\n        },\r\n        {\r\n            \"paso\": \"paso1 blabla blabla\",\r\n            \"imagen\": \"file-1726600183413.PNG\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/recetas/36"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3001/recetas/14"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Imagenes",
+			"item": [
+				{
+					"name": "imagenes Get imagen",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/imagenes/public/file-1688405770766..jpg"
+					},
+					"response": []
+				},
+				{
+					"name": "imagenes Upload Receta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY0OTkxNTIsImV4cCI6MTcyOTA5MTE1Mn0.p-92pAW59jBiCxpAw1-alu__nlSUsJTN-jgDCydkeWA"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/7.documentos/RCC- Grupo de Oración Sion/Claro que si dinero, tu sabes que el dinero no es todo en el dinero.jfif"
+								}
+							]
+						},
+						"url": "localhost:3001/imagenes/receta/26"
+					},
+					"response": []
+				},
+				{
+					"name": "imagenes Delete Receta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY0OTkxNTIsImV4cCI6MTcyOTA5MTE1Mn0.p-92pAW59jBiCxpAw1-alu__nlSUsJTN-jgDCydkeWA"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "localhost:3001/imagenes/receta/26/equisde.jpg"
+					},
+					"response": []
+				},
+				{
+					"name": "imagenes Delete Usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "localhost:3001/imagenes/usuario/2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
