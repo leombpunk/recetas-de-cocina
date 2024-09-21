@@ -76,4 +76,20 @@ const validateReceta = [
   },
 ]
 
-export { validateCreate, validateReceta }
+const validateVisibility = [
+  check("compartir.*.id")
+    .exists()
+    .isNumeric()
+    .isLength({ max: 11, min: 1 })
+    .not().isEmpty(),
+  check("compartir.*.visibilidad")
+    .exists()
+    .isNumeric()
+    .isLength({ max: 1 })
+    .not().isEmpty(),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  },
+]
+
+export { validateCreate, validateReceta, validateVisibility }
