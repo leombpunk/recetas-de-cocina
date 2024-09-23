@@ -51,7 +51,7 @@ const getAllRecetasPublic = async (req, res) => {
     if (count) {
       handleResponse(res, 200, "Resultado obtenido", {
         total_pages: Math.ceil(count / limit),
-        tottal_rows: count,
+        total_rows: count,
         results: rows,
       })
       return
@@ -87,17 +87,17 @@ const getRecetaPublic = async (req, res) => {
 //endpoints privados
 const getAllRecetas = async (req, res) => {
   try {
-    const { search, username, page, order, likes, publicated } = req.query
+    const { search, page, order, likes, publicated } = req.query
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const limit = 10
-    const offset = limit * (page ? page : 0)
+    const offset = limit * (page ? page-1 : 0)
     const orderOptions = [
       ["titulo", order ? order : "ASC"], //ASC a-z DESC z-a
       // ["likes", likes ? likes : "ASC"],
       // ["updateAt", publicated ? publicated : "ASC"],
     ]
-    const result = await Receta.findAndCountAll({
+    const {count, rows} = await Receta.findAndCountAll({
       where: {
         [Op.and]: [
           { idUsuario: usuario.id },
@@ -108,8 +108,12 @@ const getAllRecetas = async (req, res) => {
       offset: offset,
       limit: limit,
     })
-    if (result) {
-      handleResponse(res, 200, "Todas las recetas", result)
+    if (count) {
+      handleResponse(res, 200, "Resultado obtenido", {
+        total_pages: Math.ceil(count / limit),
+        total_rows: count,
+        results: rows,
+      })
       return
     } else {
       handleResponse(res, 204, "No hay recetas", result) //si, ya se que el codigo 204 no retorna nada, con lo cual el mensaje es omitido
