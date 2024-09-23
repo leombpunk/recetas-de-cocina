@@ -183,7 +183,7 @@ const RecipeForm = ({
         className='w-full'
         onSubmit={handleSubmit(handleSaveForm)}
       >
-        <div className='flex flex-row items-center justify-between'>
+        <div className='flex flex-row items-center justify-between sticky top-0 py-2 bg-orange-300 z-10'>
           <h3 className='flex flex-row items-center gap-1 text-3xl font-semibold'>
             <BookOpenIcon className='h-7 w-7' /> {title}
           </h3>
