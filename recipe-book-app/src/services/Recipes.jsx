@@ -3,8 +3,14 @@ import { RoutesAPI } from "../utils/RoutesAPI"
 import { getToken } from "../utils/Token"
 
 const getRecipes = async (search, page, order) => {
-  const url = `${RoutesAPI.recipes}/`
-  const request = axios.get(url)
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const url = `${RoutesAPI.recipes}/?search=${search}&page=${page}&order=${order}`
+  const request = axios.get(url,config)
   return request.then((response) => response)
 }
 

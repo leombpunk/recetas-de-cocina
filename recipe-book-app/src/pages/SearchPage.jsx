@@ -1,8 +1,8 @@
-import RecipeCard from "../components/recipe-card/RecipeCard"
+import RecipeContainer from "../components/recipes/RecipeContainer"
 
 //este componente es para todo publico
 const SearchPage = () => {
-    return (<><RecipeCard /></>)
+    return (<><RecipeContainer title="Resultado de la busqueda" /></>)
 }
 
 export default SearchPage
