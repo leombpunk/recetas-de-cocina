@@ -56,7 +56,7 @@ const getAllRecetasPublic = async (req, res) => {
       })
       return
     } else {
-      handleResponse(res, 204, "No hay resultados", null)
+      handleResponse(res, 204, "No hay resultados")
       return
     }
   } catch (error) {
@@ -116,7 +116,7 @@ const getAllRecetas = async (req, res) => {
       })
       return
     } else {
-      handleResponse(res, 204, "No hay recetas", result) //si, ya se que el codigo 204 no retorna nada, con lo cual el mensaje es omitido
+      handleResponse(res, 204, "No hay recetas") //si, ya se que el codigo 204 no retorna nada, con lo cual el mensaje es omitido
       return
     }
   } catch (error) {
