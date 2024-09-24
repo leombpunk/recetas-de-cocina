@@ -3,14 +3,19 @@ import { RoutesAPI } from '../../utils/RoutesAPI'
 import { PhotoIcon } from '@heroicons/react/20/solid'
 import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline"
 
-const RecipeCard = ({ recipe, navigation }) => {
+const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+  }
+
   return (
-    <Link to={`${navigation}/${recipe.id}`} title={recipe.titulo} className='group border border-gray-500 rounded-lg shadow-md hover:shadow-black/50 p-1'>
+    <Link to={`${navigation}/${recipe.id}`} onClick={linkActive && handleClick} title={recipe.titulo} className='group border border-gray-500 rounded-lg shadow-md hover:shadow-black/50 p-1 duration-500'>
+      {children}
       <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
       {recipe.imagen ? <img
           src={`${RoutesAPI.staticFiles}/${recipe.imagen}`}
           alt={recipe.imagen}
-          className='h-full w-full object-cover object-center group-hover:opacity-75'
+          className='h-full w-full object-cover object-center group-hover:opacity-90'
         />:
         <div className='w-full h-full flex flex-col items-center justify-center'>
           <PhotoIcon className='h-32 w-32 text-gray-400' />

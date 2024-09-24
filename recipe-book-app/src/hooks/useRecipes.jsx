@@ -3,7 +3,7 @@ import RecipesServices from "../services/Recipes"
 
 const useRecipes = () => {
   const [loading, setLoading] = useState(false)
-  const [notify, setNotify] = useState({})
+  // const [notify, setNotify] = useState({})
   const [recipes, setRecipes] = useState([])
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
@@ -24,6 +24,9 @@ const useRecipes = () => {
         setTotalRows(result.data.data.total_rows)
       } else if (result?.status === 204) {
         //notify
+        setRecipes([])
+        setTotalPages(0)
+        setTotalRows(0)
       }
       setLoading(false)
     } catch (error) {
@@ -34,6 +37,7 @@ const useRecipes = () => {
 
   useEffect(() => {
     fetchRecipes()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page, order])
 
   return {
@@ -44,6 +48,7 @@ const useRecipes = () => {
     order,
     totalPages,
     totalRows,
+    errors,
     setPage,
     setSearch,
     setOrder,
