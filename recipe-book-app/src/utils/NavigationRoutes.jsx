@@ -2,7 +2,7 @@ const NavigationRoutes = {
     Home: '/',
     Profile: '/profile',
     Recipes: '/recipes',
-    Recipe: '/recipe',
+    Recipe: '/recipes/:id',
     Login: '/login',
     Register: '/register',
     Notifications: '/notifications',

@@ -3,8 +3,11 @@ import { useContextNotification } from "../providers/NotificationProvider"
 
 import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
+import { useParams } from "react-router-dom"
 
 const RecipePage = ({ idRecipe = null }) => {
+  const params = useParams()
+  console.log(params)
   const { addNotification } = useContextNotification()
   const { recipe, updateRecipe, deleteRecipe } = useRecipe({ idRecipe })
 
