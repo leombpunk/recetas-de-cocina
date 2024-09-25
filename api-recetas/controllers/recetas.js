@@ -91,13 +91,13 @@ const getAllRecetas = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const limit = 10
-    const offset = limit * (page ? page-1 : 0)
+    const offset = limit * (page ? page - 1 : 0)
     const orderOptions = [
       ["titulo", order ? order : "ASC"], //ASC a-z DESC z-a
       // ["likes", likes ? likes : "ASC"],
       // ["updateAt", publicated ? publicated : "ASC"],
     ]
-    const {count, rows} = await Receta.findAndCountAll({
+    const { count, rows } = await Receta.findAndCountAll({
       where: {
         [Op.and]: [
           { idUsuario: usuario.id },
@@ -130,7 +130,9 @@ const getReceta = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const { id } = req.params
-    const result = await Receta.findByPk(id, { where: { idUsuario: usuario.id } })
+    const result = await Receta.findByPk(id, {
+      where: { idUsuario: usuario.id },
+    })
     if (result) {
       handleResponse(res, 200, "Datos de la receta", result)
       return
@@ -361,12 +363,44 @@ const updateVisibilidad = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const body = matchedData(req)
-    handleResponse(res, 200, "Acceso a recetas actualizado", body)
+    const filtroPublic = body.recetas.filter((value) => value.visibilidad)
+    const filtroPrivate = body.recetas.filter((value) => !value.visibilidad)
+    const idsPublic = filtroPublic.map((value) => value.id)
+    const idsPrivate = filtroPrivate.map((value) => value.id)
+    // console.log({ public: idsPublic, private: idsPrivate, user: usuario })
+    const result = await sequelize.transaction(async (t) => {
+      const publicResult = await Receta.update(
+        { visibilidad: 1 },
+        {
+          where: {
+            [Op.and]: [
+              { id: { [Op.in]: idsPublic } },
+              { idUsuario: usuario.id },
+            ],
+          },
+          transaction: t,
+        }
+      )
+      const privateResult = await Receta.update(
+        { visibilidad: 0 },
+        {
+          where: {
+            [Op.and]: [
+              { id: { [Op.in]: idsPrivate } },
+              { idUsuario: usuario.id },
+            ],
+          },
+          transaction: t,
+        }
+      )
+
+      return [publicResult, privateResult]
+    })
+    // console.log({ resultado: result })
+    handleResponse(res, 200, "Acceso a recetas actualizado", result)
     return
-    // body.forEach()
-    // const result = await Receta.update({visibilidad: })
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     httpError(res, error)
     return
   }

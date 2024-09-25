@@ -77,15 +77,15 @@ const validateReceta = [
 ]
 
 const validateVisibility = [
-  check("compartir.*.id")
+  check("recetas.*.id")
     .exists()
     .isNumeric()
     .isLength({ max: 11, min: 1 })
     .not().isEmpty(),
-  check("compartir.*.visibilidad")
+  check("recetas.*.visibilidad")
     .exists()
-    .isNumeric()
-    .isLength({ max: 1 })
+    .isBoolean()
+    // .isLength({ max: 1 })
     .not().isEmpty(),
   (request, response, next) => {
     validateResult(request, response, next)
