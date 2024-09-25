@@ -6,8 +6,9 @@ import {
   // recipeStruct,
 } from "../utils/RecipeLocal"
 
-const useRecipe = ({ idRecipe = null }) => {
-  const [loading, setLoading] = useState(false)
+const useRecipe = (recetaId) => {
+  console.log({ recetaid: recetaId })
+  const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState([])
   const [recipe, setRecipe] = useState(null)
   const recipeLocal = getRecipeLocal()
@@ -16,7 +17,7 @@ const useRecipe = ({ idRecipe = null }) => {
     try {
       setLoading(true)
       const result = await RecipesServices.getRecipe(id)
-      // console.log(result)
+      console.log({ get: result })
       setRecipe(result.data.data)
       setLoading(false)
     } catch (error) {
@@ -31,7 +32,7 @@ const useRecipe = ({ idRecipe = null }) => {
       setLoading(true)
       const result = await RecipesServices.createRecipe(recipe)
       //comprobar cual es el resultado y si existe la receta guardar
-      // console.log({ create: result })
+      console.log({ create: result })
       setRecipe(result.data.data)
       setLoading(false)
     } catch (error) {
@@ -46,7 +47,7 @@ const useRecipe = ({ idRecipe = null }) => {
       setLoading(true)
       const result = await RecipesServices.updateRecipe(recipe.id, recipe)
       // console.log(result)
-      if (result){
+      if (result) {
         setRecipe(recipe)
         setLoading(false)
       }
@@ -62,7 +63,7 @@ const useRecipe = ({ idRecipe = null }) => {
       setLoading(true)
       const result = await RecipesServices.deleteRecipe(id)
       // console.log(result)
-      if (result){
+      if (result) {
         setRecipe(null)
         setLoading(false)
       }
@@ -74,19 +75,36 @@ const useRecipe = ({ idRecipe = null }) => {
   }
 
   useEffect(() => {
+    if (recetaId) {
+      console.log("1er hook")
+      getRecipe(recetaId)
+    }
+  }, [recetaId])
+
+  useEffect(() => {
+    console.log("2do hook")
     if (!recipeLocal) {
+      console.log("primer if")
       createRecipe()
-    } else {
+    } else if (!recetaId) {
+      console.log("segundo if")
       // console.log({ local: recipeLocal })
       // getRecipe(idRecipe || recipeLocal.id) //esto sobreescribe la receta guardada en localStorage
       setRecipe(recipeLocal)
+      setLoading(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [recetaId])
 
   //actualiza el localStorage al cambiar recipe
   useEffect(() => {
-    saveRecipeLocal(recipe)
+    console.log("3er hook")
+    //si !recetaId guardo la receta
+    if (!recetaId) {
+      console.log("if saverecipelocal", recipe)
+      saveRecipeLocal(recipe)
+      // setLoading(false)
+    }
   }, [recipe])
 
   return {

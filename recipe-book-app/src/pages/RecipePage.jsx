@@ -5,29 +5,33 @@ import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
 import { useParams } from "react-router-dom"
 
-const RecipePage = ({ idRecipe = null }) => {
-  const params = useParams()
-  console.log(params)
+const RecipePage = () => {
+  const { id } = useParams()
+  // console.log(id)
   const { addNotification } = useContextNotification()
-  const { recipe, updateRecipe, deleteRecipe } = useRecipe({ idRecipe })
+  const { loading, recipe, updateRecipe, deleteRecipe } = useRecipe(id)
 
   return (
     <>
-      <section className='bg-orange-300'>
-        <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
-          {recipe ? (
-            <RecipeForm
-              title='Nueva Receta'
-              handleNotification={addNotification}
-              data={recipe}
-              handleSave={updateRecipe}
-              handleDelete={deleteRecipe}
-            />
-          ) : (
-            <Loader />
-          )}
-        </div>
-      </section>
+      {loading ? (
+        <Loader />
+      ) : (
+        <section className='bg-orange-300'>
+          <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
+            {recipe ? (
+              <RecipeForm
+                title='Nueva Receta'
+                handleNotification={addNotification}
+                data={recipe}
+                handleSave={updateRecipe}
+                handleDelete={deleteRecipe}
+              />
+            ) : (
+              <Loader />
+            )}
+          </div>
+        </section>
+      )}
     </>
   )
 }

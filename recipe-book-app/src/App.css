@@ -55,17 +55,17 @@
 }
 
 .checkbox-wrapper-18 .round label:after {
-  border: 2px solid #fff;
+  border: 4px solid #fff;
   border-top: none;
   border-right: none;
   content: "";
-  height: 6px;
-  left: 8px;
+  height: 12px;
+  left: 7px;
   opacity: 0;
   position: absolute;
-  top: 9px;
+  top: 2px;
   transform: rotate(-45deg);
-  width: 12px;
+  width: 32px;
 }
 
 .checkbox-wrapper-18 .round input[type="checkbox"] {

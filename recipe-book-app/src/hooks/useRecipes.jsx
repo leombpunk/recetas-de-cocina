@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import RecipesServices from "../services/Recipes"
 
 const useRecipes = () => {
-  const [loading, setLoading] = useState(false)
+  const [reload, setReload] = useState(false)
+  const [loading, setLoading] = useState(true)
   // const [notify, setNotify] = useState({})
   const [recipes, setRecipes] = useState([])
   const [search, setSearch] = useState("")
@@ -28,7 +29,8 @@ const useRecipes = () => {
         setTotalPages(0)
         setTotalRows(0)
       }
-      setLoading(false)
+      setTimeout(() => setLoading(false),1800) //trucazo
+      // setLoading(false)
     } catch (error) {
       setErrors([error])
       setLoading(false)
@@ -38,9 +40,10 @@ const useRecipes = () => {
   useEffect(() => {
     fetchRecipes()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, page, order])
+  }, [search, page, order, reload])
 
   return {
+    reload,
     loading,
     recipes,
     page,
@@ -52,6 +55,7 @@ const useRecipes = () => {
     setPage,
     setSearch,
     setOrder,
+    setReload,
   }
 }
 

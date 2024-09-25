@@ -22,8 +22,14 @@ const getRecipesByUser = async (username) => {
 }
 
 const getRecipe = async (id) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
   const url = `${RoutesAPI.recipes}/${id}`
-  const request = axios.get(url)
+  const request = axios.get(url, config)
   return request.then((response) => response)
 }
 
@@ -62,6 +68,18 @@ const deleteRecipe = async (id) => {
   return request.then((response) => response)
 }
 
+const sharedRecipes = async (recipes) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const url = `${RoutesAPI.recipes}/compartir/`
+  const request = axios.patch(url, recipes, config)
+  return request.then((response) => response)
+}
+
 const RecipesServices = {
   getRecipes,
   getRecipesByUser,
@@ -69,6 +87,7 @@ const RecipesServices = {
   createRecipe,
   updateRecipe,
   deleteRecipe,
+  sharedRecipes,
 }
 
 export default RecipesServices

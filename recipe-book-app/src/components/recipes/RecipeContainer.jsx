@@ -13,12 +13,15 @@ import RecipeCard from "./RecipeCard"
 import Pagination from "../pagination/Pagination"
 import useRecipes from "../../hooks/useRecipes"
 import NavigationRoutes from "../../utils/NavigationRoutes"
+import useRecipesShare from "../../hooks/useRecipesShare"
+import { useContextNotification } from "../../providers/NotificationProvider"
 
 const RecipeContainer = ({ title }) => {
-  const [filtro, setFiltro] = useState(false) //muestra u oculta los checks para la privacidad de las recetas
+  const { addNotification } = useContextNotification()
   const [editMode, setEditMode] = useState(false)
   const {
     recipes,
+    reload,
     loading,
     page,
     totalPages,
@@ -26,18 +29,20 @@ const RecipeContainer = ({ title }) => {
     setPage,
     setOrder,
     setSearch,
+    setReload,
   } = useRecipes()
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { search: "", likes: "ASC", order: "ASC" },
   })
+  const {
+    formShared,
+    updateRecipesShare,
+    loading: loadingShared,
+    errors: errorsShared,
+  } = useRecipesShare()
 
   const handleClickEditMode = () => {
     setEditMode(!editMode)
-    setFiltro(!filtro)
-  }
-
-  const handleClickFiltro = () => {
-    setFiltro(!filtro)
   }
 
   const onSubmitForm = (data, e) => {
@@ -47,6 +52,28 @@ const RecipeContainer = ({ title }) => {
     setSearch(data.search)
     setOrder(data.order)
   }
+
+  const handaleClickShared = async () => {
+    await updateRecipesShare()
+    setEditMode(!editMode)
+    console.log({ largo: errorsShared.length })
+    if (errorsShared.length) {
+      addNotification({ message: "algun error", type: "error" })
+      console.log({ errorsito: errorsShared })
+    } else if (loadingShared) {
+      addNotification({ message: "actualizando", type: "info" })
+    }
+    setReload(!reload)
+  }
+
+  const handleClickCancel = () => {
+    // formShared.reset()
+    setEditMode(!editMode)
+  }
+
+  console.log({ recetas: recipes })
+
+  console.log({ form: formShared.getValues() })
 
   return (
     <>
@@ -77,14 +104,14 @@ const RecipeContainer = ({ title }) => {
                       <button
                         title='Confirmar acción'
                         className={`bg-orange-500 p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500`}
-                        onClick={() => handleClickFiltro()}
+                        onClick={() => handaleClickShared()}
                       >
                         <CheckIcon className='h-6 w-6' />
                       </button>
                       <button
                         title='Cancelar acción'
                         className={`bg-orange-500 p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500`}
-                        onClick={() => handleClickEditMode()}
+                        onClick={() => handleClickCancel()}
                       >
                         <NoSymbolIcon className='h-6 w-6' />
                       </button>
@@ -173,12 +200,24 @@ const RecipeContainer = ({ title }) => {
                     recipe={recipe}
                     key={`recipe-card-${index}`}
                     navigation={NavigationRoutes.Recipes}
-                    linkActive={filtro}
+                    linkActive={editMode}
                   >
-                    <div class={`checkbox-wrapper-18 ${filtro ? "" : "hidden"}`}>
-                      <div class='round'>
-                        <input type='checkbox' id='checkbox-18' />
-                        <label for='checkbox-18'></label>
+                    <div
+                      className={`checkbox-wrapper-18 ${
+                        editMode ? "" : "hidden"
+                      }`}
+                    >
+                      <div className='round'>
+                        {formShared.setValue(`recetas.${index}.id`, recipe.id)}
+                        <input
+                          type='checkbox'
+                          id={`checkbox-${index}`}
+                          {...formShared.register(
+                            `recetas.${index}.visibilidad`
+                          )}
+                        />
+                        <label htmlFor={`checkbox-${index}`}></label>
+                        {formShared.setValue(`recetas.${index}.visibilidad`,recipe.visibilidad)}
                       </div>
                     </div>
                   </RecipeCard>
@@ -192,6 +231,7 @@ const RecipeContainer = ({ title }) => {
               totalPages={totalPages}
               totalRows={totalRows}
               setPage={setPage}
+              isDisabled={editMode}
             />
           </div>
         </div>
@@ -201,9 +241,3 @@ const RecipeContainer = ({ title }) => {
 }
 
 export default RecipeContainer
-
-/*<input
-                      title="Marcar para hacer pública la receta"
-                      type='checkbox'
-                      className={`absolute z-20 ${filtro ? "hidden" : ""}`}
-                    />*/

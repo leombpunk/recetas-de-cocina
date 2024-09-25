@@ -7,7 +7,7 @@ const UserContext = createContext()
 // AGREGAR: guardar la info de sesión del usuario en localstorage (otra vez) -> QUIZAS NO
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  console.log({ provider: user })
+  // console.log({ provider: user })
 
   // se hace la llamada en el componente mas alto
   const handleInitUserProvider = async () => {

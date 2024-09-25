@@ -20,6 +20,7 @@ const App = () => {
                 <Route element={<AppContainer />}>
                   <Route path={NavigationRoutes.Home} element={<HomePage />} />
                   <Route path={NavigationRoutes.Profile} element={<ProfilePage />} />
+                  <Route path={NavigationRoutes.RecipeCreate} element={<RecipePage />} />
                   <Route path={NavigationRoutes.Recipe} element={<RecipePage />} />
                   <Route path={NavigationRoutes.Recipes} element={<RecipesPage />} />
                   <Route path={NavigationRoutes.Search} element={<SearchPage />} />
