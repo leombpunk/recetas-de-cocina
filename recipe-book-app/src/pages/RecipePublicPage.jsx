@@ -1,6 +1,8 @@
 import { Link, useParams } from "react-router-dom"
 import {
+  ArrowUturnRightIcon,
   BookmarkIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   ClockIcon,
   HeartIcon,
   PhotoIcon,
@@ -151,10 +153,22 @@ const RecipePublicPage = () => {
                     placeholder='Deja un comentario al autor de esta receta'
                     rows={5}
                   ></textarea>
+                  <div className="flex flex-row justify-end items-center">
+                    <button
+                      type='submit'
+                      className='flex flex-row items-center gap-1 bg-orange-500 py-2 px-3 rounded-2xl font-semibold shadow-sm hover:shadow-black/40 hover:bg-orange-300'
+                    >
+                      <ChatBubbleOvalLeftEllipsisIcon className='w-5 h-5' />
+                      Comentar
+                    </button>
+                  </div>
                 </form>
                 <div className='mt-4'>
                   <div className='flex flex-col gap-1'>
-                    <Link to={'#'} className='flex flex-row items-center gap-2 text-lg font-semibold hover:underline duration-300'>
+                    <Link
+                      to={"#"}
+                      className='flex flex-row items-center gap-2 text-lg font-semibold hover:underline duration-300'
+                    >
                       {false ? (
                         <img
                           src={`${RoutesAPI.staticFiles}/avatars/${recipe.usuario.imagen}`}
@@ -164,11 +178,24 @@ const RecipePublicPage = () => {
                       ) : (
                         <UserCircleIcon className='h-8 w-8 rounded-full text-gray-900 bg-gray-300' />
                       )}
-                      {'nombre de usuario'}
+                      {"nombre de usuario"}
                     </Link>
-                    <div className="text-gray-600 italic text-sm pl-4">Comentado el {Date.now()}</div>
-                    <p className="pl-5">comentario</p>
-                    <div className="flex flex-row w-full items-center gap-2 pl-5">botones</div>
+                    <div className='text-gray-600 italic text-sm pl-5 list-item list-disc list-inside'>
+                      Comentado el {Date.now()}
+                    </div>
+                    <p className='pl-10 pr-28'>
+                      Me gusto mucho la wea de receta qlia ameo, la hice y todos
+                      me dijeron que era la mea guata, conchetumare, equisde de
+                      de de de de de de de de de de
+                    </p>
+                    <div className='flex flex-row w-full items-center gap-2 pl-10'>
+                      <button
+                        type='button'
+                        className='flex flex-row items-center gap-1 bg-orange-500 py-2 px-3 rounded-2xl font-semibold shadow-sm hover:shadow-black/40 hover:bg-orange-300'
+                      >
+                        <ArrowUturnRightIcon className='h-5 w-5' /> Responder
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
