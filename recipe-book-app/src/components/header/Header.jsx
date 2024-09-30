@@ -1,15 +1,21 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline"
-import NavigationRoutes from "../../utils/NavigationRoutes"
+import {
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline"
 import { useContextUser } from "../../providers/UserProvider"
+import NavigationRoutes from "../../utils/NavigationRoutes"
+import { RoutesAPI } from "../../utils/RoutesAPI"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
 const Header = () => {
+  const [search, setSearch] = useState("")
   const navigate = useNavigate()
   const { user, handleLogout } = useContextUser()
 
@@ -24,6 +30,14 @@ const Header = () => {
     navigate(NavigationRoutes.Login)
   }
 
+  const handleSubmitSearch = (event) => {
+    event.preventDefault()
+    // console.log(event.target[0].value)
+    // console.log({ buscador: search })
+    navigate(`${NavigationRoutes.Search}/?search=${search}`)
+    // navigate({ pathname: NavigationRoutes.Search, search: search })
+  }
+
   return (
     <Disclosure as='nav' className='bg-orange-500'>
       {({ open }) => (
@@ -36,7 +50,7 @@ const Header = () => {
                   to={NavigationRoutes.Home}
                 >
                   <img
-                    className='h-8 w-auto hover:scale-125 duration-500'
+                    className='h-8 w-auto hover:scale-110 duration-500'
                     src={require("D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/cooking-book-logo (8).png")}
                     alt='Cooking Book App'
                   />
@@ -46,16 +60,23 @@ const Header = () => {
                 </Link>
                 <div className='ml-2.5 sm:ml-6 w-full'>
                   <div className='flex'>
-                    <form className='w-full' action='#' method='POST'>
+                    <form
+                      className='w-full'
+                      onSubmit={(e) => handleSubmitSearch(e)}
+                    >
                       <div className='relative rounded-md shadow-sm'>
                         <input
-                          type='text'
+                          type='search'
                           name='searchBar'
                           id='searchBar'
-                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-500 placeholder:text-gray-500 sm:text-sm sm:leading-6'
-                          placeholder='Buscar'
+                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 sm:text-sm sm:leading-6'
+                          placeholder='Buscar recetas'
+                          onChange={(event) => setSearch(event.target.value)}
                         />
-                        <button className='absolute inset-y-0 right-2 text-gray-500 flex items-center'>
+                        <button
+                          type='submit'
+                          className='absolute inset-y-0 right-2 text-gray-600 flex items-center'
+                        >
                           <MagnifyingGlassIcon className='w-5 h-5 ' />
                         </button>
                       </div>
@@ -80,11 +101,20 @@ const Header = () => {
                       <Menu.Button className='relative flex rounded-full hover:scale-110 duration-500 bg-orange-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'>
                         <span className='absolute -inset-1.5' />
                         <span className='sr-only'>Abrir menu de usuario</span>
-                        <img
+                        {user.imagen ? (
+                          <img
+                            className='h-8 w-8 rounded-full'
+                            src={`${RoutesAPI.staticFiles}/${user.imagen}`}
+                            alt='imagen de perfil'
+                          />
+                        ) : (
+                          <UserCircleIcon className='h-8 w-8 rounded-full text-gray-900 hover:text-black' />
+                        )}
+                        {/* <img
                           className='h-8 w-8 rounded-full'
                           src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
                           alt=''
-                        />
+                        /> */}
                       </Menu.Button>
                     </div>
                     <Transition
@@ -101,11 +131,11 @@ const Header = () => {
                           {({ active }) => (
                             <span
                               className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                active ? "bg-gray-200" : "",
+                                "block px-4 py-2 text-base text-gray-700 font-semibold hover:cursor-default"
                               )}
                             >
-                              Nombre de usuario
+                              {user.usuario}
                             </span>
                           )}
                         </Menu.Item>

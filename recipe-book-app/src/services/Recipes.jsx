@@ -2,6 +2,21 @@ import axios from "axios"
 import { RoutesAPI } from "../utils/RoutesAPI"
 import { getToken } from "../utils/Token"
 
+//servicios publicos -> sin auth
+const getRecipesPublic = async (search, page, order, username) => {
+  const url = `${RoutesAPI.recipesPublic}?search=${search}&page=${page}&order=${order}&username=${username}`
+  const request = axios.get(url)
+  return request.then((response) => response)
+}
+
+const getRecipePublic = async (id) => {
+  const url = `${RoutesAPI.recipesPublic}/${id}`
+  const request = axios.get(url)
+  return request.then((response) => response)
+}
+
+
+//servicios privados -> con auth
 const getRecipes = async (search, page, order) => {
   const token = getToken()
   const config = {
@@ -81,6 +96,7 @@ const sharedRecipes = async (recipes) => {
 }
 
 const RecipesServices = {
+  //privados
   getRecipes,
   getRecipesByUser,
   getRecipe,
@@ -88,6 +104,9 @@ const RecipesServices = {
   updateRecipe,
   deleteRecipe,
   sharedRecipes,
+  //publicos
+  getRecipesPublic,
+  getRecipePublic,
 }
 
 export default RecipesServices

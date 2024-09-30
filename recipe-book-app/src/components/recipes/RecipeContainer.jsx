@@ -200,7 +200,7 @@ const RecipeContainer = ({ title }) => {
                     recipe={recipe}
                     key={`recipe-card-${index}`}
                     navigation={NavigationRoutes.Recipes}
-                    linkActive={editMode}
+                    linkActive={!editMode}
                   >
                     <div
                       className={`checkbox-wrapper-18 ${

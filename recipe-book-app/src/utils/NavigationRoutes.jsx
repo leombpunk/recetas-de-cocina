@@ -7,9 +7,8 @@ const NavigationRoutes = {
     Login: '/login',
     Register: '/register',
     Notifications: '/notifications',
-    TopOfTheWeek: '/topOfTheWeek',
     Search: '/search',
-    SearchRecipe: '/search/recipe',
+    SearchRecipe: '/search/recipe/:id',
 }
 
 export default NavigationRoutes

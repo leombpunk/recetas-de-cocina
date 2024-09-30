@@ -6,13 +6,13 @@ import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline"
 const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
   return (
     <Link
-      // eslint-disable-next-line no-script-url
       to={`${
-        linkActive ? "javascript:void(0);" : `${navigation}/${recipe.id}`
+        // eslint-disable-next-line no-script-url
+        linkActive ? `${navigation}/${recipe.id}` : "javascript:void(0);"
       }`}
       title={recipe.titulo}
       className={`${
-        linkActive ? "hover:cursor-default" : ""
+        linkActive ? "" : "hover:cursor-default"
       } group border border-gray-500 rounded-lg shadow-md hover:shadow-black/50 p-1 duration-500`}
     >
       {children}
@@ -41,7 +41,7 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
           <ChatBubbleOvalLeftIcon className='h-5 w-5' /> comentarios
         </p>
       </div>
-      <p>
+      {recipe.visibilidad ? <p>
         Estado:{" "}
         <span>
           {!recipe.checked
@@ -50,7 +50,7 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
             ? "Público"
             : "Privado"}
         </span>
-      </p>
+      </p>:null}
     </Link>
   )
 }

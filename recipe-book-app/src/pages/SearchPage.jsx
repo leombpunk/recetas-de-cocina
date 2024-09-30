@@ -1,8 +1,11 @@
-import RecipeContainer from "../components/recipes/RecipeContainer"
+import RecipeContainerPublic from "../components/recipes/RecipeContainerPublic"
 
-//este componente es para todo publico
 const SearchPage = () => {
-    return (<><RecipeContainer title="Resultado de la busqueda" /></>)
+  return (
+    <>
+      <RecipeContainerPublic />
+    </>
+  )
 }
 
 export default SearchPage
