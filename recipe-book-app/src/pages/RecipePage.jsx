@@ -16,8 +16,8 @@ const RecipePage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <section className='bg-orange-300'>
-          <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
+        <main className='bg-orange-300'>
+          <section className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             {recipe ? (
               <RecipeForm
                 title='Nueva Receta'
@@ -29,8 +29,8 @@ const RecipePage = () => {
             ) : (
               <Loader />
             )}
-          </div>
-        </section>
+          </section>
+        </main>
       )}
     </>
   )
