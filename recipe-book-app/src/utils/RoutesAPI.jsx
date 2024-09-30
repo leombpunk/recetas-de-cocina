@@ -1,5 +1,5 @@
 const urlAPI = 'http://localhost:3001'
-// const urlAPI = ''
+// const urlAPI = '' //url de producción
 
 const RoutesAPI = {
     auth: `${urlAPI}/auth`,
@@ -7,6 +7,7 @@ const RoutesAPI = {
     recipes: `${urlAPI}/recetas`,
     images: `${urlAPI}/imagenes`,
     staticFiles: `${urlAPI}/static`,
+    recipesPublic: `${urlAPI}/recetas/public`,
 }
 
 export { RoutesAPI };
