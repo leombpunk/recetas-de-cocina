@@ -11,3 +11,5 @@ api-recetas/public/images/*.png
 *.png
 *.svg
 *.zip
+*.avif
+*.gif
