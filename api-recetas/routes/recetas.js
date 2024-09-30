@@ -24,13 +24,11 @@ const router = Router()
 //endpoint recetas publicas
 //getall
 router.get("/public", getAllRecetasPublic) //filtros aplicados y paginado también
-
-//este endpoint es ambiguo porque el endpoint de arriba ya filtra por nombre de usuario
-// router.get('/public/usuario/:nombreUsuario', getRecetasByUsername) //nombreUsuario = usuario -> retorna la lista de recetas de un usuario especifico
-
 //get
 router.get("/public/:id", getRecetaPublic)
 // router.get('/public/:id', getFullRecetaById) //retorna una receta segun su ID
+//este endpoint es ambiguo porque el endpoint de arriba ya filtra por nombre de usuario
+// router.get('/public/usuario/:nombreUsuario', getRecetasByUsername) //nombreUsuario = usuario -> retorna la lista de recetas de un usuario especifico
 
 //endpoint recetas con control de token
 //getAll by username

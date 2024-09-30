@@ -1,6 +1,7 @@
 import fs from "fs"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
+import { Op } from "sequelize"
 import { matchedData } from "express-validator"
 import { sequelize } from "../config/mysql.js"
 import { verifyToken } from "../helpers/generateToken.js"
@@ -8,7 +9,6 @@ import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
 import Receta from "../models/receta.js"
 import Archivo from "../models/archivos.js"
-import { Op } from "sequelize"
 import Usuario from "../models/usuario.js"
 
 const publicPath = join(
@@ -21,12 +21,12 @@ const getAllRecetasPublic = async (req, res) => {
   try {
     const { search, username, page, order, likes, publicated } = req.query
     const limit = 10
-    const offset = limit * (page ? page : 0)
+    const offset = limit * (page ? page -1 : 0)
     const whereOptions = {
       [Op.and]: [
         { visibilidad: 1 },
         { titulo: { [Op.like]: `%${search || ""}%` } },
-        // username !== undefined && { usuario: username },
+        username && { '$usuario.usuario$': username },
       ],
     }
     const orderOptions = [
@@ -36,11 +36,11 @@ const getAllRecetasPublic = async (req, res) => {
     ]
     // console.log({ equisde: orderOptions })
 
-    const { count, rows } = await Receta.findAndCountAll({
+    const { count, rows } = await Receta.scope("publicData").findAndCountAll({
       include: {
         model: Usuario.scope("basicUserData"),
         required: true,
-        where: username !== undefined && { usuario: username },
+        // where: username && { usuario: username },
       },
       where: whereOptions,
       order: orderOptions,
@@ -72,6 +72,8 @@ const getRecetaPublic = async (req, res) => {
       include: { model: Usuario.scope("basicUserData"), required: true },
     })
     if (result) {
+      result.ingredientes = JSON.parse(result.ingredientes)
+      result.pasos = JSON.parse(result.pasos)
       handleResponse(res, 200, "Datos de la receta", result)
       return
     } else {
@@ -134,6 +136,8 @@ const getReceta = async (req, res) => {
       where: { idUsuario: usuario.id },
     })
     if (result) {
+      result.ingredientes = JSON.parse(result.ingredientes)
+      result.pasos = JSON.parse(result.pasos)
       handleResponse(res, 200, "Datos de la receta", result)
       return
     } else {

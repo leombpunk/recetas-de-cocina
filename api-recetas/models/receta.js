@@ -51,6 +51,9 @@ const Receta = sequelize.define(
   {
     timestamps: false,
     defaultScope: { attributes: { exclude: ["idUsuario"] } },
+    scopes: {
+      publicData: { attributes: { exclude: ["idUsuario","visibilidad","checked"] } }
+    }
   }
 )
 
