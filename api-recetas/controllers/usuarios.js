@@ -1,4 +1,5 @@
-import Usuario from '../models/usuario.js'
+// import Usuario from '../models/usuario.js'
+import models from "../models/index.js"
 import { matchedData } from 'express-validator'
 import { httpError } from '../helpers/handleErrors.js'
 import { encrypt } from '../helpers/handleBcrypt.js'
@@ -6,7 +7,7 @@ import { encrypt } from '../helpers/handleBcrypt.js'
 const getUsuario = async (req, res) => {
     try {
         const id = req.params.id
-        const usuario = await Usuario.findOne({ where: { id: id } })
+        const usuario = await models.Usuario.findOne({ where: { id: id } })
         res.send(usuario)
     } catch (error) {
         httpError(res, error)
@@ -16,7 +17,7 @@ const getUsuario = async (req, res) => {
 const getRecetasByUserId = async (req, res) => {
     try {
         const id = req.params.id
-        const recetas = await Usuario.getRecetasByUserId(id)
+        const recetas = await models.Usuario.getRecetasByUserId(id)
         res.send(recetas)
     } catch (error) {
         httpError(res, error)
@@ -26,7 +27,7 @@ const getRecetasByUserId = async (req, res) => {
 const getRecetasVisiblesByUserId = async (req, res) => {
     try {
         const id = req.params.id
-        const recetas = await Usuario.getRecetasVisiblesByUserId(id)
+        const recetas = await models.Usuario.getRecetasVisiblesByUserId(id)
         res.send(recetas)
     } catch (error) {
         httpError(res, error)
@@ -38,7 +39,7 @@ const updateUsuario = async (req, res) => {
         const id = req.params.id
         req = matchedData(req)
         const { usuario, mail } = req
-        await Usuario.update({ usuario, mail }, { where: { id: id }}).then(result => {
+        await models.Usuario.update({ usuario, mail }, { where: { id: id }}).then(result => {
             console.log(result)
             if (result[0]) {
                 res.status(200).send(req)
@@ -61,7 +62,7 @@ const updateUsuarioPass = async (req, res) => {
         req = matchedData(req)
         const { contrasena } = req
         const passEncrypt = encrypt(contrasena)
-        await Usuario.update({ contrasena: passEncrypt }, { where: { id: id } }).then(result => {
+        await models.Usuario.update({ contrasena: passEncrypt }, { where: { id: id } }).then(result => {
             console.log(result)
             if (result[0]) {
                 res.status(200).send(req)

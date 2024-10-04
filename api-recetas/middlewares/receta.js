@@ -1,12 +1,13 @@
 import { verifyToken } from "../helpers/generateToken.js"
-import Receta from "../models/receta.js"
+// import Receta from "../models/receta.js"
+import models from "../models/index.js"
 
 const checkReceta = async (request, response, next) => {
   try {
     const token = request.headers.authorization.split(' ').pop()
     const tokenData = await verifyToken(token)
     const {idReceta, id} = request.params
-    const receta = await Receta.findOne({ where: { idUsuario: tokenData.id, id: idReceta || id } })
+    const receta = await models.Receta.findOne({ where: { idUsuario: tokenData.id, id: idReceta || id } })
     if (receta) {
       next()
     } else {

@@ -1,6 +1,7 @@
 import { matchedData } from "express-validator"
 import { sequelize } from "../config/mysql.js"
-import Usuario from "../models/usuario.js"
+// import Usuario from "../models/usuario.js"
+import models from "../models/index.js"
 import { httpError } from "../helpers/handleErrors.js"
 import { tokenSign, verifyToken } from "../helpers/generateToken.js"
 import { encrypt, compare } from "../helpers/handleBcrypt.js"
@@ -10,7 +11,7 @@ const login = async (req, res) => {
   try {
     req = matchedData(req)
     const { usuario, contrasena } = req
-    const result = await Usuario.getUsuarioByUserwPass(usuario)
+    const result = await models.Usuario.getUsuarioByUserwPass(usuario)
     console.log(result)
     if (!result) {
       const status = 404
@@ -43,7 +44,7 @@ const registro = async (req, res) => {
     const { nombres, apellidos, usuario, contrasena, mail } = req
     const contraHash = await encrypt(contrasena)
     const result = await sequelize.transaction(async (t) => {
-      const { id } = await Usuario.create(
+      const { id } = await models.Usuario.create(
         { nombres, apellidos, usuario, contrasena: contraHash, mail },
         { transaction: t }
       )
@@ -65,7 +66,7 @@ const refreshUserData = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const tokenData = await verifyToken(token)
 
-    const result = await Usuario.findOne({
+    const result = await models.Usuario.findOne({
       where: { id: tokenData.id, usuario: tokenData.usuario },
     })
     console.log(result)

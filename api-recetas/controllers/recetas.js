@@ -7,9 +7,10 @@ import { sequelize } from "../config/mysql.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
-import Receta from "../models/receta.js"
-import Archivo from "../models/archivos.js"
-import Usuario from "../models/usuario.js"
+// import Receta from "../models/receta.js"
+// import Archivo from "../models/archivos.js"
+// import Usuario from "../models/usuario.js"
+import models from "../models/index.js"
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -36,7 +37,7 @@ const getAllRecetasPublic = async (req, res) => {
     ]
     // console.log({ equisde: orderOptions })
 
-    const { count, rows } = await Receta.scope("publicData").findAndCountAll({
+    const { count, rows } = await models.Receta.scope("publicData").findAndCountAll({
       include: {
         model: Usuario.scope("basicUserData"),
         required: true,
@@ -68,8 +69,8 @@ const getAllRecetasPublic = async (req, res) => {
 const getRecetaPublic = async (req, res) => {
   try {
     const { id } = req.params
-    const result = await Receta.findByPk(id, {
-      include: { model: Usuario.scope("basicUserData"), required: true },
+    const result = await models.Receta.findByPk(id, {
+      include: { model: models.Usuario.scope("basicUserData"), required: true },
     })
     if (result) {
       result.ingredientes = JSON.parse(result.ingredientes)
@@ -99,7 +100,7 @@ const getAllRecetas = async (req, res) => {
       // ["likes", likes ? likes : "ASC"],
       // ["updateAt", publicated ? publicated : "ASC"],
     ]
-    const { count, rows } = await Receta.findAndCountAll({
+    const { count, rows } = await models.Receta.findAndCountAll({
       where: {
         [Op.and]: [
           { idUsuario: usuario.id },
@@ -132,7 +133,7 @@ const getReceta = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const { id } = req.params
-    const result = await Receta.findByPk(id, {
+    const result = await models.Receta.findByPk(id, {
       where: { idUsuario: usuario.id },
     })
     if (result) {
@@ -208,7 +209,7 @@ const createReceta = async (req, res) => {
       imagen = "",
       checked = "",
     } = body
-    const receta = await Receta.findOne({
+    const receta = await models.Receta.findOne({
       where: { idUsuario: tokenData.id, checked: 0 },
     })
     if (receta) {
@@ -220,7 +221,7 @@ const createReceta = async (req, res) => {
       return
     } else {
       const result = await sequelize.transaction(async (t) => {
-        const receta = await Receta.create(
+        const receta = await models.Receta.create(
           {
             titulo,
             detalle,
@@ -266,7 +267,7 @@ const updateReceta = async (req, res) => {
       imagen = "",
       checked = 0,
     } = body
-    const result = await Receta.update(
+    const result = await models.Receta.update(
       {
         titulo,
         detalle,
@@ -303,7 +304,7 @@ const deleteReceta = async (req, res) => {
     const idReceta = req.params.id
     const date = new Date()
     //buscar la receta
-    const receta = await Receta.findOne({ where: { id: idReceta } })
+    const receta = await models.Receta.findOne({ where: { id: idReceta } })
     receta.ingredientes = JSON.parse(receta.ingredientes)
     receta.pasos = JSON.parse(receta.pasos)
     //capturar las imágenes
@@ -330,14 +331,14 @@ const deleteReceta = async (req, res) => {
           }
         })
         //actualizar la tabla de archivos
-        const archivos = await Archivo.update(
+        const archivos = await models.Archivo.update(
           { deleteAt: date.toISOString() },
           { where: { idUsuario: usuario.id, imagen: filename } }
         )
         console.log({ arch: archivos })
       })
       //borrar la receta
-      const result = await Receta.destroy({
+      const result = await models.Receta.destroy({
         where: { id: idReceta },
         force: true,
       })
@@ -373,7 +374,7 @@ const updateVisibilidad = async (req, res) => {
     const idsPrivate = filtroPrivate.map((value) => value.id)
     // console.log({ public: idsPublic, private: idsPrivate, user: usuario })
     const result = await sequelize.transaction(async (t) => {
-      const publicResult = await Receta.update(
+      const publicResult = await models.Receta.update(
         { visibilidad: 1 },
         {
           where: {
@@ -385,7 +386,7 @@ const updateVisibilidad = async (req, res) => {
           transaction: t,
         }
       )
-      const privateResult = await Receta.update(
+      const privateResult = await models.Receta.update(
         { visibilidad: 0 },
         {
           where: {

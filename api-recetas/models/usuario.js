@@ -1,4 +1,4 @@
-import { DataTypes, Op } from "sequelize"
+import { DataTypes } from "sequelize"
 import { sequelize } from "../config/mysql.js"
 import Receta from "./receta.js"
 import Archivo from "./archivos.js"
@@ -57,9 +57,11 @@ const Usuario = sequelize.define(
   }
 )
 
-Usuario.hasMany(Receta, { foreignKey: "idUsuario" }) //un usuario tiene muchas recetas
-Receta.belongsTo(Usuario, { foreignKey: "idUsuario" }) //una receta pertenece a un usuario
-Usuario.hasMany(Archivo, { foreignKey: "idUsuario" })
+// Usuario.hasMany(Receta, { foreignKey: "idUsuario" }) //un usuario tiene muchas recetas
+// Receta.belongsTo(Usuario, { foreignKey: "idUsuario" }) //una receta pertenece a un usuario
+// Usuario.hasMany(Archivo, { foreignKey: "idUsuario" })
+// Archivo.belongsTo(Usuario, { foreignKey: "idUsuario" })
+
 
 //metodos personalizados
 //retorna un usuario y todas sus recetas -> para usar en el perfil logeado

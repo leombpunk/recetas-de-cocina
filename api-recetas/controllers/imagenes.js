@@ -3,8 +3,9 @@ import express from "express"
 import fs from "fs"
 import { dirname, join } from "path"
 import { fileURLToPath } from "url"
-import Usuario from "../models/usuario.js"
-import Archivo from "../models/archivos.js"
+// import Usuario from "../models/usuario.js"
+// import Archivo from "../models/archivos.js"
+import models from "../models/index.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
@@ -28,7 +29,7 @@ const uploadProfileImg = async (req, res) => {
     const idUsuario = req.params.id
     const avatar = req.file
     console.log(avatar)
-    await Usuario.update(
+    await models.Usuario.update(
       { imagen: avatar.filename },
       { where: { id: idUsuario } }
     )
@@ -59,7 +60,7 @@ const uploadProfileImg = async (req, res) => {
 const deleteProfileImg = async (req, res) => {
   try {
     const idUsuario = req.params.id
-    const usuario = await Usuario.findOne({ where: { id: idUsuario } })
+    const usuario = await models.Usuario.findOne({ where: { id: idUsuario } })
     if (usuario) {
       const { imagen } = usuario
       if (imagen) {
@@ -105,7 +106,7 @@ const uploadRecetaImg = async (req, res) => {
         const usuario = await verifyToken(token)
         const { filename, size, mimetype, encoding } = req.file
         const path = `http://localhost:3001/static/${filename}`
-        const archivo = await Archivo.create({
+        const archivo = await models.Archivo.create({
           idUsuario: usuario.id,
           imagen: filename,
           createAt: date.toISOString(),
@@ -142,11 +143,11 @@ const deleteRecetaImg = async (req, res) => {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const { filename } = req.params
-    const archivo = await Archivo.findOne({
+    const archivo = await models.Archivo.findOne({
       where: { idUsuario: usuario.id, imagen: filename, deleteAt: null },
     })
     if (archivo) {
-      await Archivo.update(
+      await models.Archivo.update(
         { deleteAt: date.toISOString() },
         { where: { idUsuario: usuario.id, imagen: filename } }
       )
