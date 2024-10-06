@@ -74,6 +74,7 @@ const deteleLike = async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
+    const { id } = req.params
     const like = await models.Like.destroy({
       where: { [Op.and]: [{ idReceta: id }, { idUsuario: usuario.id }] },
       force: true,
