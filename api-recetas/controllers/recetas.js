@@ -22,12 +22,12 @@ const getAllRecetasPublic = async (req, res) => {
   try {
     const { search, username, page, order, likes, publicated } = req.query
     const limit = 10
-    const offset = limit * (page ? page -1 : 0)
+    const offset = limit * (page ? page - 1 : 0)
     const whereOptions = {
       [Op.and]: [
         { visibilidad: 1 },
         { titulo: { [Op.like]: `%${search || ""}%` } },
-        username && { '$usuario.usuario$': username },
+        username && { "$usuario.usuario$": username },
       ],
     }
     const orderOptions = [
@@ -37,9 +37,11 @@ const getAllRecetasPublic = async (req, res) => {
     ]
     // console.log({ equisde: orderOptions })
 
-    const { count, rows } = await models.Receta.scope("publicData").findAndCountAll({
+    const { count, rows } = await models.Receta.scope(
+      "publicData"
+    ).findAndCountAll({
       include: {
-        model: Usuario.scope("basicUserData"),
+        model: models.Usuario.scope("basicUserData"),
         required: true,
         // where: username && { usuario: username },
       },
@@ -68,9 +70,30 @@ const getAllRecetasPublic = async (req, res) => {
 
 const getRecetaPublic = async (req, res) => {
   try {
+    //intentar recuperar el id del usuario para saber si dio like, el tema es que esto es un metodo publico, donde no se controla si esta logeado o no
+    //nuevo
+    const token = req.headers.authorization?.split(" ").pop()
+    let include = [
+      { model: models.Usuario.scope("basicUserData"), required: true },
+    ]
+    if (token) {
+      const usuario = await verifyToken(token)
+      include.push({
+        model: models.Like,
+        required: false,
+        where: { idUsuario: usuario.id },
+      })
+    } else {
+      include.push({
+        model: models.Like,
+        required: false,
+        where: { idUsuario: 0 },
+      })
+    }
+    //-----
     const { id } = req.params
     const result = await models.Receta.findByPk(id, {
-      include: { model: models.Usuario.scope("basicUserData"), required: true },
+      include: include,
     })
     if (result) {
       result.ingredientes = JSON.parse(result.ingredientes)

@@ -47,6 +47,18 @@ const Receta = sequelize.define(
       type: DataTypes.TINYINT,
       allowNull: false,
     },
+    createAt : {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updateAt : {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    deleteAt : {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,
