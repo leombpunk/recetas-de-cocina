@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import {
   ArrowUturnRightIcon,
@@ -10,15 +11,63 @@ import {
   UserCircleIcon,
   UserIcon,
 } from "@heroicons/react/24/outline"
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid"
+import { useContextNotification } from "../providers/NotificationProvider"
+import { useContextUser } from "../providers/UserProvider"
 import { RoutesAPI } from "../utils/RoutesAPI"
 import useRecipeSearch from "../hooks/useRecipeSearch"
+import useLikes from "../hooks/useLikes"
 import Loader from "../components/loader/Loader"
+import CustomModal from "../components/modals/CustomModal"
 
 const RecipePublicPage = () => {
+  const { user } = useContextUser()
+  const today = new Date()
   const { id } = useParams()
+  const { addNotification } = useContextNotification()
   const { recipe, errors, loading } = useRecipeSearch(id)
+  const {
+    loading: likeLoading,
+    errors: likeErrors,
+    count,
+    handleClickLike,
+    liked,
+    setLiked,
+  } = useLikes(id)
 
-  console.log({ r: recipe, e: errors, l: loading })
+  // console.log({ r: recipe, e: errors, l: loading })
+  // console.log({ c: count, l: likes, lk: likeErrors })
+  // console.log({ chuser: user })
+
+  useEffect(() => {
+    // console.log(recipe)
+    if (recipe.likes?.length) {
+      setLiked(true)
+    } else {
+      setLiked(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipe])
+
+  useEffect(() => {
+    if (errors.length) {
+      addNotification({
+        message: "Ocurrió un problema con la receta",
+        type: "error",
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors])
+
+  useEffect(() => {
+    if (likeErrors.length) {
+      addNotification({
+        message: "Ocurrió un problema con los likes",
+        type: "error",
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [likeErrors])
 
   return (
     <>
@@ -50,14 +99,24 @@ const RecipePublicPage = () => {
                 {recipe.titulo}
               </h1>
               <div className='flex self-end gap-3'>
-                <button
-                  type='button'
-                  className='flex flex-row gap-1 items-center text-xl font-semibold group'
-                  title='Me gusta'
-                >
-                  <HeartIcon className='w-10 h-10 group-hover:text-red-700 group-hover:scale-105 duration-300' />
-                  <span>9999</span>
-                </button>
+                {!user ? '':<CustomModal open={true} />}
+                {loading ? null : (
+                  <button
+                    type='button'
+                    className='flex flex-row gap-1 items-center text-xl font-semibold group'
+                    title='Me gusta'
+                    onClick={() => handleClickLike()}
+                  >
+                    {liked ? (
+                      <HeartIconSolid className='w-10 h-10 text-red-700 group-hover:scale-105 duration-300' />
+                    ) : (
+                      <HeartIcon className='w-10 h-10 group-hover:text-red-700 group-hover:scale-105 duration-300' />
+                    )}
+
+                    <span>{count}</span>
+                  </button>
+                )}
+
                 <button type='button' title='Compartir'>
                   <ShareIcon className='w-10 h-10' />
                 </button>
@@ -85,7 +144,12 @@ const RecipePublicPage = () => {
                 {recipe.usuario.usuario}
               </Link>
               <div className='text-lg italic text-gray-600 hover:cursor-default'>
-                Publicado: <span>{Date.now()}</span>
+                Publicado:{" "}
+                <span>
+                  {recipe.updateAt
+                    ? recipe.updateAt
+                    : today.toISOString().split(".").shift().replace("T", " ")}
+                </span>
               </div>
             </div>
             <div className='px-2 flex flex-col gap-3 mt-3'>
@@ -115,6 +179,7 @@ const RecipePublicPage = () => {
               <ul className='list-item bg-orange-400 p-3 rounded-2xl shadow-sm shadow-black/30'>
                 {recipe.ingredientes.map((ingrediente, index) => (
                   <li
+                    key={index}
                     id={`ingrediente-${index}`}
                     className='list-disc list-inside text-lg'
                   >
@@ -128,6 +193,7 @@ const RecipePublicPage = () => {
               <ul className='list-item bg-orange-400 p-3 rounded-2xl shadow-sm shadow-black/30'>
                 {recipe.pasos.map((paso, index) => (
                   <li
+                    key={index}
                     id={`paso-${index}`}
                     className='list-disc list-inside text-lg'
                   >
@@ -153,7 +219,7 @@ const RecipePublicPage = () => {
                     placeholder='Deja un comentario al autor de esta receta'
                     rows={5}
                   ></textarea>
-                  <div className="flex flex-row justify-end items-center">
+                  <div className='flex flex-row justify-end items-center'>
                     <button
                       type='submit'
                       className='flex flex-row items-center gap-1 bg-orange-500 py-2 px-3 rounded-2xl font-semibold shadow-sm hover:shadow-black/40 hover:bg-orange-300'

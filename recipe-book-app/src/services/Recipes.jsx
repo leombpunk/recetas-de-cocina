@@ -10,11 +10,18 @@ const getRecipesPublic = async (search, page, order, username) => {
 }
 
 const getRecipePublic = async (id) => {
+  const token = getToken()
+  const config = {
+    ...(token && {
+      headers: {
+        Authorization: token,
+      },
+    }),
+  }
   const url = `${RoutesAPI.recipesPublic}/${id}`
-  const request = axios.get(url)
+  const request = axios.get(url, config)
   return request.then((response) => response)
 }
-
 
 //servicios privados -> con auth
 const getRecipes = async (search, page, order) => {
@@ -25,7 +32,7 @@ const getRecipes = async (search, page, order) => {
     },
   }
   const url = `${RoutesAPI.recipes}/?search=${search}&page=${page}&order=${order}`
-  const request = axios.get(url,config)
+  const request = axios.get(url, config)
   return request.then((response) => response)
 }
 

@@ -7,6 +7,7 @@ const RoutesAPI = {
     recipes: `${urlAPI}/recetas`,
     images: `${urlAPI}/imagenes`,
     staticFiles: `${urlAPI}/static`,
+    likes: `${urlAPI}/likes`,
     recipesPublic: `${urlAPI}/recetas/public`,
 }
 
