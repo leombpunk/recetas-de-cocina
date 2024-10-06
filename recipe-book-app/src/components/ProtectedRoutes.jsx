@@ -1,9 +1,9 @@
 import { useEffect } from "react"
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useContextUser } from "../providers/UserProvider"
-import NavigationRoutes from "../utils/NavigationRoutes"
 import { useContextNotification } from "../providers/NotificationProvider"
-import Loader from "./loader/Loader"
+import NavigationRoutes from "../utils/NavigationRoutes"
+// import Loader from "./loader/Loader"
 
 const protectedLocations = [
   NavigationRoutes.Profile,
