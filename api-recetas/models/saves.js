@@ -1,3 +1,4 @@
+import { DataTypes } from "sequelize"
 import { sequelize } from "../config/mysql.js"
 
 const SaveRecipe = sequelize.define("guardadas",
