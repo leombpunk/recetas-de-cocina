@@ -78,17 +78,41 @@ const getRecetaPublic = async (req, res) => {
     ]
     if (token) {
       const usuario = await verifyToken(token)
-      include.push({
-        model: models.Like,
-        required: false,
-        where: { idUsuario: usuario.id },
-      })
+      include.push(
+        {
+          model: models.Like,
+          required: false,
+          where: { idUsuario: usuario.id },
+        },
+        {
+          model: models.SaveRecipe,
+          required: false,
+          where: { idUsuario: usuario.id },
+        }
+      )
+      // include.push({
+      //   model: models.SaveRecipe,
+      //   required: false,
+      //   where: { idUsuario: usuario.id },
+      // })
     } else {
-      include.push({
-        model: models.Like,
-        required: false,
-        where: { idUsuario: 0 },
-      })
+      include.push(
+        {
+          model: models.Like,
+          required: false,
+          where: { idUsuario: 0 },
+        },
+        {
+          model: models.SaveRecipe,
+          required: false,
+          where: { idUsuario: 0 },
+        }
+      )
+      // include.push({
+      //   model: models.SaveRecipe,
+      //   required: false,
+      //   where: { idUsuario: 0 },
+      // })
     }
     //-----
     const { id } = req.params
