@@ -8,6 +8,8 @@ const RoutesAPI = {
     images: `${urlAPI}/imagenes`,
     staticFiles: `${urlAPI}/static`,
     likes: `${urlAPI}/likes`,
+    saves: `${urlAPI}/guardadas`,
+    coments: `${urlAPI}/comentarios`,
     recipesPublic: `${urlAPI}/recetas/public`,
 }
 
