@@ -144,7 +144,7 @@ const RecipePublicPage = () => {
                 </div>
               )}
             </figure>
-            <div className='w-full flex flex-col lg:flex-row items-center justify-between mt-5 px-2'>
+            <div className='w-full flex flex-col lg:flex-row items-center justify-between mt-10 px-2 sticky top-0 py-5 bg-orange-300 shadow-sm border-b border-gray-500/50'>
               <h1 className='text-gray-900 text-4xl capitalize font-bold'>
                 {recipe.titulo}
               </h1>
@@ -165,7 +165,6 @@ const RecipePublicPage = () => {
                     <span>{count}</span>
                   </button>
                 )}
-
                 <button
                   type='button'
                   title='Compartir'
@@ -189,7 +188,7 @@ const RecipePublicPage = () => {
                 )}
               </div>
             </div>
-            <div className='w-full flex flex-row gap-3 items-center justify-end mt-3 px-2'>
+            <div className='w-full flex flex-row gap-3 items-center justify-end mt-5 px-2'>
               <Link
                 className='flex flex-row items-center gap-3 text-lg hover:underline font-semibold duration-500'
                 title='Mostrar todas las recetas de este usuario'
@@ -204,7 +203,6 @@ const RecipePublicPage = () => {
                 ) : (
                   <UserCircleIcon className='h-8 w-8 rounded-full text-gray-900 bg-gray-300' />
                 )}
-
                 {recipe.usuario.usuario}
               </Link>
               <div className='text-lg italic text-gray-600 hover:cursor-default'>
@@ -216,7 +214,7 @@ const RecipePublicPage = () => {
                 </span>
               </div>
             </div>
-            <div className='px-2 flex flex-col gap-3 mt-3'>
+            <div className='px-2 flex flex-col gap-3 mt-10'>
               <h2 className='text-3xl font-semibold'>Introducción</h2>
               <div className='flex flex-row items-center gap-4'>
                 {recipe.comensales ? (
@@ -238,7 +236,7 @@ const RecipePublicPage = () => {
               </div>
               <p className='text-lg'>{recipe.detalle}</p>
             </div>
-            <div className='px-2 flex flex-col gap-3 mt-3'>
+            <div className='px-2 flex flex-col gap-3 mt-10'>
               <h2 className='text-3xl font-semibold'>Ingredientes</h2>
               <ul className='list-item bg-orange-400 p-3 rounded-2xl shadow-sm shadow-black/30'>
                 {recipe.ingredientes.map((ingrediente, index) => (
@@ -252,7 +250,7 @@ const RecipePublicPage = () => {
                 ))}
               </ul>
             </div>
-            <div className='px-2 flex flex-col gap-3 mt-3'>
+            <div className='px-2 flex flex-col gap-3 mt-10'>
               <h2 className='text-3xl font-semibold'>Preparación</h2>
               <ul className='list-item bg-orange-400 p-3 rounded-2xl shadow-sm shadow-black/30'>
                 {recipe.pasos.map((paso, index) => (
@@ -274,7 +272,7 @@ const RecipePublicPage = () => {
                 ))}
               </ul>
             </div>
-            <div className='px-2 flex flex-col gap-3 mt-3'>
+            <div className='px-2 flex flex-col gap-3 mt-10'>
               <h2 className='text-3xl font-semibold'>Comentarios</h2>
               <div className='w-full bg-orange-400 rounded-2xl shadow-sm shadow-black/30 p-5'>
                 <form className='w-full mt-3 pt-5 pb-3 pl-20 pr-3 border-b-2 border-black/40'>
