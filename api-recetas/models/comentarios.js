@@ -20,10 +20,6 @@ const Comentario = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    isReply: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    }
   },
   {
     timestamps: false,

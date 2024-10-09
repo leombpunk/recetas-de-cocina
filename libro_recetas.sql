@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2024 a las 01:32:31
+-- Tiempo de generación: 09-10-2024 a las 23:12:04
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -73,9 +73,21 @@ CREATE TABLE `comentarios` (
   `idReceta` int(11) UNSIGNED NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `comentario` varchar(1000) NOT NULL,
-  `createAt` datetime NOT NULL,
-  `isReply` tinyint(1) NOT NULL
+  `createAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `comentarios`
+--
+
+INSERT INTO `comentarios` (`id`, `idReceta`, `idUsuario`, `comentario`, `createAt`) VALUES
+(1, 2, 1, 're manija esa receta ameo', '2024-10-08 14:40:03'),
+(2, 2, 3, 'soy la primer respuesta al comentario principal', '2024-10-08 18:05:40'),
+(3, 2, 5, 'soy la segunda respuesta a la primer respuesta del comentario princial', '2024-10-09 20:05:22'),
+(4, 2, 3, 'soy el segundo comentario principal', '2024-10-09 01:39:10'),
+(5, 2, 3, 'soy la segunda respuesta al comentario principal', '2024-10-09 01:41:50'),
+(6, 2, 1, 'terrible receta qliao, me gusto mucho equisde', '2024-10-09 17:00:20'),
+(8, 2, 1, 'capo soy yo de nuevo, se la pase a unos amigos y les encanto', '2024-10-09 17:18:01');
 
 -- --------------------------------------------------------
 
@@ -110,7 +122,8 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`id`, `idUsuario`, `idReceta`, `createAt`) VALUES
-(1, 1, 5, '2024-10-04 19:56:38');
+(1, 1, 5, '2024-10-04 19:56:38'),
+(9, 1, 2, '2024-10-06 17:22:25');
 
 -- --------------------------------------------------------
 
@@ -165,6 +178,31 @@ INSERT INTO `recetas` (`id`, `idUsuario`, `titulo`, `detalle`, `imagen`, `visibi
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `respuestas`
+--
+
+DROP TABLE IF EXISTS `respuestas`;
+CREATE TABLE `respuestas` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idComentario` int(11) UNSIGNED NOT NULL COMMENT 'id del comentario origen',
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `idUsuarioMension` int(11) UNSIGNED NOT NULL,
+  `respuesta` varchar(1000) NOT NULL,
+  `createAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `respuestas`
+--
+
+INSERT INTO `respuestas` (`id`, `idComentario`, `idUsuario`, `idUsuarioMension`, `respuesta`, `createAt`) VALUES
+(5, 1, 2, 1, 'chupala ameo no sabes una chota', '2024-10-09 15:25:40'),
+(6, 3, 1, 2, 'no se, soy una respuesta, jiji', '2024-10-09 18:05:14'),
+(7, 1, 1, 2, 'no se, soy una respuesta, jiji', '2024-10-09 18:05:34');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -205,14 +243,18 @@ ALTER TABLE `archivos`
 -- Indices de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_receta_comentario` (`idReceta`),
+  ADD KEY `fk_usuario_comentario` (`idUsuario`);
 
 --
 -- Indices de la tabla `guardadas`
 --
 ALTER TABLE `guardadas`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_usuario_receta` (`idUsuario`,`idReceta`) USING BTREE;
+  ADD UNIQUE KEY `uq_usuario_receta` (`idUsuario`,`idReceta`) USING BTREE,
+  ADD KEY `ix_idUsuario` (`idUsuario`) USING BTREE,
+  ADD KEY `ix_idReceta` (`idReceta`) USING BTREE;
 
 --
 -- Indices de la tabla `likes`
@@ -229,6 +271,15 @@ ALTER TABLE `likes`
 ALTER TABLE `recetas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ix_usuario` (`idUsuario`) USING BTREE;
+
+--
+-- Indices de la tabla `respuestas`
+--
+ALTER TABLE `respuestas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ix_comentario` (`idComentario`),
+  ADD KEY `ix_usuario` (`idUsuario`),
+  ADD KEY `ix_idUsuarioMension` (`idUsuarioMension`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -253,25 +304,31 @@ ALTER TABLE `archivos`
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `guardadas`
 --
 ALTER TABLE `guardadas`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `recetas`
 --
 ALTER TABLE `recetas`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT de la tabla `respuestas`
+--
+ALTER TABLE `respuestas`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -290,6 +347,20 @@ ALTER TABLE `archivos`
   ADD CONSTRAINT `fk_usuario2` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`);
 
 --
+-- Filtros para la tabla `comentarios`
+--
+ALTER TABLE `comentarios`
+  ADD CONSTRAINT `fk_receta_comentario` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_comentario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `guardadas`
+--
+ALTER TABLE `guardadas`
+  ADD CONSTRAINT `fk_receta_favorito` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_favorito` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `likes`
 --
 ALTER TABLE `likes`
@@ -301,6 +372,14 @@ ALTER TABLE `likes`
 --
 ALTER TABLE `recetas`
   ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `respuestas`
+--
+ALTER TABLE `respuestas`
+  ADD CONSTRAINT `fk_comentario_respuesta` FOREIGN KEY (`idComentario`) REFERENCES `comentarios` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_mension` FOREIGN KEY (`idUsuarioMension`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_respuesta` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

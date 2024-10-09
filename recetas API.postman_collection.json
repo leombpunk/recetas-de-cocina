@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"usuario123\",\r\n    \"contrasena\": \"usuario123\"\r\n}",
+							"raw": "{\r\n    \"usuario\": \"usuario123\", //nombre de usuario\r\n    \"contrasena\": \"usuario123\" //contraseña del usuario\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -57,57 +57,6 @@
 						"method": "POST",
 						"header": [],
 						"url": "localhost:3001/auth/verifyToken"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Unidades Medida",
-			"item": [
-				{
-					"name": "unidadesMedidas GetAll",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjM2NTUyNzMsImV4cCI6MTcyMzY5MTI3M30.msXRYeOoHyrH9GSxk1Ppig2I5j1S_Emr8-N0SIFYfL4"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "localhost:3001/unidadesMedidas/"
-					},
-					"response": []
-				},
-				{
-					"name": "unidadesMedidas Create",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Cucharada\" \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "localhost:3001/unidadesMedidas/"
-					},
-					"response": []
-				},
-				{
-					"name": "unidadesMedidas Delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": "localhost:3001/unidadesMedidas/1"
 					},
 					"response": []
 				}
@@ -221,26 +170,78 @@
 			"name": "Recetas",
 			"item": [
 				{
-					"name": "recetas GetById",
+					"name": "recetas GetAll Public",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjM2NTUyNzMsImV4cCI6MTcyMzY5MTI3M30.msXRYeOoHyrH9GSxk1Ppig2I5j1S_Emr8-N0SIFYfL4"
-							}
-						},
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3001/recetas/1"
+						"url": {
+							"raw": "localhost:3001/recetas/public",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"recetas",
+								"public"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "falopa",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "usuario1235",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "recetas GetByUsername",
+					"name": "recetas Get Public byID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3001/recetas/usuario/usuario123"
+						"url": "localhost:3001/recetas/public/5"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY4NDg4MjMsImV4cCI6MTcyOTQ0MDgyM30.eK-bMKt9egdGDKm-XYocj2FyZOhVttTLEnk9zl8Mk6g"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/recetas"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas Get byID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY4NDg4MjMsImV4cCI6MTcyOTQ0MDgyM30.eK-bMKt9egdGDKm-XYocj2FyZOhVttTLEnk9zl8Mk6g"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/recetas/3"
 					},
 					"response": []
 				},
@@ -265,6 +266,30 @@
 							}
 						},
 						"url": "localhost:3001/recetas/"
+					},
+					"response": []
+				},
+				{
+					"name": "recetas Compartir",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY4NDg4MjMsImV4cCI6MTcyOTQ0MDgyM30.eK-bMKt9egdGDKm-XYocj2FyZOhVttTLEnk9zl8Mk6g"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"compartir\": [\r\n        {\r\n            \"id\": 1, //receta id\r\n            // \"visibilidad\": 1 //1 == visible, 0 == oculta\r\n        },\r\n        {\r\n            \"id\": 2, //receta id\r\n            \"visibilidad\": 1 //1 == visible, 0 == oculta\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/recetas/compartir/"
 					},
 					"response": []
 				},
@@ -295,9 +320,15 @@
 				{
 					"name": "recetas Delete",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjY3MDY2NDMsImV4cCI6MTcyOTI5ODY0M30.mv7-XfFoTnXGwPZ0QqDvUWI-vaObrflkitYeagydl00"
+							}
+						},
 						"method": "DELETE",
 						"header": [],
-						"url": "localhost:3001/recetas/14"
+						"url": "localhost:3001/recetas/34"
 					},
 					"response": []
 				}
@@ -369,6 +400,154 @@
 							"formdata": []
 						},
 						"url": "localhost:3001/imagenes/usuario/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Acciones de usuario",
+			"item": [
+				{
+					"name": "likes get by recetaId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/likes/5"
+					},
+					"response": []
+				},
+				{
+					"name": "likes get Details by recetaId Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/likes/details/5"
+					},
+					"response": []
+				},
+				{
+					"name": "likes post like",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3MjgwODI1NzcsImV4cCI6MTczMDY3NDU3N30.1vqebo3aRhnIqgGoS2Alai39-D613-2ktTYNEp-SK9s"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "localhost:3001/likes/5"
+					},
+					"response": []
+				},
+				{
+					"name": "likes delete like",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3001/likes/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentarios",
+			"item": [
+				{
+					"name": "comentarios Getall",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/comentarios/2"
+					},
+					"response": []
+				},
+				{
+					"name": "comentarios Get Respuestas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3Mjg0MDgzNjAsImV4cCI6MTczMTAwMDM2MH0.sgrjpkfNS3ERPypuol0pjS2Kqlnc3REWcAdKWYk83E0"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3001/comentarios/respuesta/1"
+					},
+					"response": []
+				},
+				{
+					"name": "comentarios Create comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3Mjg1MDM5OTMsImV4cCI6MTczMTA5NTk5M30.DQgdC_BgtmRxFCs7Dsp6KspL6_aHGBVhMR2P-Kq1RX8"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"capo soy yo de nuevo, se la pase a unos amigos y les encanto\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/comentarios/2"
+					},
+					"response": []
+				},
+				{
+					"name": "comentarios Delete comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3Mjg1MDM5OTMsImV4cCI6MTczMTA5NTk5M30.DQgdC_BgtmRxFCs7Dsp6KspL6_aHGBVhMR2P-Kq1RX8"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3001/comentarios/7"
+					},
+					"response": []
+				},
+				{
+					"name": "comentarios Create respuesta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXN1YXJpbyI6InVzdWFyaW8xMjMiLCJpYXQiOjE3Mjg1MDM5OTMsImV4cCI6MTczMTA5NTk5M30.DQgdC_BgtmRxFCs7Dsp6KspL6_aHGBVhMR2P-Kq1RX8"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"respuesta\": \"no se, soy una respuesta, jiji\",\r\n    \"mension\": \"usuario456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3001/comentarios/respuesta/1"
+					},
+					"response": []
+				},
+				{
+					"name": "comentarios Delete respuesta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3001/comentarios/respuesta/2"
 					},
 					"response": []
 				}

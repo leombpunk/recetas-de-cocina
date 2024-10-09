@@ -5,6 +5,7 @@ import { router as usuariosRouter } from "./usuarios.js"
 import { router as imagenesRouter } from "./imagenes.js"
 import { router as likesRouter } from "./likes.js"
 import { router as savesRouter } from "./guardadas.js"
+import { router as comentariosRouter } from "./comentarios.js"
 
 const router = express.Router()
 
@@ -14,6 +15,7 @@ router.use("/usuarios", usuariosRouter)
 router.use("/imagenes", imagenesRouter)
 router.use("/likes", likesRouter)
 router.use("/guardadas", savesRouter)
+router.use("/comentarios", comentariosRouter)
 
 router.get("*", (request, response) => {
   response.status(404)
