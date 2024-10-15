@@ -5,11 +5,11 @@ const HomePage = () => {
       <main className="w-full bg-orange-300 flex flex-col justify-center items-center">
         <section className='home relative w-full bg-orange-400 pt-16 bg-cover bg-center'>
           <div className='container mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
-            <div className='landing flex flex-wrap items-center gap-6'>
+            <div className='landing flex flex-col lg:flex-row flex-wrap items-center gap-6'>
               <div className='content'>
                 <span className="text-white text-4xl">Recipe App</span>
-                <h3 className="text-gray-50 text-8xl uppercase py-2">
-                  Crea <br /> Comparte <br /> Disfruta
+                <h3 className="text-gray-50 text-7xl uppercase py-2">
+                  Crea ✨<br /> Comparte 🤝 <br /> Disfruta 😋
                 </h3>
                 <a className='btn inline-block mt-4 px-12 py-4 bg-orange-300 text-black text-xl cursor-pointer hover:bg-orange-500 rounded-xl shadow-md hover:shadow-black/50' href='#asd'>
                   Registrate
