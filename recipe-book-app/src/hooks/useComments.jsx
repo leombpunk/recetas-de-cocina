@@ -5,13 +5,10 @@ import { useContextUser } from "../providers/UserProvider"
 const useComments = (recipeId) => {
   const { user } = useContextUser()
   const [loading, setLoading] = useState(true)
-  // const [loadingReplys, setLoadingReplys] = useState(false)
   const [loadingComment, setLoadingComment] = useState(false)
   const [errorsComment, setErrorsComment] = useState([])
   const [errors, setErrors] = useState([])
   const [comments, setComments] = useState([])
-  // const [replys, setReplys] = useState([])
-  // const [errorsReplys, setErrorsReply] = useState([])
 
   const fetchComments = async () => {
     try {
@@ -50,25 +47,6 @@ const useComments = (recipeId) => {
       setLoading(false)
     }
   }
-
-  // const getReplys = async (commentId) => {
-  //   try {
-  //     setLoadingReplys(true)
-  //     const result = await CommentsServices.getReplys(commentId)
-  //     if (result.status === 200) {
-  //       console.log(result)
-  //       setReplys(result.data.data)
-  //     } else {
-  //       setErrorsReply([result])
-  //     }
-  //     setLoadingReplys(false)
-  //   } catch (error) {
-  //     setErrorsReply([error])
-  //     setLoadingReplys(false)
-  //   } finally {
-  //     setLoadingReplys(false)
-  //   }
-  // }
 
   const createComment = async (comment) => {
     try {
@@ -125,10 +103,6 @@ const useComments = (recipeId) => {
     loading,
     errors,
     comments,
-    // loadingReplys,
-    // errorsReplys,
-    // replys,
-    // getReplys,
     getComments, //para el infinity scroll
     createComment,
     deleteComment,
