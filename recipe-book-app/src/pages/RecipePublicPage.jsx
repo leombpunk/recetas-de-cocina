@@ -143,7 +143,7 @@ const RecipePublicPage = () => {
                 </div>
               )}
             </figure>
-            <div className='w-full flex flex-col lg:flex-row items-center justify-between mt-10 px-2 sticky top-0 py-5 bg-orange-300 shadow-sm border-b border-gray-500/50'>
+            <div className='z-[1] w-full flex flex-col lg:flex-row items-center justify-between mt-10 px-2 sticky top-0 py-5 bg-orange-300 shadow-sm border-b border-gray-500/50'>
               <h1 className='text-gray-900 text-4xl capitalize font-bold'>
                 {recipe.titulo}
               </h1>

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react"
+import { Fragment } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { XMarkIcon } from "@heroicons/react/24/solid"
 
@@ -22,7 +22,7 @@ const CustomModal = ({ open = false, setOpen, confirm = false, children, setCanc
     closeModal()
   }
 
-  console.log({ confirm: confirm })
+  // console.log({ confirm: confirm })
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={closeModal}>

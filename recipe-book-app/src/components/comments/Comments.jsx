@@ -17,13 +17,8 @@ import Comment from "./Comment"
 import Replys from "./Replys"
 
 const Comments = ({ recipeId, onNotLogin }) => {
-  const {
-    loading,
-    errors,
-    comments,
-    createComment,
-    deleteComment,
-  } = useComments(recipeId)
+  const { loading, errors, comments, createComment, deleteComment } =
+    useComments(recipeId)
   const { user } = useContextUser()
   const { addNotification } = useContextNotification()
   const [comment, setComment] = useState("")
@@ -95,14 +90,25 @@ const Comments = ({ recipeId, onNotLogin }) => {
     <div className='px-2 flex flex-col gap-3 mt-10'>
       <h2 className='text-3xl font-semibold'>Comentarios</h2>
       <div className='w-full bg-orange-400 rounded-2xl shadow-sm shadow-black/30 p-5'>
-        <form className='w-full mt-3 pt-5 pb-3 pl-20 pr-3 border-b-2 border-black/40'>
-          <textarea
-            className='w-full bg-orange-200 rounded-2xl'
-            placeholder='Deja un comentario al autor de esta receta'
-            rows={5}
-            onChange={(event) => setComment(event.target.value)}
-          ></textarea>
-          <div className='flex flex-row justify-end items-center mt-1'>
+        <form className='w-full mt-3 pt-3 pb-5 pl-8 pr-3 border-b-2 border-black/40'>
+          <div className="flex flex-row gap-2">
+            {comment.usuario?.imagen ? (
+              <img
+                src={`${RoutesAPI.staticFiles}/avatars/${comment.usuario?.imagen}`}
+                alt='imagen de perfil'
+                className='w-11 h-11 rounded-full'
+              />
+            ) : (
+              <UserCircleIcon className='w-11 h-11 rounded-full text-gray-900 bg-gray-300' />
+            )}
+            <textarea
+              className='w-full bg-orange-200 rounded-2xl'
+              placeholder='Deja un comentario al autor de esta receta'
+              rows={5}
+              onChange={(event) => setComment(event.target.value)}
+            ></textarea>
+          </div>
+          <div className='flex flex-row justify-end items-center mt-2'>
             <button
               onClick={(e) => checkComment(e)}
               type='submit'
