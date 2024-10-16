@@ -1,4 +1,4 @@
-//mover aquí la logica sobre respuestas a comentarios del hook comments
+//mover aquí la logica sobre respuestas a comentarios del hook s
 import { useState } from "react"
 import CommentsServices from "../services/Comments"
 import { useContextUser } from "../providers/UserProvider"
@@ -34,10 +34,10 @@ const useReplys = () => {
   const [replys, setReplys] = useState([])
   const { addNotification } = useContextNotification()
 
-  const getReplys = async (commentId) => {
+  const getReplys = async (Id) => {
     try {
       setLoading(true)
-      const result = await CommentsServices.getReplys(commentId)
+      const result = await CommentsServices.getReplys(Id)
       if (result.status === 200) {
         console.log(result)
         setReplys(result.data.data)
@@ -53,10 +53,10 @@ const useReplys = () => {
     }
   }
 
-  const createReply = async (commentId, reply) => {
+  const createReply = async (Id, reply) => {
     try {
       setLoading(true)
-      const result = await CommentsServices.createReply(commentId, reply)
+      const result = await CommentsServices.createReply(Id, reply)
       // console.log(result)
       if (result.status === 200) {
         addNotification({message:"Gracias por comentar!", type:"success"})
@@ -71,12 +71,31 @@ const useReplys = () => {
     }
   }
 
+  const deleteReply = async (replyId) => {
+    try {
+      setLoading(true)
+      const result = await CommentsServices.deleteReply(replyId)
+      if (result.status === 200) {
+        console.log(result)
+      } else {
+        setErrors([result])
+      }
+      setLoading(false)
+    } catch (error) {
+      setErrors([error])
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return {
     replys,
     errors,
     loading,
     getReplys,
     createReply,
+    deleteReply,
   }
 }
 

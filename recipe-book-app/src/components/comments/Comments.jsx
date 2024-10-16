@@ -140,7 +140,7 @@ const Comments = ({ recipeId, onNotLogin }) => {
       >
         <div className='pt-12 pb-6'>
           <p className='font-semibold text-2xl text-center'>
-            ¿Desea borrar su comentario?
+            ¿Deseas borrar tu comentario?
           </p>
         </div>
       </CustomModal>

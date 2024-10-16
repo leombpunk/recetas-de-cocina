@@ -105,7 +105,7 @@ const Comment = ({
             user.usuario === comment.usuario.usuario ? (
               <button
                 type='button'
-                onClick={(e) => handleClickDeleteComment(e, isAnswer?commentId:comment.id)}
+                onClick={(e) => handleClickDeleteComment(e, comment.id)}
                 className='flex flex-row items-center gap-1 bg-orange-500 py-2 px-3 rounded-2xl font-semibold shadow-sm hover:shadow-black/40 hover:bg-orange-300'
               >
                 <TrashIcon className='h-5 w-5' /> Borrar
@@ -118,8 +118,8 @@ const Comment = ({
           )}
         </div>
       </div>
-      <Answer isHidden={!reply} comment={comment} commentId={isAnswer?commentId:comment.id} />
-      <Replys isHidden={replysHidden} commentId={comment.id} user={user} />
+      <Answer isHidden={!reply} comment={comment} commentId={isAnswer ? commentId : comment.id} />
+      <Replys isHidden={replysHidden} commentId={comment.id} user={user} onNotLogin={onNotLogin} />
     </>
   )
 }
