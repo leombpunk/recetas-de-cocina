@@ -133,7 +133,7 @@ const Comments = ({ recipeId, onNotLogin }) => {
               />
             ))
           ) : (
-            <div className='flex flex-col gap-1'>aun no hay comentarios</div>
+            <div className='flex flex-row items-center justify-center py-3'><p className="text-gray-800/70 italic text-3xl font-medium">Aún no hay comentarios! <span className="not-italic">😢</span></p></div>
           )}
         </div>
       </div>
