@@ -69,7 +69,7 @@ const getRespuestas = async (req, res) => {
         },
       ],
       where: { idComentario: id },
-      order: [["createAt", "DESC"]],
+      order: [["createAt", "ASC"]],
     })
 
     if (respuestas.length) {
