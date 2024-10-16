@@ -48,12 +48,7 @@ const RecipePublicPage = () => {
     handleClickSave,
   } = useSaves(id)
 
-  // console.log({ r: recipe, e: errors, l: loading })
-  // console.log({ c: count, l: likes, lk: likeErrors })
-  // console.log({ chuser: user })
-
   useEffect(() => {
-    // console.log(recipe)
     if (recipe.likes?.length) {
       setLiked(true)
     } else {
@@ -88,23 +83,6 @@ const RecipePublicPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [likeErrors])
 
-  // useEffect(() => {
-  //   if (save) {
-  //     addNotification({
-  //       message: "Receta guardada en tus favoritos",
-  //       type: "success",
-  //     })
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [save])
-
-  // useEffect(() => {
-  //   if (liked) {
-  //     addNotification({ message: "Me gusta", type: "success" })
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [liked])
-
   const onClickLike = () => {
     user ? handleClickLike() : setOpenModal(true)
   }
@@ -126,7 +104,6 @@ const RecipePublicPage = () => {
         ) : (
           <section className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             <figure className='w-full'>
-              {/*w-9/12 h-96 bg-cover bg-center rounded-lg*/}
               {recipe.imagen ? (
                 <img
                   src={`${RoutesAPI.staticFiles}/${recipe.imagen}`}

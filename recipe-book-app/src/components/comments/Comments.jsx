@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
 import {
-  ArrowUturnRightIcon,
-  ChatBubbleLeftRightIcon,
   ChatBubbleOvalLeftEllipsisIcon,
-  TrashIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline"
 import { RoutesAPI } from "../../utils/RoutesAPI"
@@ -14,7 +10,6 @@ import { useContextNotification } from "../../providers/NotificationProvider"
 import Loader from "../loader/Loader"
 import CustomModal from "../modals/CustomModal"
 import Comment from "./Comment"
-import Replys from "./Replys"
 
 const Comments = ({ recipeId, onNotLogin }) => {
   const { loading, errors, comments, createComment, deleteComment } =
