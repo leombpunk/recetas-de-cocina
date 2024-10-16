@@ -71,7 +71,7 @@ const RecipeContainerPublic = () => {
                   ? `Mostrando resultados para "${filters.search}"`
                   : `Mostrando todas las recetas`}
               </h2>
-              <div className='flex flex-row items-center gap-2 justify-end w-full pb-3 pt-6 mt-5'>
+              <div className='flex flex-row items-center gap-2 justify-end w-full pb-3 pt-6'>
                 <form
                   onSubmit={handleSubmit(onSubmitForm)}
                   className='flex flex-col lg:flex-row items-center gap-3'
@@ -140,7 +140,7 @@ const RecipeContainerPublic = () => {
                 </form>
               </div>
             </div>
-            <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
+            <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-1'>
               {recipes.length ? (
                 recipes.map((recipe, index) => (
                   <RecipeCard
