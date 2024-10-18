@@ -11,7 +11,7 @@ import { useContextNotification } from "../providers/NotificationProvider"
 export const data = {
   fetch: {
     loading: true,
-    errors:[],
+    errors: [],
     data: [],
   },
   create: {
@@ -23,7 +23,7 @@ export const data = {
     errors: [],
     loading: true,
     result: {},
-  }
+  },
 }
 
 //Nota: no hace infinity scroll
@@ -32,12 +32,34 @@ const useReplys = () => {
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState([])
   const [replys, setReplys] = useState([])
+  const [lastReply, setLastReply] = useState({})
   const { addNotification } = useContextNotification()
 
-  const getReplys = async (Id) => {
+  console.log({ replys: replys })
+
+  const getLastReply = async (commentId) => {
     try {
       setLoading(true)
-      const result = await CommentsServices.getReplys(Id)
+      const result = await CommentsServices.getLastReply(commentId)
+      if (result.status === 200) {
+        console.log(result)
+        setLastReply(result.data.data)
+      } else {
+        setErrors([result])
+      }
+      setLoading(false)
+    } catch (error) {
+      setErrors([error])
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getReplys = async (commentId) => {
+    try {
+      setLoading(true)
+      const result = await CommentsServices.getReplys(commentId)
       if (result.status === 200) {
         console.log(result)
         setReplys(result.data.data)
@@ -53,13 +75,32 @@ const useReplys = () => {
     }
   }
 
-  const createReply = async (Id, reply) => {
+  const createReply = async (commentId, reply) => {
     try {
       setLoading(true)
-      const result = await CommentsServices.createReply(Id, reply)
-      // console.log(result)
+      const result = await CommentsServices.createReply(commentId, reply)
+      console.log(result)
       if (result.status === 200) {
-        addNotification({message:"Gracias por comentar!", type:"success"})
+        addNotification({
+          message: "Gracias por comentar! ❤️",
+          type: "success",
+        })
+        let newReply = {
+          id: result.data.data.id,
+          idComentario: result.data.data.idComentario,
+          respuesta: result.data.data.respuesta,
+          createAt: result.data.data.createAt,
+          usuario: {
+            usuario: user.usuario,
+            imagen: user.imagen,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+          },
+          mension: { usuario: reply.mension },
+        }
+        console.log({newReply: newReply})
+        // agregar a última respuesta en ves de a la lista de respuestas?
+        setReplys([newReply, ...replys])
       } else {
         setErrors([result])
       }
@@ -77,6 +118,7 @@ const useReplys = () => {
       const result = await CommentsServices.deleteReply(replyId)
       if (result.status === 200) {
         console.log(result)
+        setReplys(replys.filter((reply) => reply.id !== replyId))
       } else {
         setErrors([result])
       }
@@ -91,9 +133,11 @@ const useReplys = () => {
 
   return {
     replys,
+    lastReply,
     errors,
     loading,
     getReplys,
+    getLastReply,
     createReply,
     deleteReply,
   }

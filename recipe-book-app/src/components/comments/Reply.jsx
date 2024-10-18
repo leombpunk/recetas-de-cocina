@@ -17,6 +17,7 @@ const Reply = ({
   user,
   onNotLogin,
   handleClickDeleteReply,
+  isOwn = false
 }) => {
   const [reply, setReply] = useState(false)
   const [replysHidden, setReplysHidden] = useState(true)
@@ -38,7 +39,7 @@ const Reply = ({
 
   return (
     <>
-      <div className='flex flex-col gap-1 my-3 border px-2 py-3 rounded-xl shadow-md shadow-black/25 bg-orange-300/70'>
+      <div className={`flex flex-col gap-1 my-3 ${isOwn ? 'border-2 border-black/50' : 'border'} px-2 py-3 rounded-xl shadow-md shadow-black/25 bg-orange-300/70`}>
         <div className='w-full flex flex-row items-center gap-2'>
           <Link
             to={"#"}

@@ -20,6 +20,18 @@ const getReplys = async (commentId) => {
   return request.then((response) => response)
 }
 
+const getLastReply = async (commentId) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      authorization: token
+    }
+  }
+  const url = `${RoutesAPI.coments}/respuesta/ultima/${commentId}`
+  const request = axios.get(url, config)
+  return request.then((response) => response)
+}
+
 const createComment = async (recetaId, comment) => {
   const token = getToken()
   const config = {
@@ -71,6 +83,7 @@ const deleteReply = async (replyId) => {
 const CommentsServices = {
   getComments,
   getReplys,
+  getLastReply,
   createComment,
   createReply,
   deleteComment,

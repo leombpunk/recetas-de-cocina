@@ -12,7 +12,15 @@ const Replys = ({ isHidden = true, commentId, user, onNotLogin }) => {
   const [cancel, setCancel] = useState(false)
   const [replyId, setReplyId] = useState(0)
   //cargar las respuestas
-  const { errors, getReplys, loading, replys, deleteReply } = useReplys()
+  const {
+    errors,
+    lastReply,
+    getLastReply,
+    getReplys,
+    loading,
+    replys,
+    deleteReply,
+  } = useReplys()
   const [replyData, setReplyData] = useState({})
   const [show, setShow] = useState(true)
 
@@ -31,6 +39,7 @@ const Replys = ({ isHidden = true, commentId, user, onNotLogin }) => {
   useEffect(() => {
     if (!isHidden) {
       getReplys(commentId)
+      getLastReply(commentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHidden])
@@ -74,17 +83,25 @@ const Replys = ({ isHidden = true, commentId, user, onNotLogin }) => {
             leaveFrom='transform scale-100 opacity-100'
             leaveTo='transform scale-95 opacity-0'
           >
+            {console.log({ last: lastReply })}
+            {Object.values(lastReply).length ? (
+              <Reply
+                onNotLogin={onNotLogin}
+                handleClickDeleteReply={handleClickDeleteReply}
+                replyData={lastReply}
+                user={user}
+                isOwn={true}
+              />
+            ):''}
             {replys.map((reply, index) => (
-              <div
-                key={index}
-                className={`flex flex-col gap-0 my-0 ml-14`}
-              >
-                <Reply 
+              <div key={index} className={`flex flex-col gap-0 my-0 ml-14`}>
+                <Reply
                   onNotLogin={onNotLogin}
                   handleClickDeleteReply={handleClickDeleteReply}
                   replyData={reply}
                   user={user}
-                  />
+                  isOwn={user.usuario === reply.usuario.usuario}
+                />
               </div>
             ))}
           </Transition>
