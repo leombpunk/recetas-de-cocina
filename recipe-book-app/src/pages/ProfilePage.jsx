@@ -1,23 +1,22 @@
-import { UserCircleIcon } from "@heroicons/react/24/solid"
-
-// import RecipesServices from "../services/Recipes"
 // import { useEffect, useState } from "react"
-
+import { Fragment } from "react"
 import { Tab } from "@headlessui/react"
+import { UserCircleIcon } from "@heroicons/react/24/outline"
+import { useContextUser } from "../providers/UserProvider"
+import useProfile from "../hooks/useProfile"
+import { RoutesAPI } from "../utils/RoutesAPI"
+
+const tabs = ["Personal", "Seguridad", "Cuenta"]
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ")
+}
 
 const ProfilePage = () => {
-  // const [recetas, setRecetas] = useState([])
+  const { user } = useContextUser()
+  const { profile } = useProfile(user?.usuario)
 
-  // useEffect(() => {
-  //   try {
-  //     const response = RecipesServices.getRecipesByUser('usuario123')
-  //     console.log(response.data)
-  //     // setRecetas(result)
-  //   } catch (error) {
-  //     console.log(`mamahuevo! ${error}`)
-  //   }
-  // })
-
+  console.log(profile)
   return (
     <>
       <section className='bg-orange-300'>
@@ -31,28 +30,44 @@ const ProfilePage = () => {
                 Esta información será mostrada públicamente, tenga cuidado con
                 lo que comparte.
               </p>
-
               <Tab.Group>
-                <div className='flex flex-row items-start divide-x-2 mt-2'>
+                <div className='flex flex-row items-start divide-x-2 mt-5'>
                   <Tab.List className='flex flex-row md:flex-col min-w-[15vw]'>
-                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
-                      Personal
-                    </Tab>
-                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
-                      Seguridad
-                    </Tab>
-                    <Tab className='text-lg font-semibold col-span-3 text-left px-5 py-2 border-b hover:bg-orange-500'>
-                      Cuenta
-                    </Tab>
+                    {tabs.map((tab, index) => (
+                      <Fragment key={index}>
+                        <Tab
+                          key={index}
+                          className={({ selected }) =>
+                            classNames(
+                              "text-lg font-semibold col-span-3 text-left rounded-xl duration-500 px-5 py-2 hover:shadow-md hover:bg-orange-500",
+                              selected ? "bg-orange-600" : ""
+                            )
+                          }
+                        >
+                          {tab}
+                        </Tab>
+                        <hr />
+                      </Fragment>
+                    ))}
                   </Tab.List>
                   <Tab.Panels className='flex flex-row md:flex-col w-full min-h-[75vh] rounded-xl bg-orange-200 overflow-y-auto shadow-black/20 shadow-md'>
                     <Tab.Panel className='w-full px-5 pt-4'>
                       <div className='divide-y-2'>
                         <div className='mb-3'>
-                          <form id='avatarForm'>
-                            <label>Avatar</label>
+                          <h2 className="text-2xl font-mono">Hola 🤓 <span className="font-bold">{profile.usuario}</span>!</h2>
+                          <form id='avatarForm' className="mt-3">
+                            <label className='text-lg font-semibold col-span-3'>
+                              Avatar
+                            </label>
                             <picture>
-                              <img src='' alt='' />
+                              {profile.imagen ? (
+                                <img
+                                  src={`${RoutesAPI.staticFiles}/avatars/${profile.imagen}`}
+                                  alt='soy tu imagen de perfil'
+                                />
+                              ) : (
+                                <UserCircleIcon className='w-24 h-24 text-gray-900' />
+                              )}
                             </picture>
                             <input hidden />
                           </form>
@@ -135,8 +150,18 @@ const ProfilePage = () => {
                               />
                             </div>
                             <div className='flex flex-row justify-end gap-4 w-full my-3'>
-                              <button type="submit" className="text-lg font-semibold w-28 px-4 py-2 rounded-md bg-green-500">Actualizar</button>
-                              <button type="button" className="text-lg font-semibold w-28 px-4 py-2 rounded-md bg-red-600">Cancelar</button>
+                              <button
+                                type='submit'
+                                className='text-lg font-semibold w-28 px-4 py-2 rounded-md bg-green-500'
+                              >
+                                Actualizar
+                              </button>
+                              <button
+                                type='button'
+                                className='text-lg font-semibold w-28 px-4 py-2 rounded-md bg-red-600'
+                              >
+                                Cancelar
+                              </button>
                             </div>
                           </form>
                         </div>
@@ -299,7 +324,7 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    {/* <div className='relative flex gap-x-3'>
+                    <div className='relative flex gap-x-3'>
                       <div className='flex h-6 items-center'>
                         <input
                           id='offers'
@@ -320,7 +345,7 @@ const ProfilePage = () => {
                           offer.
                         </p>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </fieldset>
               </div>

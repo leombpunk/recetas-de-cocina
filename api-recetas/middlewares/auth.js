@@ -32,7 +32,7 @@ const checkCoherence = async (request, response, next) => {
     // const data = request.body
     const id = request.params.id || request.body.idUsuario || request.body.id //testear esto
     // console.log({ id: id })
-    if (tokenData.id == id) {
+    if (tokenData.id === id) {
       next()
     } else {
       response.status(401)
@@ -51,4 +51,30 @@ const checkCoherence = async (request, response, next) => {
   }
 }
 
-export { checkAuth, checkCoherence }
+const checkUsername = async (request, response, next) => {
+  try {
+    const token = request.headers.authorization.split(" ").pop()
+    const tokenData = await verifyToken(token)
+    // const data = request.body
+    const username = request.params.usuario || request.body.usuario || request.body.usuario //testear esto
+    // console.log({ id: id })
+    if (tokenData.usuario === username) {
+      next()
+    } else {
+      response.status(401)
+      response.send({
+        error: "No posees permisos suficientes para realizar esta operacion",
+      })
+    }
+  } catch (error) {
+    console.log("/* checkCoherence middleware (catch) */")
+    console.log(error)
+    response.status(401)
+    response.send({
+      message: "No posees permisos suficientes para realizar esta operacion",
+      error: error,
+    })
+  }
+}
+
+export { checkAuth, checkCoherence, checkUsername }

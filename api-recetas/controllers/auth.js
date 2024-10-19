@@ -1,11 +1,10 @@
 import { matchedData } from "express-validator"
 import { sequelize } from "../config/mysql.js"
-// import Usuario from "../models/usuario.js"
-import models from "../models/index.js"
 import { httpError } from "../helpers/handleErrors.js"
+import { handleResponse } from "../helpers/handleResponse.js"
 import { tokenSign, verifyToken } from "../helpers/generateToken.js"
 import { encrypt, compare } from "../helpers/handleBcrypt.js"
-import { handleResponse } from "../helpers/handleResponse.js"
+import models from "../models/index.js"
 
 const login = async (req, res) => {
   try {
@@ -14,9 +13,8 @@ const login = async (req, res) => {
     const result = await models.Usuario.getUsuarioByUserwPass(usuario)
     console.log(result)
     if (!result) {
-      const status = 404
-      const message = "User not found"
-      handleResponse(res, status, message)
+      handleResponse(res, 404, "User not found")
+      return
     }
 
     const checkPass = await compare(contrasena, result.contrasena)
@@ -28,13 +26,16 @@ const login = async (req, res) => {
       delete result.dataValues.contrasena
       const data = { ...result.dataValues, token: token }
       handleResponse(res, status, message, data)
+      return
     } else {
       const status = 404
       const message = "Credentials not valid"
       handleResponse(res, status, message)
+      return
     }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 
@@ -48,7 +49,7 @@ const registro = async (req, res) => {
         { nombres, apellidos, usuario, contrasena: contraHash, mail },
         { transaction: t }
       )
-      return await Usuario.findOne({ where: { id: id } })
+      return await models.Usuario.findOne({ where: { id: id } })
     })
     const status = 201
     const message = "User registrer done"
