@@ -108,7 +108,7 @@ const Header = () => {
                             alt='imagen de perfil'
                           />
                         ) : (
-                          <UserCircleIcon className='h-8 w-8 rounded-full text-gray-900 hover:text-black' />
+                          <UserCircleIcon className='h-8 w-8 bg-gray-300 rounded-full text-gray-900 hover:text-black' />
                         )}
                       </Menu.Button>
                     </div>
