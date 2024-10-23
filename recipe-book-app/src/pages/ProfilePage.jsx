@@ -31,6 +31,9 @@ const ProfilePage = () => {
     profile,
     uploadPhoto,
     deletePhoto,
+    updateProfile,
+    deleteProfile,
+    updatePassword,
     notifyUpload,
     errors,
     loadPhoto,
@@ -77,10 +80,21 @@ const ProfilePage = () => {
                     <Tab.Panel className='w-full px-5 pt-4'>
                       <div className='divide-y-2 divide-gray-900/10'>
                         <div className='mb-4'>
-                          <ProfileAvatar profile={profile} resources={{loadPhoto, notifyUpload, uploadPhoto, deletePhoto}} />
+                          <ProfileAvatar
+                            profile={profile}
+                            resources={{
+                              loadPhoto,
+                              notifyUpload,
+                              uploadPhoto,
+                              deletePhoto,
+                            }}
+                          />
                         </div>
                         <div className='pt-4'>
-                          <ProfileMainData profile={profile} />
+                          <ProfileMainData
+                            profile={profile}
+                            handleUpdate={updateProfile}
+                          />
                         </div>
                       </div>
                     </Tab.Panel>

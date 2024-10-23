@@ -7,7 +7,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup"
 import { profileSchema } from "../../utils/ProfileResolver"
 
-const ProfileMainData = ({ profile, resources }) => {
+const ProfileMainData = ({ profile, handleUpdate }) => {
   const {
     register,
     reset,
@@ -15,80 +15,81 @@ const ProfileMainData = ({ profile, resources }) => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      names: profile.nombres,
-      lastnames: profile.apellidos,
-      email: profile.mail,
+      nombres: profile.nombres,
+      apellidos: profile.apellidos,
+      mail: profile.mail,
     },
     values: {
-      names: profile.nombres,
-      lastnames: profile.apellidos,
-      email: profile.mail,
+      nombres: profile.nombres,
+      apellidos: profile.apellidos,
+      mail: profile.mail,
     },
     resolver: yupResolver(profileSchema),
   })
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data)
+    await handleUpdate(profile.usuario, data)
   }
   return (
     <>
       <form id='dataForm' className='px-6' onSubmit={handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 lg:grid-cols-12 items-center w-full my-3'>
-          <label className='text-lg font-semibold col-span-2' htmlFor='name'>
+          <label className='text-lg font-semibold col-span-2' htmlFor='nombres'>
             Nombres
           </label>
           <input
-            className={`rounded-xl w-full col-span-10 ${errors.names && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
+            className={`rounded-xl w-full col-span-10 ${errors.nombres && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
             type='text'
-            id='names'
-            name='names'
+            id='nombres'
+            name='nombres'
             placeholder='Tu nombre'
-            {...register("names")}
+            {...register("nombres")}
           />
-          {errors.names && (
+          {errors.nombres && (
             <span className='flex gap-0.5 mt-0.5 col-start-1 lg:col-start-3 col-span-10 italic text-red-500 text-sm'>
               <ExclamationCircleIcon className='w-5 h-5 inline' />
-              {errors.names.message}
+              {errors.nombres.message}
             </span>
           )}
         </div>
         <div className='grid grid-cols-1 lg:grid-cols-12 items-center w-full my-3'>
-          <label className='text-lg font-semibold col-span-2' htmlFor='surname'>
+          <label className='text-lg font-semibold col-span-2' htmlFor='apellidos'>
             Apellidos
           </label>
           <input
-            className={`rounded-xl w-full col-span-10 ${errors.lastnames && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
+            className={`rounded-xl w-full col-span-10 ${errors.apellidos && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
             type='text'
-            id='lastnames'
-            name='lastnames'
+            id='apellidos'
+            name='apellidos'
             placeholder='Tu apellido'
-            {...register("lastnames")}
+            {...register("apellidos")}
           />
-          {errors.lastnames && (
+          {errors.apellidos && (
             <span className='flex gap-0.5 mt-0.5 col-start-1 lg:col-start-3 col-span-10 italic text-red-500 text-sm'>
               <ExclamationCircleIcon className='w-5 h-5 inline' />
-              {errors.lastnames.message}
+              {errors.apellidos.message}
             </span>
           )}
         </div>
         <div className='grid grid-cols-1 lg:grid-cols-12 items-center w-full my-3'>
           <label
             className='text-lg font-semibold col-span-2 w-32'
-            htmlFor='nationality'
+            htmlFor='mail'
           >
             Email
           </label>
           <input
-            className={`rounded-xl w-full col-span-10 ${errors.email && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
+            className={`rounded-xl w-full col-span-10 ${errors.mail && 'border border-red-500 focus:border-red-500 focus:ring-red-500'}`}
             type='email'
-            id='email'
-            name='email'
+            id='mail'
+            name='mail'
             placeholder='Ingresa tu email'
-            {...register("email")}
+            {...register("mail")}
           />
-          {errors.email && (
+          {errors.mail && (
             <span className='flex h-5 gap-0.5 mt-0.5 col-start-1 lg:col-start-3 col-span-10 italic text-red-500 text-sm'>
               <ExclamationCircleIcon className='w-5 h-5 inline' />
-              {errors.email.message}
+              {errors.mail.message}
             </span>
           )}
         </div>
