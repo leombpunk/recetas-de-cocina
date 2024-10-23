@@ -23,6 +23,7 @@ app.use(cors(/*corsOptions*/))
 app.use(express.json())
 //servidor de datos estaticos
 app.use("/static", express.static("public/images/recipes"))
+app.use("/avatar", express.static("public/images/avatars"))
 app.use(router)
 app.listen(port, () => {
   console.log("API funcionando en el puerto", port)

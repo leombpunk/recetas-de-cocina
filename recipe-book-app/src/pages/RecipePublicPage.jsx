@@ -172,7 +172,7 @@ const RecipePublicPage = () => {
               >
                 {recipe.usuario.imagen ? (
                   <img
-                    src={`${RoutesAPI.staticFiles}/avatars/${recipe.usuario.imagen}`}
+                    src={`${RoutesAPI.avatarFiles}/${recipe.usuario.imagen}`}
                     alt='imagen perfil'
                     className='h-8 w-8 rounded-full'
                   />

@@ -34,19 +34,22 @@ const deletePerfil = async (username) => {
     },
   }
   const url = `${RoutesAPI.profile}/${username}`
-  const request = axios.get(url, config)
+  const request = axios.delete(url, config)
   return request.then((response) => response)
 }
 
-const updatePhoto = async (username, data) => {
+const updatePhoto = async (username, image) => {
   const token = getToken()
   const config = {
     headers: {
       Authorization: token,
     },
   }
-  const url = `${RoutesAPI.profile}/${username}`
-  const request = axios.get(url, config)
+  const formData = new FormData()
+  formData.append("file",image)
+
+  const url = `${RoutesAPI.images}/usuario/${username}`
+  const request = axios.post(url, formData, config)
   return request.then((response) => response)
 }
 
@@ -57,8 +60,8 @@ const deletePhoto = async (username) => {
       Authorization: token,
     },
   }
-  const url = `${RoutesAPI.profile}/${username}`
-  const request = axios.get(url, config)
+  const url = `${RoutesAPI.images}/usuario/${username}`
+  const request = axios.delete(url, config)
   return request.then((response) => response)
 }
 

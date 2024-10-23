@@ -49,7 +49,7 @@ const Comment = ({
         >
           {comment.usuario?.imagen ? (
             <img
-              src={`${RoutesAPI.staticFiles}/avatars/${comment.usuario?.imagen}`}
+              src={`${RoutesAPI.avatarFiles}/${comment.usuario?.imagen}`}
               alt='imagen de perfil'
               className='h-8 w-8 rounded-full'
             />

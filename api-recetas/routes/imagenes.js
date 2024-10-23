@@ -15,7 +15,7 @@ router.delete('/receta/:idReceta/:filename', checkAuth, checkReceta, deleteRecet
 
 //para perfil de usuario
 //NOTA: cambiar id --> username
-router.post('/usuario/:id', checkAuth, upload.single('file'), uploadProfileImg)
-router.delete('/usuario/:id', checkAuth, deleteProfileImg)
+router.post('/usuario/:username', checkAuth, /*upload.single('file'),*/ uploadProfileImg) //modificar a username
+router.delete('/usuario/:username', checkAuth, deleteProfileImg) //modificar a username
 
 export { router }

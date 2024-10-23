@@ -31,7 +31,7 @@ const ProfileMainData = ({ profile }) => {
             className='text-lg font-semibold col-span-3 w-32'
             htmlFor='nationality'
           >
-            Nacionalidad
+            E-mail
           </label>
           <input
             className='rounded-lg w-full col-span-9'
@@ -39,18 +39,6 @@ const ProfileMainData = ({ profile }) => {
             id='nationality'
             name='nationality'
             placeholder='Nacionalidad'
-          />
-        </div>
-        <div className='grid grid-cols-12 w-full my-3'>
-          <label className='text-lg font-semibold col-span-3' htmlFor='sex'>
-            Sexo
-          </label>
-          <input
-            className='rounded-lg w-full col-span-9'
-            type='text'
-            id='sex'
-            name='sex'
-            placeholder='No sos traba verdad?'
           />
         </div>
         <div className='flex flex-row justify-end gap-4 w-full my-3'>

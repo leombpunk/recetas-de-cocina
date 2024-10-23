@@ -5,7 +5,6 @@ import { RoutesAPI } from "../utils/RoutesAPI"
 //datos -> params idReceta e idUsuario, en el body el archivo
 const uploadFile = async (idReceta, file) => {
   const token = getToken()
-  console.log({token:token})
   const config = {
     headers: {
       Authorization: token,

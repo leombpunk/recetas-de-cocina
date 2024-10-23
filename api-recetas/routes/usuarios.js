@@ -9,14 +9,14 @@ const router = Router()
 
 // retorna solo las recetas visibles de un usuario
 //listar recetas de cualquier usuario -> retorna el usuario sin la pass y la lista de recetas 
-router.get('/allRecetas/:id', getRecetasVisiblesByUserId)
+router.get('/allRecetas/:id', getRecetasVisiblesByUserId) //al dope, ya esta en la ruta recetas
 
 //muestra los datos del perfil
 router.get('/perfil/:usuario', checkUsername, getUsuario) //actualizado, agregar checkauth ya que no se puede ver un perfil?
 
 //retorna todas las recetas del usuario logeado (incluso las no visibles/publicas)
 //las recetas propias (logeado)
-router.get('/perfil/allRecetas/:id', checkAuth, checkCoherence, getRecetasByUserId)
+router.get('/perfil/allRecetas/:id', checkAuth, checkCoherence, getRecetasByUserId) //al dope, ya esta en la ruta recetas
 
 //actualzia el perfil (logeado)
 router.patch('/perfil/:id', checkAuth, checkCoherence, validateUsuario, updateUsuario)

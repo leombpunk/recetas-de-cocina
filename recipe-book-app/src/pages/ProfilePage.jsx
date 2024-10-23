@@ -26,9 +26,18 @@ function classNames(...classes) {
 
 const ProfilePage = () => {
   const { user } = useContextUser()
-  const { profile } = useProfile(user?.usuario)
+  const {
+    loading,
+    profile,
+    uploadPhoto,
+    deletePhoto,
+    notifyUpload,
+    errors,
+    loadPhoto,
+    photo,
+  } = useProfile(user?.usuario)
 
-  console.log(profile)
+  // console.log(profile)
   return (
     <>
       <section className='bg-orange-300'>
@@ -57,7 +66,7 @@ const ProfilePage = () => {
                             )
                           }
                         >
-                          <tab.icon className="w-6 h-6 text-gray-900" />
+                          <tab.icon className='w-6 h-6 text-gray-900' />
                           {tab.name}
                         </Tab>
                         <hr />
@@ -66,14 +75,9 @@ const ProfilePage = () => {
                   </Tab.List>
                   <Tab.Panels className='flex flex-row md:flex-col w-full min-h-[75vh] rounded-xl bg-orange-200 overflow-y-auto shadow-black/20 shadow-md'>
                     <Tab.Panel className='w-full px-5 pt-4'>
-                      <div className='divide-y-2'>
-                        <div className='mb-3'>
-                          {/* <h2 className='text-2xl font-medium mt-2 mb-3'>
-                            Hola{" "}
-                            <span className='font-bold'>{profile.usuario}</span>
-                            ! 🤓
-                          </h2> */}
-                          <ProfileAvatar profile={profile} />
+                      <div className='divide-y-2 divide-gray-900/10'>
+                        <div className='mb-4'>
+                          <ProfileAvatar profile={profile} resources={{loadPhoto, notifyUpload, uploadPhoto, deletePhoto}} />
                         </div>
                         <div className='pt-4'>
                           <ProfileMainData profile={profile} />

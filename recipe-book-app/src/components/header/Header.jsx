@@ -104,7 +104,7 @@ const Header = () => {
                         {user.imagen ? (
                           <img
                             className='h-8 w-8 rounded-full'
-                            src={`${RoutesAPI.staticFiles}/${user.imagen}`}
+                            src={`${RoutesAPI.avatarFiles}/${user.imagen}`}
                             alt='imagen de perfil'
                           />
                         ) : (

@@ -68,23 +68,22 @@ const refreshUserData = async (req, res) => {
     const tokenData = await verifyToken(token)
 
     const result = await models.Usuario.findOne({
-      where: { id: tokenData.id, usuario: tokenData.usuario },
+      where: { id: tokenData.id, /*usuario: tokenData.usuario*/ }, //si actualizo el nombre de usuario de un perfil el where no encontrará al usuario
     })
     console.log(result)
     if (!result) {
-      const status = 404
-      const message = "User not found"
-      handleResponse(res, status, message)
+      handleResponse(res, 404, "User not found")
+      return
     } else {
       const newToken = await tokenSign(result)
-      const status = 200
-      const message = ""
       delete result.dataValues.id
       const data = { ...result.dataValues, token: newToken }
-      handleResponse(res, status, message, data)
+      handleResponse(res, 200, "", data)
+      return
     }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 
