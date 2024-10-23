@@ -53,7 +53,7 @@ const ProfilePage = () => {
                 lo que comparte.
               </p>
               <Tab.Group>
-                <div className='flex flex-row items-start divide-x-2 mt-5'>
+                <div className='flex flex-col gap-1 lg:gap-0.5 lg:flex-row items-start divide-x-2 mt-5'>
                   <Tab.List className='flex flex-row md:flex-col min-w-[15vw]'>
                     {tabs.map((tab, index) => (
                       <Fragment key={index}>
