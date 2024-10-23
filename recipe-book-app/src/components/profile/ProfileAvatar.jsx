@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   PhotoIcon,
   TrashIcon,
@@ -6,10 +6,14 @@ import {
 } from "@heroicons/react/24/outline"
 import { RoutesAPI } from "../../utils/RoutesAPI"
 import { useContextNotification } from "../../providers/NotificationProvider"
+import CustomModal from '../modals/CustomModal'
 
-const validFileTypes = ["image/jpeg", "image/png", "image/webp"]
+// const validFileTypes = ["image/jpeg", "image/png", "image/webp"]
 
 const ProfileAvatar = ({ profile, resources }) => {
+  const [openModal, setOpenModal] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+  const [cancel, setCancel] = useState(false)
   const { addNotification } = useContextNotification()
   const inputFile = useRef(null)
 
@@ -30,10 +34,26 @@ const ProfileAvatar = ({ profile, resources }) => {
     //}
   }
 
+  const handleClickDelete = (event) => {
+    //antes poner un modal de confirmación
+    setOpenModal(true)
+  }
+
   useEffect(() => {
     addNotification(resources.notifyUpload)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resources.notifyUpload])
+
+  useEffect(() => {
+    if (confirm) {
+      resources.deletePhoto(profile.usuario)
+      setConfirm(false)
+    }
+    if (cancel) {
+      setCancel(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [confirm, cancel])
 
   return (
     <>
@@ -45,7 +65,7 @@ const ProfileAvatar = ({ profile, resources }) => {
                 <img
                   src={`${RoutesAPI.avatarFiles}/${profile.imagen}`}
                   alt='soy tu imagen de perfil'
-                  className='w-28 h-28 bg-gray-200 rounded-full border border-gray-500 shadow-md shadow-black/50'
+                  className='w-36 h-36 bg-gray-200 rounded-full border border-gray-500 shadow-md shadow-black/50'
                 />
               ) : (
                 <UserCircleIcon className='w-28 h-28 text-gray-800 bg-gray-200 rounded-full border border-gray-500 shadow-md shadow-black/50' />
@@ -54,7 +74,7 @@ const ProfileAvatar = ({ profile, resources }) => {
             <div className='flex flex-col gap-2 justify-center'>
               <button
                 type='button'
-                className='flex flex-row gap-1.5 bg-orange-400 rounded-xl py-1.5 px-2.5 border border-orange-500 shadow-md hover:shadow-black/50 duration-300'
+                className='flex flex-row gap-1.5 bg-orange-400 font-medium rounded-xl py-1.5 px-2.5 border border-orange-500 shadow-md hover:shadow-black/50 duration-300'
                 onClick={() => handleClickChange()}
               >
                 <PhotoIcon
@@ -66,9 +86,9 @@ const ProfileAvatar = ({ profile, resources }) => {
 
               <button
                 type='button'
-                className={`${profile.imagen ? 'hover:bg-red-500 hover:shadow-black/50':'hover:cursor-not-allowed'} flex flex-row gap-1.5 bg-gray-300 rounded-xl py-1.5 px-2.5 shadow-md duration-300`}
+                className={`${profile.imagen ? 'hover:bg-red-500 hover:shadow-black/50':'hover:cursor-not-allowed'} flex flex-row gap-1.5 font-medium bg-gray-300 rounded-xl py-1.5 px-2.5 shadow-md duration-300`}
                 disabled={!(profile.imagen && true)}
-                onClick={(e) => null}
+                onClick={(e) => handleClickDelete(e)}
               >
                 <TrashIcon
                   className='w-6 h-6 text-gray-900'
@@ -95,6 +115,19 @@ const ProfileAvatar = ({ profile, resources }) => {
           hidden
         />
       </form>
+      <CustomModal
+        open={openModal}
+        setOpen={setOpenModal}
+        confirm={true}
+        setConfirm={setConfirm}
+        setCancel={setCancel}
+      >
+        <div className='pt-12 pb-6'>
+          <p className='font-semibold text-2xl text-center'>
+            ¿Deseas borrar tu imagen de perfil?
+          </p>
+        </div>
+      </CustomModal>
     </>
   )
 }

@@ -1,5 +1,7 @@
 import { verifyToken } from "../helpers/generateToken.js"
 
+const checkAdmin = async (request, response, next) => {}
+
 const checkAuth = async (request, response, next) => {
   try {
     const token = request.headers.authorization.split(" ").pop()
@@ -77,4 +79,4 @@ const checkUsername = async (request, response, next) => {
   }
 }
 
-export { checkAuth, checkCoherence, checkUsername }
+export { checkAdmin, checkAuth, checkCoherence, checkUsername }

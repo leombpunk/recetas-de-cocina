@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { upload } from '../middlewares/almacenamiento.js'
+// import { upload } from '../middlewares/almacenamiento.js'
 import { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg, publicFolder } from '../controllers/imagenes.js'
 import { checkAuth, checkCoherence } from '../middlewares/auth.js'
 import { checkReceta } from '../middlewares/receta.js'

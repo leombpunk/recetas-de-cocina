@@ -41,7 +41,6 @@ const useProfile = (username) => {
         setUser({...user, imagen: result.data.data.file.filename})
       } else {
         setNotifyUpload({message:"Apa!! ¿que pasó?", type:"info"})
-        // console.log(result)
       }
     } catch (error) {
       console.log(error)
@@ -54,9 +53,22 @@ const useProfile = (username) => {
 
   const deletePhoto = async (username) => {
     try {
-      
+      setLoadPhoto(true)
+      const result = await ProfileServices.deletePhoto(username)
+      console.log(result)
+      if (result.status === 200) {
+        setNotifyUpload({message:"Imagen de perfil eliminada", type:"success"})
+        setProfile({...profile, imagen: null})
+        setUser({...user, imagen: null})
+      } else {
+        setNotifyUpload({message:"Apa!! ¿que pasó?", type:"info"})
+      }
     } catch (error) {
-      
+      console.log(error)
+      setNotifyUpload({message:"Algo ha salido muy mal! Vuelve a intentarlo!", type:"error"})
+      setLoadPhoto(false)
+    }finally {
+      setLoadPhoto(false)
     }
   }
 

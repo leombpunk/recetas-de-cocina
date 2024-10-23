@@ -18,8 +18,9 @@ const almacenamiento = multer.diskStorage({
 const almacenamientoAvatar = multer.diskStorage({
     destination: join(CURRENT_DIR, '../public/images/avatars'), //direccion absoluta del directorio actual
     filename: (req, file, callback) => {
+        const {username} = req.params
         const extension = extname(file.originalname) //extrae la extension del archivo
-        const filename = `file-${Date.now()}${extension}` //nombre del archivo
+        const filename = `${username}-${Date.now()}${extension}` //nombre del archivo
         callback(null, filename)
     }
 })
