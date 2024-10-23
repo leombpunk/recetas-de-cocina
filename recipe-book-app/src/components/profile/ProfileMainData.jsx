@@ -11,7 +11,7 @@ const ProfileMainData = ({ profile, handleUpdate }) => {
   const {
     register,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
   } = useForm({
     defaultValues: {
@@ -96,17 +96,19 @@ const ProfileMainData = ({ profile, handleUpdate }) => {
         <div className='flex flex-row justify-end gap-4 w-full my-3'>
           <button
             type='submit'
-            className='flex flex-row gap-1 items-center text-lg font-medium w-36 px-4 py-2 rounded-xl border border-orange-500 bg-orange-400 shadow-md hover:shadow-black/50 duration-300'
+            className={`${!isDirty ? 'hover:cursor-not-allowed bg-gray-200 text-gray-600':'border-orange-500 bg-orange-400 shadow-md hover:shadow-black/50'} flex flex-row gap-1 items-center border text-lg font-medium w-36 px-4 py-2 rounded-xl duration-300`}
+            disabled={!isDirty}
           >
-            <CheckIcon className='w-8 h-8 text-gray-900' />
+            <CheckIcon className={`${!isDirty ? 'text-gray-600':'text-gray-900'} w-8 h-8 `} />
             Actualizar
           </button>
           <button
             type='button'
-            className='flex flex-row gap-1 items-center text-lg font-medium w-36 px-4 py-2 rounded-xl bg-gray-300 hover:bg-red-500 shadow-md hover:shadow-black/50 duration-300'
+            className={`${!isDirty ? 'hover:cursor-not-allowed bg-gray-200 text-gray-600':'bg-gray-300 shadow-md hover:shadow-black/50 hover:bg-red-500 hover:border-red-600'} flex flex-row gap-1 items-center border text-lg font-medium w-36 px-4 py-2 rounded-xl duration-300`}
             onClick={() => reset()}
+            disabled={!isDirty}
           >
-            <XMarkIcon className='w-8 h-8 text-gray-900' />
+            <XMarkIcon className={`${!isDirty ? 'text-gray-600':'text-gray-900'} w-8 h-8 `} />
             Cancelar
           </button>
         </div>
