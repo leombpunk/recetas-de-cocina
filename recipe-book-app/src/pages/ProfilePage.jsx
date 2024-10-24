@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { Tab } from "@headlessui/react"
 import {
   UsersIcon,
@@ -13,6 +13,7 @@ import ProfileAvatar from "../components/profile/ProfileAvatar"
 import ProfileMainData from "../components/profile/ProfileMainData"
 import ProfileSecurity from "../components/profile/ProfileSecurity"
 import ProfileAccount from "../components/profile/ProfileAccount"
+import { useContextNotification } from "../providers/NotificationProvider"
 
 const tabs = [
   { name: "Personal", icon: IdentificationIcon },
@@ -26,6 +27,7 @@ function classNames(...classes) {
 
 const ProfilePage = () => {
   const { user } = useContextUser()
+  const { addNotification } = useContextNotification()
   const {
     loading,
     profile,
@@ -40,6 +42,12 @@ const ProfilePage = () => {
     photo,
   } = useProfile(user?.usuario)
 
+  useEffect(() => {
+    if (notifyUpload) {
+      addNotification(notifyUpload)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notifyUpload])
   // console.log(profile)
   return (
     <>
@@ -108,21 +116,6 @@ const ProfilePage = () => {
                 </div>
               </Tab.Group>
             </div>
-          </div>
-
-          <div className='mt-6 flex items-center justify-end gap-x-6'>
-            <button
-              type='button'
-              className='text-sm font-semibold leading-6 text-gray-900'
-            >
-              Cancelar
-            </button>
-            <button
-              type='submit'
-              className='rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-black shadow-md hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600'
-            >
-              Guardar
-            </button>
           </div>
         </div>
       </section>

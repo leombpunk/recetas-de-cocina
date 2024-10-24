@@ -30,6 +30,7 @@ const ProfileMainData = ({ profile, handleUpdate }) => {
     console.log(data)
     await handleUpdate(profile.usuario, data)
   }
+  
   return (
     <>
       <form id='dataForm' className='px-6' onSubmit={handleSubmit(onSubmit)}>

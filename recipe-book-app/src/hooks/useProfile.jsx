@@ -54,6 +54,7 @@ const useProfile = (username) => {
       setLoadPhoto(false)
     } finally {
       setLoadPhoto(false)
+      // setNotifyUpload({})
     }
   }
 
@@ -81,6 +82,7 @@ const useProfile = (username) => {
       setLoadPhoto(false)
     } finally {
       setLoadPhoto(false)
+      // setNotifyUpload({})
     }
   }
 
@@ -119,6 +121,7 @@ const useProfile = (username) => {
         })
     } finally {
       setLoading(false)
+      // setNotifyUpload({})
     }
   }
 

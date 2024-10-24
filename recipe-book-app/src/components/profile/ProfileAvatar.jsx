@@ -5,16 +5,12 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline"
 import { RoutesAPI } from "../../utils/RoutesAPI"
-import { useContextNotification } from "../../providers/NotificationProvider"
 import CustomModal from '../modals/CustomModal'
-
-// const validFileTypes = ["image/jpeg", "image/png", "image/webp"]
 
 const ProfileAvatar = ({ profile, resources }) => {
   const [openModal, setOpenModal] = useState(false)
   const [confirm, setConfirm] = useState(false)
   const [cancel, setCancel] = useState(false)
-  const { addNotification } = useContextNotification()
   const inputFile = useRef(null)
 
   const handleClickChange = () => {
@@ -24,25 +20,12 @@ const ProfileAvatar = ({ profile, resources }) => {
   const handleChangeInput = (event) => {
     console.log(event.target.files[0])
     let file = event.target.files[0]
-    //if (file.type.includes(validFileTypes)) {
-    //mandar al server, e informar el resultado
-    //console.log('ola k ase')
     resources.uploadPhoto(profile.usuario, file)
-    //} else {
-    //informar que el tipo de dato no es compatible o el esperado
-    //console.log('xd')
-    //}
   }
 
   const handleClickDelete = (event) => {
-    //antes poner un modal de confirmación
     setOpenModal(true)
   }
-
-  useEffect(() => {
-    addNotification(resources.notifyUpload)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resources.notifyUpload])
 
   useEffect(() => {
     if (confirm) {
