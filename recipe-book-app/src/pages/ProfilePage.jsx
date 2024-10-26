@@ -107,10 +107,10 @@ const ProfilePage = () => {
                         </div>
                       </div>
                     </Tab.Panel>
-                    <Tab.Panel className='w-full pl-5 pt-4'>
+                    <Tab.Panel className='w-full px-5 pt-4'>
                       <ProfileSecurity profile={profile} handleUpdatePassword={updatePassword} />
                     </Tab.Panel>
-                    <Tab.Panel className='w-full pl-5 pt-4'>
+                    <Tab.Panel className='w-full px-5 pt-4'>
                       <ProfileAccount profile={profile} handleDeleteAccount={deleteProfile} syncSocialAccount={null}/>
                     </Tab.Panel>
                   </Tab.Panels>
