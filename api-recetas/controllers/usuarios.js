@@ -1,7 +1,7 @@
 import { matchedData } from "express-validator"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
-import { encrypt } from "../helpers/handleBcrypt.js"
+import { compare, encrypt } from "../helpers/handleBcrypt.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import models from "../models/index.js"
 
@@ -57,7 +57,7 @@ const updateUsuario = async (req, res) => {
     )
     if (result) {
       handleResponse(res, 200, "Datos de perfil actualizado", result)
-      return 
+      return
     } else {
       handleResponse(res, 400, "No se actualizó el perfil", result)
       return
@@ -70,30 +70,41 @@ const updateUsuario = async (req, res) => {
 
 const updateUsuarioPass = async (req, res) => {
   try {
-    const { usuario } = req.params
     const token = req.headers.authorization?.split(" ").pop()
     const usuarioToken = await verifyToken(token)
-    req = matchedData(req)
-    const { contrasena } = req
-    const passEncrypt = encrypt(contrasena)
-    await models.Usuario.update(
-      { contrasena: passEncrypt },
-      { where: { id: usuarioToken.id } }
-    )
-      .then((result) => {
-        console.log(result)
-        if (result[0]) {
-          res.status(200).send(req)
+    const data = matchedData(req)
+    const { oldPassword, newPassword } = data
+
+    const usuario = await models.Usuario.scope("withPassword").findOne({
+      where: { id: usuarioToken.id },
+    })
+    if (usuario) {
+      // hacer las weas
+      if (!await compare(oldPassword, usuario.contrasena)) {
+        handleResponse(res, 404, "La contraseña actual no es correcta")
+        return
+      } else if (await compare(newPassword, usuario.contrasena)) {
+        handleResponse(res, 404, "La contraseña nueva debe ser distinta a la actual contraseña")
+        return
+      } else {
+        const newPassEncrypt = await encrypt(newPassword) 
+        usuario.contrasena = newPassEncrypt
+        usuario.save({ fields: ["contrasena"] })
+        if (usuario.changed()) {
+          handleResponse(res, 200, "Contraseña actualizada correctamente")
+          return
         } else {
-          res.status(200).send({ message: "Nada para actualizar" })
+          handleResponse(res, 400, "No se puedo realizar la operación")
+          return
         }
-      })
-      .catch((error) => {
-        console.log(error)
-        res.status(500).send({ message: "Error al actualizar la contraseña" })
-      })
+      }
+    } else {
+      handleResponse(res, 404, "Usuario no encontrado")
+      return
+    }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 

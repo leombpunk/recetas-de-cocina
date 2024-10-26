@@ -21,7 +21,11 @@ const validateUsuario = [
 ]
 
 const validatePass = [
-  check('contrasena')
+  check('oldPassword')
+    .exists()
+    .not().isEmpty()
+    .isLength({ min:8, max:16 }),
+  check('newPassword')
     .exists()
     .not().isEmpty()
     .isLength({ min:8, max:16 }),

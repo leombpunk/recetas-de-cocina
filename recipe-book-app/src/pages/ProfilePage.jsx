@@ -65,20 +65,21 @@ const ProfilePage = () => {
               </p>
               <Tab.Group>
                 <div className='flex flex-col gap-1 lg:gap-0.5 lg:flex-row items-start divide-x-2 mt-5'>
-                  <Tab.List className='flex flex-row md:flex-col min-w-[15vw]'>
+                  <Tab.List className='flex flex-row lg:flex-col w-full justify-between min-w-[15vw] lg:max-w-[15vw]'>
                     {tabs.map((tab, index) => (
                       <Fragment key={index}>
                         <Tab
                           key={index}
                           className={({ selected }) =>
                             classNames(
-                              "flex gap-1.5 items-center text-lg font-semibold col-span-3 text-left rounded-xl duration-500 px-5 py-2 hover:shadow-md hover:bg-orange-500",
+                              "flex gap-1.5 w-full items-center justify-center md:justify-start text-lg font-semibold col-span-3 text-left rounded-xl duration-500 px-5 py-2 hover:shadow-md hover:bg-orange-500",
                               selected ? "bg-orange-600" : ""
                             )
                           }
+                          title={tab.name}
                         >
                           <tab.icon className='w-6 h-6 text-gray-900' />
-                          {tab.name}
+                          <span className="hidden md:inline">{tab.name}</span>
                         </Tab>
                         <hr />
                       </Fragment>
@@ -107,10 +108,10 @@ const ProfilePage = () => {
                       </div>
                     </Tab.Panel>
                     <Tab.Panel className='w-full pl-5 pt-4'>
-                      <ProfileSecurity profile={profile} />
+                      <ProfileSecurity profile={profile} handleUpdatePassword={updatePassword} />
                     </Tab.Panel>
                     <Tab.Panel className='w-full pl-5 pt-4'>
-                      <ProfileAccount profile={profile} />
+                      <ProfileAccount profile={profile} handleDeleteAccount={deleteProfile} syncSocialAccount={null}/>
                     </Tab.Panel>
                   </Tab.Panels>
                 </div>

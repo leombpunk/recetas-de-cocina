@@ -11,7 +11,7 @@ const getPerfil = async (username) => {
   }
   const url = `${RoutesAPI.profile}/perfil/${username}`
   const request = axios.get(url, config)
-  return request.then((response) => response)
+  return request.then((response) => response).catch((error) => error)
 }
 
 const updatePerfil = async (username, data) => {
@@ -23,7 +23,7 @@ const updatePerfil = async (username, data) => {
   }
   const url = `${RoutesAPI.profile}/perfil/${username}`
   const request = axios.put(url, data, config)
-  return request.then((response) => response)
+  return request.then((response) => response).catch((error) => error)
 }
 
 const deletePerfil = async (username) => {
@@ -35,7 +35,7 @@ const deletePerfil = async (username) => {
   }
   const url = `${RoutesAPI.profile}/${username}`
   const request = axios.delete(url, config)
-  return request.then((response) => response)
+  return request.then((response) => response).catch((error) => error)
 }
 
 const updatePhoto = async (username, image) => {
@@ -50,7 +50,7 @@ const updatePhoto = async (username, image) => {
 
   const url = `${RoutesAPI.images}/usuario/${username}`
   const request = axios.post(url, formData, config)
-  return request.then((response) => response)
+  return request.then((response) => response).catch((error) => error)
 }
 
 const deletePhoto = async (username) => {
@@ -62,7 +62,20 @@ const deletePhoto = async (username) => {
   }
   const url = `${RoutesAPI.images}/usuario/${username}`
   const request = axios.delete(url, config)
-  return request.then((response) => response)
+  return request.then((response) => response).catch((error) => error)
+}
+
+const updatePassword = async (data) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const url = `${RoutesAPI.profile}/perfil/changePass/`
+  const request = axios.put(url, data, config)
+  console.log(request)
+  return request.then((response) => response).catch((error) => error)
 }
 
 const ProfileServices = {
@@ -71,6 +84,7 @@ const ProfileServices = {
   deletePerfil,
   updatePhoto,
   deletePhoto,
+  updatePassword,
 }
 
 export default ProfileServices

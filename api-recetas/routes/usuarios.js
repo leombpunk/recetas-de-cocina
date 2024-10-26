@@ -18,11 +18,11 @@ router.get('/perfil/:usuario', checkUsername, getUsuario) //actualizado, agregar
 //las recetas propias (logeado)
 // router.get('/perfil/allRecetas/:id', checkAuth, checkCoherence, getRecetasByUserId) //al dope, ya esta en la ruta recetas
 
-//actualzia el perfil (logeado)
-router.put('/perfil/:usuario', checkAuth, validateUsuario, updateUsuario)
-
 //actualizar la contraseña
 router.put('/perfil/changePass/', checkAuth, validatePass, updateUsuarioPass)
+
+//actualzia el perfil (logeado)
+router.put('/perfil/:usuario', checkAuth, validateUsuario, updateUsuario)
 
 //borra el perfil, que pasa con las recetas? (logeado)
 router.delete('/perfil/:usuario', checkAuth, deleteUsuario)

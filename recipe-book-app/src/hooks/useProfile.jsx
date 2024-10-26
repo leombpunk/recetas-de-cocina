@@ -125,10 +125,23 @@ const useProfile = (username) => {
     }
   }
 
-  const updatePassword = async (username, data) => {
+  const updatePassword = async (data) => {
     try {
+      setLoading(true)
+      const result = await ProfileServices.updatePassword(data)
+      console.log(result)
+      if (result.status === 200) {
+        //la password se actualizo
+        setNotifyUpload({ message: "Contraseña actualizada", type: "success" })
+      } else {
+        //informar el error
+        setNotifyUpload({ message: result?.response?.data?.message, type: "error" })
+      }
     } catch (error) {
+      setErrors([error])
+      setLoading(false)
     } finally {
+      setLoading(false)
     }
   }
 
