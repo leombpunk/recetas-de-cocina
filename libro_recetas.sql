@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-10-2024 a las 23:12:04
+-- Tiempo de generación: 27-10-2024 a las 22:14:46
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -33,6 +33,7 @@ DROP TABLE IF EXISTS `archivos`;
 CREATE TABLE `archivos` (
   `id` int(11) UNSIGNED NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
+  `directorio` varchar(50) NOT NULL,
   `imagen` varchar(100) NOT NULL,
   `createAt` datetime DEFAULT NULL,
   `deleteAt` datetime DEFAULT NULL
@@ -42,24 +43,25 @@ CREATE TABLE `archivos` (
 -- Volcado de datos para la tabla `archivos`
 --
 
-INSERT INTO `archivos` (`id`, `idUsuario`, `imagen`, `createAt`, `deleteAt`) VALUES
-(1, 1, '865032.jpg', '2024-09-16 16:37:35', '2024-09-16 16:18:16'),
-(2, 1, 'file-1726103142309.jpg', '2024-09-16 16:37:35', NULL),
-(3, 1, 'file-1726253487234.PNG', '2024-09-16 16:37:35', NULL),
-(4, 1, 'file-1726499238700.jpg', '2024-09-16 12:19:06', NULL),
-(5, 1, 'file-1726499929764.jpg', '2024-09-16 15:18:49', NULL),
-(6, 1, 'file-1726503803359.png', '2024-09-16 16:23:23', NULL),
-(7, 1, 'file-1726510057563.jpg', '2024-09-16 18:07:37', NULL),
-(8, 1, 'file-1726510198561.jpg', '2024-09-16 18:09:58', NULL),
-(9, 1, 'file-1726510766090.jpg', '2024-09-16 15:19:26', NULL),
-(10, 1, 'file-1726510957757.jpg', '2024-09-16 15:22:37', NULL),
-(11, 1, 'file-1726512526382.webp', '2024-09-16 15:48:46', NULL),
-(12, 1, 'file-1726590848211.PNG', '2024-09-17 13:34:08', NULL),
-(13, 1, 'file-1726590994336.PNG', '2024-09-17 13:36:34', NULL),
-(14, 1, 'file-1726591483365.PNG', '2024-09-17 13:44:43', '2024-09-17 15:41:57'),
-(15, 1, 'file-1726592221361.PNG', '2024-09-17 13:57:01', '2024-09-17 15:42:29'),
-(16, 1, 'file-1726600183413.PNG', '2024-09-17 16:09:43', '2024-09-19 14:07:46'),
-(17, 1, 'file-1726683473740.jpg', '2024-09-18 15:17:53', '2024-09-19 14:07:46');
+INSERT INTO `archivos` (`id`, `idUsuario`, `directorio`, `imagen`, `createAt`, `deleteAt`) VALUES
+(1, 1, 'recipes', '865032.jpg', '2024-09-16 16:37:35', '2024-09-16 16:18:16'),
+(2, 1, 'recipes', 'file-1726103142309.jpg', '2024-09-16 16:37:35', NULL),
+(3, 1, 'recipes', 'file-1726253487234.PNG', '2024-09-16 16:37:35', NULL),
+(4, 1, 'recipes', 'file-1726499238700.jpg', '2024-09-16 12:19:06', NULL),
+(5, 1, 'recipes', 'file-1726499929764.jpg', '2024-09-16 15:18:49', NULL),
+(6, 1, 'recipes', 'file-1726503803359.png', '2024-09-16 16:23:23', NULL),
+(7, 1, 'recipes', 'file-1726510057563.jpg', '2024-09-16 18:07:37', NULL),
+(8, 1, 'recipes', 'file-1726510198561.jpg', '2024-09-16 18:09:58', NULL),
+(9, 1, 'recipes', 'file-1726510766090.jpg', '2024-09-16 15:19:26', NULL),
+(10, 1, 'recipes', 'file-1726510957757.jpg', '2024-09-16 15:22:37', NULL),
+(11, 1, 'recipes', 'file-1726512526382.webp', '2024-09-16 15:48:46', NULL),
+(12, 1, 'recipes', 'file-1726590848211.PNG', '2024-09-17 13:34:08', NULL),
+(13, 1, 'recipes', 'file-1726590994336.PNG', '2024-09-17 13:36:34', NULL),
+(14, 1, 'recipes', 'file-1726591483365.PNG', '2024-09-17 13:44:43', '2024-09-17 15:41:57'),
+(15, 1, 'recipes', 'file-1726592221361.PNG', '2024-09-17 13:57:01', '2024-09-17 15:42:29'),
+(16, 1, 'recipes', 'file-1726600183413.PNG', '2024-09-17 16:09:43', '2024-09-19 14:07:46'),
+(17, 1, 'recipes', 'file-1726683473740.jpg', '2024-09-18 15:17:53', '2024-09-19 14:07:46'),
+(18, 1, 'avatars', 'usuario123-1729711637629.webp', '2024-10-14 14:28:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -198,7 +200,18 @@ CREATE TABLE `respuestas` (
 INSERT INTO `respuestas` (`id`, `idComentario`, `idUsuario`, `idUsuarioMension`, `respuesta`, `createAt`) VALUES
 (5, 1, 2, 1, 'chupala ameo no sabes una chota', '2024-10-09 15:25:40'),
 (6, 3, 1, 2, 'no se, soy una respuesta, jiji', '2024-10-09 18:05:14'),
-(7, 1, 1, 2, 'no se, soy una respuesta, jiji', '2024-10-09 18:05:34');
+(7, 1, 1, 2, 'no se, soy una respuesta, jiji', '2024-10-09 18:05:34'),
+(8, 3, 1, 5, 'ola k ase amigo de los ninios', '2024-10-15 18:40:48'),
+(9, 5, 1, 3, 'pero que', '2024-10-15 21:11:20'),
+(10, 8, 1, 1, 'respuesta al ola k ase', '2024-10-15 21:11:39'),
+(11, 3, 1, 1, 'intento 2 respuesta al ola k ase', '2024-10-15 21:31:33'),
+(13, 3, 1, 5, 'respuesta con el nuevo componente \"reply\"', '2024-10-16 19:42:11'),
+(14, 3, 3, 5, 'relaja la raja', '2024-10-18 19:56:38'),
+(15, 3, 2, 5, 're mas capito equisde', '2024-10-07 20:26:52'),
+(16, 2, 1, 3, 'jaja jas, que copados! equisdes', '2024-10-18 19:39:53'),
+(17, 4, 1, 3, 'mamamia mas calsone', '2024-10-18 19:48:07'),
+(18, 4, 1, 3, 'tremendamente original tu comentario amigo', '2024-10-18 19:52:09'),
+(19, 4, 1, 3, 'otro intento pe', '2024-10-18 19:55:18');
 
 -- --------------------------------------------------------
 
@@ -209,24 +222,25 @@ INSERT INTO `respuestas` (`id`, `idComentario`, `idUsuario`, `idUsuarioMension`,
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int(11) UNSIGNED NOT NULL,
-  `apellidos` varchar(100) NOT NULL,
-  `nombres` varchar(100) NOT NULL,
   `usuario` varchar(16) NOT NULL,
   `contrasena` varchar(255) NOT NULL COMMENT 'pass: usuario123',
+  `apellidos` varchar(100) NOT NULL,
+  `nombres` varchar(100) NOT NULL,
   `mail` varchar(50) NOT NULL,
   `imagen` varchar(100) DEFAULT NULL,
-  `createAt` datetime DEFAULT NULL
+  `createAt` datetime DEFAULT NULL,
+  `deleteAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `apellidos`, `nombres`, `usuario`, `contrasena`, `mail`, `imagen`, `createAt`) VALUES
-(1, '', '', 'usuario123', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', 'mail_123@update.com', NULL, NULL),
-(2, '', '', 'usuario456', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', 'usu456@ario.com', NULL, NULL),
-(3, '', '', 'usuario124', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', 'mail@testeo.com', NULL, NULL),
-(5, '', '', 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', 'mail_equisde@testeo.com', NULL, NULL);
+INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `apellidos`, `nombres`, `mail`, `imagen`, `createAt`, `deleteAt`) VALUES
+(1, 'usuario123', '$2a$10$KXf7W6z9q1K3sbnezjq2KuhIytGXDExScqcP.3JwHx.ps0BUHqShG', 'jiji jiji', 'pepito', 'mail_123@update.com', 'usuario123-1729711637629.webp', NULL, NULL),
+(2, 'usuario456', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', '', '', 'usu456@ario.com', NULL, NULL, NULL),
+(3, 'usuario124', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', '', '', 'mail@testeo.com', NULL, NULL, NULL),
+(5, 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', '', '', 'mail_equisde@testeo.com', NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -288,7 +302,8 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uq_usuario` (`usuario`) USING BTREE,
   ADD UNIQUE KEY `uq_mail` (`mail`) USING BTREE,
-  ADD KEY `ix_usuario` (`usuario`) USING BTREE;
+  ADD KEY `ix_usuario` (`usuario`) USING BTREE,
+  ADD KEY `ix_mail` (`mail`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -298,13 +313,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `archivos`
 --
 ALTER TABLE `archivos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `guardadas`
@@ -328,7 +343,7 @@ ALTER TABLE `recetas`
 -- AUTO_INCREMENT de la tabla `respuestas`
 --
 ALTER TABLE `respuestas`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
