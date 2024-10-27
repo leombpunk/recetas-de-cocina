@@ -34,4 +34,14 @@ const validatePass = [
   }
 ]
 
-export { validateUsuario, validatePass }
+const validateDelete = [
+  check("borrarTodo")
+    .exists()
+    .not().isEmpty()
+    .isBoolean(),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  }
+]
+
+export { validateUsuario, validatePass, validateDelete }

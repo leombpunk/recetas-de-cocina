@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { getUsuario, getRecetasByUserId, getRecetasVisiblesByUserId, updateUsuario, deleteUsuario, updateUsuarioPass } from '../controllers/usuarios.js'
 import { checkAuth, checkCoherence, checkUsername } from '../middlewares/auth.js'
-import { validateUsuario, validatePass } from '../validators/usuarios.js'
+import { validateUsuario, validatePass, validateDelete } from '../validators/usuarios.js'
 
 const router = Router()
 
@@ -25,6 +25,6 @@ router.put('/perfil/changePass/', checkAuth, validatePass, updateUsuarioPass)
 router.put('/perfil/:usuario', checkAuth, validateUsuario, updateUsuario)
 
 //borra el perfil, que pasa con las recetas? (logeado)
-router.delete('/perfil/:usuario', checkAuth, deleteUsuario)
+router.delete('/perfil/:usuario', checkAuth, validateDelete, deleteUsuario)
 
 export { router }
