@@ -35,8 +35,12 @@ const Usuario = sequelize.define(
     },
     createAt: {
       type: DataTypes.DATE,
-      allowNull:true
-    }
+      allowNull: true,
+    },
+    deleteAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     defaultScope: {
@@ -65,7 +69,6 @@ const Usuario = sequelize.define(
 // Receta.belongsTo(Usuario, { foreignKey: "idUsuario" }) //una receta pertenece a un usuario
 // Usuario.hasMany(Archivo, { foreignKey: "idUsuario" })
 // Archivo.belongsTo(Usuario, { foreignKey: "idUsuario" })
-
 
 //metodos personalizados
 //retorna un usuario y todas sus recetas -> para usar en el perfil logeado
