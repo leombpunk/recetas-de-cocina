@@ -3,14 +3,14 @@ import express from "express"
 import fs from "fs"
 import { dirname, join } from "path"
 import { fileURLToPath } from "url"
-// import Usuario from "../models/usuario.js"
-// import Archivo from "../models/archivos.js"
 import models from "../models/index.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
 import { upload, uploadAvatar } from "../middlewares/almacenamiento.js"
-import { Op } from "sequelize"
+import { where } from "sequelize"
+
+// const paths = fs
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -61,17 +61,24 @@ const uploadProfileImg = async (req, res) => {
               if (error) throw error
               else console.log("cb: mensaje del metodo fs.unlink2")
             })
+            //actualizar la tabla archivos
+            const oldArchivo = await models.Archivo.update(
+              { deleteAt: today.toISOString() },
+              { where: { idUsuario: usuario.id, imagen: exist.imagen } }
+            )
+            console.log(oldArchivo)
           }
           exist.imagen = filename
           exist.save({ fields: ["imagen"] })
-          // const avatar = await models.Usuario.update(
-          //   {
-          //     imagen: filename,
-          //   },
-          //   { where: { id: usuario.id } }
-          // )
-          // console.log(archivo)
-          if (/*avatar*/ exist.changed()) {
+          const newArchivo = await models.Archivo.create({
+            idUsuario: usuario.id,
+            directorio: "/avatars",
+            imagen: filename,
+            createAt: today.toISOString(),
+          })
+          console.log(newArchivo)
+          // guardar el dato de la imagen en la tabla archivos
+          if (exist.changed()) {
             //si se pudo guardar enviar el mensaje de imagen guardada
             handleResponse(res, 200, "Imagen de perfil actualizada", {
               file: { filename, size, mimetype, encoding, path },
@@ -102,6 +109,7 @@ const uploadProfileImg = async (req, res) => {
 
 const deleteProfileImg = async (req, res) => {
   try {
+    const today = new Date()
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const { username } = req.params
@@ -115,18 +123,23 @@ const deleteProfileImg = async (req, res) => {
           if (error) throw error
           else console.log("cb: mensaje del metodo fs.unlink")
         })
+        const archivo = await models.Archivo.update(
+          { deleteAt: today.toISOString() },
+          { where: { idUsuario: usuario.id, imagen: imagen } }
+        )
+        console.log(archivo)
         usuarioData.imagen = null
         usuarioData.save({ fields: ["imagen"] })
-        if (usuarioData.changed()){
+        if (usuarioData.changed()) {
           handleResponse(res, 200, "Imagen eliminada")
           return
         }
       } else {
-        handleResponse(res, 404,"Imagen no encontrada")
+        handleResponse(res, 404, "Imagen no encontrada")
         return
       }
     } else {
-      handleResponse(res, 404,"El usuario no existe")
+      handleResponse(res, 404, "El usuario no existe")
       return
     }
   } catch (error) {
@@ -161,6 +174,7 @@ const uploadRecetaImg = async (req, res) => {
         const path = `http://localhost:3001/static/${filename}`
         const archivo = await models.Archivo.create({
           idUsuario: usuario.id,
+          directorio: "/recipes",
           imagen: filename,
           createAt: date.toISOString(),
         })
