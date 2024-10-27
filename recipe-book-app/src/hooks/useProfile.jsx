@@ -145,10 +145,16 @@ const useProfile = (username) => {
     }
   }
 
-  const deleteProfile = async (username) => {
+  const deleteProfile = async (username, deleteAll) => {
     try {
+      setLoading(true)
+      const result = await ProfileServices.deletePerfil(username, deleteAll)
+      console.log(result)
     } catch (error) {
+      setErrors([error])
+      setLoading(false)
     } finally {
+      setLoading(false)
     }
   }
 
