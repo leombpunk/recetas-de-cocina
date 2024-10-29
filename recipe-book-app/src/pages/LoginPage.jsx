@@ -18,7 +18,7 @@ const LoginPage = () => {
     },
     resolver: yupResolver(loginSchema),
   })
-  const { login } = useLogin()
+  const { loading, login } = useLogin()
   const onSubmit = (data) => {
     login({ user: data.username, pass: data.password })
   }
@@ -143,7 +143,8 @@ const LoginPage = () => {
               <div className='mt-8'>
                 <button
                   type='submit'
-                  className='focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none bg-orange-600 border rounded hover:bg-orange-500 py-4 w-full'
+                  disabled={loading}
+                  className={`${loading ? 'hover:cursor-not-allowedr bg-gray-600' : 'bg-orange-600 hover:bg-orange-500'} focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none border rounded  py-4 w-full`}
                 >
                   Iniciar Sesión
                 </button>
