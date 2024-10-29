@@ -25,8 +25,10 @@ const ProtectedRoutes = () => {
       addNotification({ message: result.message, type: result.type })
     } 
     else if (result.type === "info") {
-      addNotification({ message: result.message, type: result.type })
-      navigate(NavigationRoutes.Home)
+      addNotification({ message: "Registrate o Inicia sesión 🥰", type: result.type })
+      if(protectedLocations.includes(location.pathname)) {
+        navigate(NavigationRoutes.Home)
+      }
     }
     else {
       if (protectedLocations.includes(location.pathname) & !user) {
