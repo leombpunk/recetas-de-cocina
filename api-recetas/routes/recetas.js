@@ -3,10 +3,9 @@ import {
   validateReceta,
   validateCreate,
   validateVisibility,
+  validatePatch,
 } from "../validators/recetas.js"
 import {
-  //   getFullRecetaById,
-  //   getRecetasByUsername,
   getAllRecetas,
   getReceta,
   createReceta,
@@ -15,6 +14,7 @@ import {
   updateVisibilidad,
   getAllRecetasPublic,
   getRecetaPublic,
+  patchReceta,
 } from "../controllers/recetas.js"
 import { checkAuth } from "../middlewares/auth.js"
 import { checkReceta } from "../middlewares/receta.js"
@@ -38,7 +38,8 @@ router.get("/:id", checkAuth, getReceta) //trae la receta segun id del usuario l
 
 router.post("/", checkAuth, validateCreate, createReceta)
 router.patch("/compartir/", checkAuth, validateVisibility, updateVisibilidad) //falta terminar este endpoint
-router.patch("/:id", checkAuth, checkReceta, validateReceta, updateReceta)
+router.patch("/:id", checkAuth, checkReceta, validatePatch, patchReceta) //hacer que solo actualice la imagen de portada e imagen de pasos y si agrega o quita pasos
+router.put("/:id", checkAuth, checkReceta, validateReceta, updateReceta)
 router.delete("/:id", checkAuth, checkReceta, deleteReceta)
 
 export { router }

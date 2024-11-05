@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-10-2024 a las 22:14:46
+-- Tiempo de generación: 28-10-2024 a las 18:46:37
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -22,46 +22,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `libro_recetas` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `libro_recetas`;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `archivos`
---
-
-DROP TABLE IF EXISTS `archivos`;
-CREATE TABLE `archivos` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `idUsuario` int(11) UNSIGNED NOT NULL,
-  `directorio` varchar(50) NOT NULL,
-  `imagen` varchar(100) NOT NULL,
-  `createAt` datetime DEFAULT NULL,
-  `deleteAt` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `archivos`
---
-
-INSERT INTO `archivos` (`id`, `idUsuario`, `directorio`, `imagen`, `createAt`, `deleteAt`) VALUES
-(1, 1, 'recipes', '865032.jpg', '2024-09-16 16:37:35', '2024-09-16 16:18:16'),
-(2, 1, 'recipes', 'file-1726103142309.jpg', '2024-09-16 16:37:35', NULL),
-(3, 1, 'recipes', 'file-1726253487234.PNG', '2024-09-16 16:37:35', NULL),
-(4, 1, 'recipes', 'file-1726499238700.jpg', '2024-09-16 12:19:06', NULL),
-(5, 1, 'recipes', 'file-1726499929764.jpg', '2024-09-16 15:18:49', NULL),
-(6, 1, 'recipes', 'file-1726503803359.png', '2024-09-16 16:23:23', NULL),
-(7, 1, 'recipes', 'file-1726510057563.jpg', '2024-09-16 18:07:37', NULL),
-(8, 1, 'recipes', 'file-1726510198561.jpg', '2024-09-16 18:09:58', NULL),
-(9, 1, 'recipes', 'file-1726510766090.jpg', '2024-09-16 15:19:26', NULL),
-(10, 1, 'recipes', 'file-1726510957757.jpg', '2024-09-16 15:22:37', NULL),
-(11, 1, 'recipes', 'file-1726512526382.webp', '2024-09-16 15:48:46', NULL),
-(12, 1, 'recipes', 'file-1726590848211.PNG', '2024-09-17 13:34:08', NULL),
-(13, 1, 'recipes', 'file-1726590994336.PNG', '2024-09-17 13:36:34', NULL),
-(14, 1, 'recipes', 'file-1726591483365.PNG', '2024-09-17 13:44:43', '2024-09-17 15:41:57'),
-(15, 1, 'recipes', 'file-1726592221361.PNG', '2024-09-17 13:57:01', '2024-09-17 15:42:29'),
-(16, 1, 'recipes', 'file-1726600183413.PNG', '2024-09-17 16:09:43', '2024-09-19 14:07:46'),
-(17, 1, 'recipes', 'file-1726683473740.jpg', '2024-09-18 15:17:53', '2024-09-19 14:07:46'),
-(18, 1, 'avatars', 'usuario123-1729711637629.webp', '2024-10-14 14:28:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -247,13 +207,6 @@ INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `apellidos`, `nombres`, `
 --
 
 --
--- Indices de la tabla `archivos`
---
-ALTER TABLE `archivos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ix_usuario` (`idUsuario`) USING BTREE;
-
---
 -- Indices de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
@@ -310,12 +263,6 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `archivos`
---
-ALTER TABLE `archivos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
@@ -356,45 +303,39 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Filtros para la tabla `archivos`
---
-ALTER TABLE `archivos`
-  ADD CONSTRAINT `fk_usuario2` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`);
-
---
 -- Filtros para la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  ADD CONSTRAINT `fk_receta_comentario` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario_comentario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_receta_comentario` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_comentario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `guardadas`
 --
 ALTER TABLE `guardadas`
-  ADD CONSTRAINT `fk_receta_favorito` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario_favorito` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_receta_favorito` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_favorito` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `likes`
 --
 ALTER TABLE `likes`
-  ADD CONSTRAINT `fk_recetas_likes` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuarios_likes` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_recetas_likes` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuarios_likes` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `recetas`
 --
 ALTER TABLE `recetas`
-  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `respuestas`
 --
 ALTER TABLE `respuestas`
-  ADD CONSTRAINT `fk_comentario_respuesta` FOREIGN KEY (`idComentario`) REFERENCES `comentarios` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario_mension` FOREIGN KEY (`idUsuarioMension`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario_respuesta` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_comentario_respuesta` FOREIGN KEY (`idComentario`) REFERENCES `comentarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_mension` FOREIGN KEY (`idUsuarioMension`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_respuesta` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

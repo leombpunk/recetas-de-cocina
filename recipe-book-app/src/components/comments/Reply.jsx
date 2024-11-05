@@ -47,7 +47,7 @@ const Reply = ({
           >
             {replyData.usuario?.imagen ? (
               <img
-                src={`${RoutesAPI.avatarFiles}/${replyData.usuario?.imagen}`}
+                src={`${RoutesAPI.public}/${replyData.usuario?.usuario}/${replyData.usuario?.imagen}`}
                 alt='imagen de perfil'
                 className='h-8 w-8 rounded-full'
               />

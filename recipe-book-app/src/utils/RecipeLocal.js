@@ -32,20 +32,21 @@ const sanityRecipe = (recipe) => {
   })
 }
 
-//guarda en localstorage
-const saveRecipeLocal = (recipe) => {
+//guarda o crea en localstorage
+const saveRecipeLocal = (username, recipe) => {
   const data = JSON.stringify(recipe)
-  localStorage.setItem("RecipeApp", data)
+  localStorage.setItem(`RecipeApp-${username}`, data)
 }
 
-const getRecipeLocal = () => {
-  const data = localStorage.getItem("RecipeApp")
-  return JSON.parse(data)
+//busca en locastorage
+const getRecipeLocal = (username) => {
+  const data = localStorage.getItem(`RecipeApp-${username}`)
+  return data ? JSON.parse(data) : undefined
 }
 
 //elimina de localstorage
-const deleteRecipeLocal = () => {
-  localStorage.removeItem("RecipeApp")
+const deleteRecipeLocal = (username) => {
+  localStorage.removeItem(`RecipeApp-${username}`)
 }
 
 export { saveRecipeLocal, deleteRecipeLocal, getRecipeLocal, recipeStruct, dictionary, sanityRecipe }

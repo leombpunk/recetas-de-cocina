@@ -1,9 +1,17 @@
+import { unlink, rmdir, rename } from "node:fs"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
 import { matchedData } from "express-validator"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
 import { compare, encrypt } from "../helpers/handleBcrypt.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import models from "../models/index.js"
+
+const publicPath = join(
+  dirname(fileURLToPath(import.meta.url)),
+  "../public/images"
+)
 
 const getUsuario = async (req, res) => {
   try {
@@ -113,36 +121,103 @@ const updateUsuarioPass = async (req, res) => {
 
 const deleteUsuario = async (req, res) => {
   try {
-    //que hago al borrar un usuario?
+    const today = new Date()
     const { usuario } = req.params
     const token = req.headers.authorization?.split(" ").pop()
     const usuarioToken = await verifyToken(token)
     const { borrarTodo } = matchedData(req)
 
-    const user = await models.Usuario.findOne({
+    const user = await models.Usuario.scope("withPassword").findOne({
       where: { id: usuarioToken.id },
     })
+
     //cosas a borrar
-    //si quiere borrar toda su información
-    //cambiar la configuracion de las tablas para que el borrado se a en cascada
-    //(si hice todo bien y como último paso) buscar en archivos todos los archivos del usuario y borrarlos
-    //para no utilizar unlink en este proceso y que sea mas transparente para el usuario y para el programador
-    //si solo quiere borrar su info personal
-    //borrar su foto de perfil (de la tabla usuarios y archivos)
-    //actualizar la tabla usuarios con los siguientes lineamientos
-    //nombres, apellidos, usuario, constraseña, deleteAt (y algún otro dato sencible)
-    //actualizarlos a datos genéricos, ej: nombre y apellido vacíos, usuario a anonimo[usuario.id]
-    //la contraseña en blanco, deleteAt con la fecha en la que se borró
-    //user deleteAt como filtro al momento de hacer login
+
     if (user) {
-      //borro todas sus recetas?
-      //o las dejo pero como anónimas?
-      //creo que es mejor borrar todas las recetas (e ingredientes) junto al usuario y listo
-      //y que hago con las imágenes?
       if (borrarTodo) {
+        //si quiere borrar toda su información
+        //cambiar la configuracion de las tablas para que el borrado se a en cascada
+
+        // const archivos = await models.Archivo.findAll({
+        //   where: { idUsuario: user.id, deleteAt: null },
+        // })
+        // console.log(archivos)
+        // await models.Archivo.update(
+        //   { deleteAt: today.toISOString() },
+        //   { where: { idUsuario: user.id } }
+        // )
+
+        //elimina la carpeta de datos del usuario
+        rmdir(`${publicPath}/users/${user.usuario}`, (error) => {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log("carpeta borrada")
+          }
+        })
         //proceder a borrar todo
+        user.destroy({ force: true })
+        handleResponse(
+          res,
+          200,
+          "Usuario eliminado (incluida toda su actividad)"
+        )
+        return
       } else {
-        //solo borrar el perfil o cambiar todos los datos
+        //si solo quiere borrar su info personal
+        //borrar su foto de perfil (de la tabla usuarios y archivos)
+        //actualizar la tabla usuarios con los siguientes lineamientos
+        //nombres, apellidos, usuario, constraseña, mail, deleteAt (y algún otro dato sencible)
+        //actualizarlos a datos genéricos, ej: nombre y apellido vacíos, usuario a anonimo[usuario.id]
+        //la contraseña en blanco, deleteAt con la fecha en la que se borró
+        //user deleteAt como filtro al momento de hacer login
+
+        //borrar imagen de perfin si existe
+        if ((user, imagen)) {
+          unlink(
+            `${publicPath}/users/${user.usuario}/${user.imagen}`,
+            (error) => {
+              if (error) {
+                console.log(error)
+              } else {
+                console.log("imagen de perfil eliminada")
+              }
+            }
+          )
+        }
+        //cambiar el nombre de la carpeta donde se guardan los archivos
+        rename(
+          `${publicPath}/users/${user.usuario}`,
+          `${publicPath}/users/anonimo${user.id}`,
+          (error) => {
+            if (error) {
+              console.log(error)
+            } else {
+              console.log("carpeta renombrada")
+            }
+          }
+        )
+        //modificar los datos sencibles
+        user.nombres = ""
+        user.apellidos = ""
+        user.mail = ""
+        user.usuario = `anonimo${user.id}`
+        user.contrasena = ""
+        user.imagen = null
+        user.deleteAt = today.toISOString()
+        user.save()
+
+        if (user.changed()) {
+          handleResponse(res, 200, "Usuario eliminado (solo datos sensibles)")
+          return
+        } else {
+          handleResponse(
+            res,
+            400,
+            "No se elimino el usuario, intentelo mas tarde"
+          )
+          return
+        }
       }
     } else {
       handleResponse(res, 400, "El usuario no existe")

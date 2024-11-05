@@ -47,15 +47,15 @@ const Receta = sequelize.define(
       type: DataTypes.TINYINT,
       allowNull: false,
     },
-    createAt : {
+    createAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
-    updateAt : {
+    updateAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
-    deleteAt : {
+    deleteAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -64,8 +64,11 @@ const Receta = sequelize.define(
     timestamps: false,
     defaultScope: { attributes: { exclude: ["idUsuario"] } },
     scopes: {
-      publicData: { attributes: { exclude: ["idUsuario","visibilidad","checked"] } }
-    }
+      publicData: {
+        attributes: { exclude: ["idUsuario", "visibilidad", "checked"] },
+      },
+      allData: { attributes: {} },
+    },
   }
 )
 

@@ -6,12 +6,13 @@ const RoutesAPI = {
     profile: `${urlAPI}/usuarios`,
     recipes: `${urlAPI}/recetas`,
     images: `${urlAPI}/imagenes`,
-    staticFiles: `${urlAPI}/static`,
-    avatarFiles: `${urlAPI}/avatar`,
+    // staticFiles: `${urlAPI}/static`,
+    // avatarFiles: `${urlAPI}/avatar`,
     likes: `${urlAPI}/likes`,
     saves: `${urlAPI}/guardadas`,
     coments: `${urlAPI}/comentarios`,
     recipesPublic: `${urlAPI}/recetas/public`,
+    public: `${urlAPI}/public/users`,
 }
 
 export { RoutesAPI };

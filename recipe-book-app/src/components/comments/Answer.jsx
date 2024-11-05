@@ -61,7 +61,7 @@ const Answer = ({ commentId, comment, isHidden = true }) => {
               <div className='flex flex-row gap-2 items-start w-full'>
                 {comment.usuario?.imagen ? (
                   <img
-                    src={`${RoutesAPI.avatarFiles}/${comment.usuario?.imagen}`}
+                    src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
                     alt='imagen de perfil'
                     className='h-8 w-8 rounded-full'
                   />

@@ -7,7 +7,7 @@ const HomePage = () => {
           <div className='container mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             <div className='landing flex flex-col lg:flex-row flex-wrap items-center gap-6'>
               <div className='content'>
-                <span className="text-white text-4xl">Recipe App</span>
+                <span className="pacifico-regular text-white text-5xl">Recipe App</span>
                 <h3 className="text-gray-50 text-7xl uppercase py-2">
                   Crea ✨<br /> Comparte 🤝 <br /> Disfruta 😋
                 </h3>

@@ -17,7 +17,7 @@ const useRecipes = () => {
     try {
       setLoading(true)
       const result = await RecipesServices.getRecipes(search, page, order)
-      console.log(result)
+      // console.log(result)
       if (result?.status === 200) {
         // console.log(result.status)
         setRecipes(result.data.data.results)
@@ -29,7 +29,7 @@ const useRecipes = () => {
         setTotalPages(0)
         setTotalRows(0)
       }
-      setTimeout(() => setLoading(false),1800) //trucazo
+      setTimeout(() => setLoading(false),1000) //trucazo
       // setLoading(false)
     } catch (error) {
       setErrors([error])

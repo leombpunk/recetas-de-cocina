@@ -1,6 +1,20 @@
 import { verifyToken } from "../helpers/generateToken.js"
 
-const checkAdmin = async (request, response, next) => {}
+const checkAdmin = async (request, response, next) => {
+  try {
+    //agregar código para verificar si el usuario es admin
+    //propongo que el admin sea el usuario con id=1
+    next()
+  } catch (error) {
+    console.log("/* checkAuth middleware (catch) */")
+    console.log(error)
+    response.status(401)
+    response.send({
+      message: "No posees permisos suficientes para realizar esta operacion",
+      error: error,
+    })
+  }
+}
 
 const checkAuth = async (request, response, next) => {
   try {

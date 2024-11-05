@@ -8,32 +8,29 @@ import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
 import { upload, uploadAvatar } from "../middlewares/almacenamiento.js"
-import { where } from "sequelize"
-
-// const paths = fs
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
-  "../public/images/recipes"
+  "../public/images/users"
 )
 
-const publicPathAvatar = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "../public/images/avatars"
-)
+// const publicPathAvatar = join(
+//   dirname(fileURLToPath(import.meta.url)),
+//   "../public/images/avatars"
+// )
 
 const publicFolder = express.static(
-  join(dirname(fileURLToPath(import.meta.url)), "../public/images/recipes")
+  join(dirname(fileURLToPath(import.meta.url)), "../public/images/users")
 )
 
 const uploader = upload.single("file")
-const uploaderAvatar = uploadAvatar.single("file")
+// const uploaderAvatar = uploadAvatar.single("file")
 
 // Usuarios
 //modificar un poco el endpoint para subir y eliminar imagenes de perfil o avatares
 const uploadProfileImg = async (req, res) => {
   try {
-    uploaderAvatar(req, res, async function (err) {
+    uploader(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         console.log(err)
         // A Multer error occurred when uploading.
@@ -50,33 +47,37 @@ const uploadProfileImg = async (req, res) => {
         const token = req.headers.authorization.split(" ").pop()
         const usuario = await verifyToken(token)
         const { filename, size, mimetype, encoding } = req.file
-        const path = `http://localhost:3001/avatar/${filename}`
+        const path = `http://localhost:3001/public/users/${usuario.usuario}/${filename}`
         //comprobar si existe algun archivo que borrar
-        const exist = await models.Usuario.findOne({
+        const exist = await models.Usuario.scope("withPassword").findOne({
           where: { id: usuario.id },
         })
         if (exist) {
           if (exist.imagen) {
-            fs.unlink(`${publicPathAvatar}/${exist.imagen}`, (error) => {
+            fs.unlink(`${publicPath}/${exist.usuario}/${exist.imagen}`, (error) => {
               if (error) throw error
               else console.log("cb: mensaje del metodo fs.unlink2")
             })
+
             //actualizar la tabla archivos
-            const oldArchivo = await models.Archivo.update(
-              { deleteAt: today.toISOString() },
-              { where: { idUsuario: usuario.id, imagen: exist.imagen } }
-            )
-            console.log(oldArchivo)
+            // const oldArchivo = await models.Archivo.update(
+            //   { deleteAt: today.toISOString() },
+            //   { where: { idUsuario: usuario.id, imagen: exist.imagen } }
+            // )
+            // console.log(oldArchivo)
+
           }
           exist.imagen = filename
           exist.save({ fields: ["imagen"] })
-          const newArchivo = await models.Archivo.create({
-            idUsuario: usuario.id,
-            directorio: "/avatars",
-            imagen: filename,
-            createAt: today.toISOString(),
-          })
-          console.log(newArchivo)
+
+          // const newArchivo = await models.Archivo.create({
+          //   idUsuario: usuario.id,
+          //   directorio: "/avatars",
+          //   imagen: filename,
+          //   createAt: today.toISOString(),
+          // })
+          // console.log(newArchivo)
+
           // guardar el dato de la imagen en la tabla archivos
           if (exist.changed()) {
             //si se pudo guardar enviar el mensaje de imagen guardada
@@ -86,7 +87,7 @@ const uploadProfileImg = async (req, res) => {
             return
           } else {
             //si no se pudo, informar y eliminar el archivo guardado con multer
-            fs.unlink(`${publicPathAvatar}/${filename}`, (error) => {
+            fs.unlink(`${publicPath}/${exist.usuario}/${filename}`, (error) => {
               if (error) throw error
               else console.log("cb: mensaje del metodo fs.unlink2")
             })
@@ -119,15 +120,17 @@ const deleteProfileImg = async (req, res) => {
     if (usuarioData) {
       const { imagen } = usuarioData
       if (imagen) {
-        fs.unlink(`${publicPathAvatar}/${imagen}`, (error) => {
+        fs.unlink(`${publicPath}/${usuario.usuario}/${imagen}`, (error) => {
           if (error) throw error
           else console.log("cb: mensaje del metodo fs.unlink")
         })
-        const archivo = await models.Archivo.update(
-          { deleteAt: today.toISOString() },
-          { where: { idUsuario: usuario.id, imagen: imagen } }
-        )
-        console.log(archivo)
+
+        // const archivo = await models.Archivo.update(
+        //   { deleteAt: today.toISOString() },
+        //   { where: { idUsuario: usuario.id, imagen: imagen } }
+        // )
+        // console.log(archivo)
+
         usuarioData.imagen = null
         usuarioData.save({ fields: ["imagen"] })
         if (usuarioData.changed()) {
@@ -171,29 +174,30 @@ const uploadRecetaImg = async (req, res) => {
         const token = req.headers.authorization.split(" ").pop()
         const usuario = await verifyToken(token)
         const { filename, size, mimetype, encoding } = req.file
-        const path = `http://localhost:3001/static/${filename}`
-        const archivo = await models.Archivo.create({
-          idUsuario: usuario.id,
-          directorio: "/recipes",
-          imagen: filename,
-          createAt: date.toISOString(),
-        })
+        const path = `http://localhost:3001/public/users/${usuario.usuario}/${filename}`
+
+        // const archivo = await models.Archivo.create({
+        //   idUsuario: usuario.id,
+        //   directorio: "/recipes",
+        //   imagen: filename,
+        //   createAt: date.toISOString(),
+        // })
         // console.log(archivo)
-        if (archivo) {
+        // if (archivo) {
           //si se pudo guardar enviar el mensaje de imagen guardada
           handleResponse(res, 200, "Imagen guardada", {
             file: { filename, size, mimetype, encoding, path },
           })
           return
-        } else {
-          //si no se pudo, informar y eliminar el archivo guardado con multer
-          fs.unlink(`${publicPath}/${filename}`, (error) => {
-            if (error) throw error
-            else console.log("cb: mensaje del metodo fs.unlink2")
-          })
-          handleResponse(res, 400, "No se puedo almacenar la imagen")
-          return
-        }
+        // } else {
+        //   //si no se pudo, informar y eliminar el archivo guardado con multer
+        //   fs.unlink(`${publicPath}/${filename}`, (error) => {
+        //     if (error) throw error
+        //     else console.log("cb: mensaje del metodo fs.unlink2")
+        //   })
+        //   handleResponse(res, 400, "No se puedo almacenar la imagen")
+        //   return
+        // }
       } else {
         handleResponse(res, 404, "No hay archivo")
         return
@@ -206,22 +210,23 @@ const uploadRecetaImg = async (req, res) => {
 
 const deleteRecetaImg = async (req, res) => {
   try {
-    const date = new Date()
+    // const date = new Date()
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const { filename } = req.params
-    const archivo = await models.Archivo.findOne({
-      where: { idUsuario: usuario.id, imagen: filename, deleteAt: null },
-    })
-    if (archivo) {
-      await models.Archivo.update(
-        { deleteAt: date.toISOString() },
-        { where: { idUsuario: usuario.id, imagen: filename } }
-      )
-      fs.unlink(`${publicPath}/${filename}`, (error) => {
+    // const archivo = await models.Archivo.findOne({
+    //   where: { idUsuario: usuario.id, imagen: filename, deleteAt: null },
+    // })
+    // if (archivo) {
+      // await models.Archivo.update(
+      //   { deleteAt: date.toISOString() },
+      //   { where: { idUsuario: usuario.id, imagen: filename } }
+      // )
+
+      fs.unlink(`${publicPath}/${usuario.usuario}/${filename}`, (error) => {
         if (error) {
           // throw new Error("El archivo que desea borrar no existe")
-          httpError(res, { message: "El archivo que desea borrar no existe" })
+          handleResponse(res, 404, "El archivo que desea borrar no existe")
           return
         } else {
           console.log("cb: mensaje del metodo fs.unlink")
@@ -229,10 +234,10 @@ const deleteRecetaImg = async (req, res) => {
           return
         }
       })
-    } else {
-      handleResponse(res, 404, "El archivo que desea borrar no existe")
-      return
-    }
+    // } else {
+    //   handleResponse(res, 404, "El archivo que desea borrar no existe")
+    //   return
+    // }
   } catch (error) {
     httpError(res, error)
     return

@@ -23,6 +23,7 @@ import Loader from "../components/loader/Loader"
 import CustomModal from "../components/modals/CustomModal"
 import useSaves from "../hooks/useSaves"
 import Comments from "../components/comments/Comments"
+import NavigationRoutes from "../utils/NavigationRoutes"
 
 const RecipePublicPage = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -106,7 +107,7 @@ const RecipePublicPage = () => {
             <figure className='w-full'>
               {recipe.imagen ? (
                 <img
-                  src={`${RoutesAPI.staticFiles}/${recipe.imagen}`}
+                  src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${recipe.imagen}`}
                   alt='Imagen portada de receta'
                   className='w-full h-[50vh] rounded-2xl object-cover object-top'
                   style={{ aspectRatio: "16/9" }}
@@ -168,11 +169,11 @@ const RecipePublicPage = () => {
               <Link
                 className='flex flex-row items-center gap-3 text-lg hover:underline font-semibold duration-500'
                 title='Mostrar todas las recetas de este usuario'
-                to={"#"}
+                to={`${NavigationRoutes.Search}/?username=${recipe.usuario.usuario}`} //agregar el link
               >
                 {recipe.usuario.imagen ? (
                   <img
-                    src={`${RoutesAPI.avatarFiles}/${recipe.usuario.imagen}`}
+                    src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${recipe.usuario.imagen}`}
                     alt='imagen perfil'
                     className='h-8 w-8 rounded-full'
                   />
@@ -238,7 +239,7 @@ const RecipePublicPage = () => {
                     <span>{paso.paso}</span>
                     {paso.imagen ? (
                       <img
-                        src={`${RoutesAPI.staticFiles}/${paso.imagen}`}
+                        src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${paso.imagen}`}
                         alt='imagen del paso'
                       />
                     ) : (

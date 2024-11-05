@@ -1,11 +1,19 @@
 import { Fragment, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import {
   BellIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline"
+import {
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+  BookmarkIcon,
+  DocumentPlusIcon,
+  DocumentTextIcon,
+  IdentificationIcon,
+} from "@heroicons/react/24/solid"
 import { useContextUser } from "../../providers/UserProvider"
 import NavigationRoutes from "../../utils/NavigationRoutes"
 import { RoutesAPI } from "../../utils/RoutesAPI"
@@ -14,9 +22,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
+const filterSearch = ["/recipes","/recipe"]
+
 const Header = () => {
   const [search, setSearch] = useState("")
   const navigate = useNavigate()
+  const location = useLocation()
   const { user, handleLogout } = useContextUser()
 
   const handleClickEndSesion = (e) => {
@@ -38,13 +49,15 @@ const Header = () => {
     // navigate({ pathname: NavigationRoutes.Search, search: search })
   }
 
+  // console.log({location})
+
   return (
     <Disclosure as='nav' className='bg-orange-500'>
       {({ open }) => (
         <>
           <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
             <div className='relative flex h-16 items-center justify-between'>
-              <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
+              <div className='flex flex-1 items-center sm:items-stretch sm:justify-start'>
                 <Link
                   className='flex flex-shrink-0 items-center gap-2'
                   to={NavigationRoutes.Home}
@@ -58,7 +71,7 @@ const Header = () => {
                     Recipe App
                   </span>
                 </Link>
-                <div className='ml-2.5 sm:ml-6 w-full'>
+                {!filterSearch.includes(location.pathname) && <div className='ml-2.5 sm:ml-6 w-full'>
                   <div className='flex'>
                     <form
                       className='w-full'
@@ -69,7 +82,7 @@ const Header = () => {
                           type='search'
                           name='searchBar'
                           id='searchBar'
-                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 sm:text-sm sm:leading-6'
+                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 text-base sm:leading-6'
                           placeholder='Buscar recetas'
                           onChange={(event) => setSearch(event.target.value)}
                         />
@@ -82,7 +95,8 @@ const Header = () => {
                       </div>
                     </form>
                   </div>
-                </div>
+                </div>}
+                
               </div>
               <div className='inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto ml-2.5 sm:ml-6 sm:pr-0 gap-2'>
                 <button
@@ -103,8 +117,8 @@ const Header = () => {
                         <span className='sr-only'>Abrir menu de usuario</span>
                         {user.imagen ? (
                           <img
-                            className='h-8 w-8 rounded-full'
-                            src={`${RoutesAPI.avatarFiles}/${user.imagen}`}
+                            className='h-10 w-10 rounded-full'
+                            src={`${RoutesAPI.public}/${user.usuario}/${user.imagen}`}
                             alt='imagen de perfil'
                           />
                         ) : (
@@ -121,15 +135,16 @@ const Header = () => {
                       leaveFrom='transform opacity-100 scale-100'
                       leaveTo='transform opacity-0 scale-95'
                     >
-                      <Menu.Items className='absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                      <Menu.Items className='absolute right-0 z-20 mt-2 w-52 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                         <Menu.Item>
                           {({ active }) => (
                             <span
                               className={classNames(
                                 active ? "bg-gray-200" : "",
-                                "block px-4 py-2 text-base text-gray-700 font-semibold hover:cursor-default"
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700 font-semibold hover:cursor-default"
                               )}
                             >
+                              <UserIcon className='w-5 h-5' />
                               {user.usuario}
                             </span>
                           )}
@@ -139,10 +154,11 @@ const Header = () => {
                             <Link
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
                               )}
                               to={NavigationRoutes.Profile}
                             >
+                              <IdentificationIcon className='w-5 h-5' />
                               Perfil
                             </Link>
                           )}
@@ -153,9 +169,10 @@ const Header = () => {
                               to={NavigationRoutes.Recipes}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
                               )}
                             >
+                              <DocumentTextIcon className='w-5 h-5' />
                               Mis Recetas
                             </Link>
                           )}
@@ -166,9 +183,10 @@ const Header = () => {
                               to={NavigationRoutes.RecipeCreate}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
                               )}
                             >
+                              <DocumentPlusIcon className='w-5 h-5' />
                               Nueva Receta
                             </Link>
                           )}
@@ -179,9 +197,10 @@ const Header = () => {
                               to={NavigationRoutes.Recipes}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
                               )}
                             >
+                              <BookmarkIcon className='w-5 h-5' />
                               Mis Favoritos
                             </Link>
                           )}
@@ -193,9 +212,10 @@ const Header = () => {
                               onClick={(e) => handleClickEndSesion(e)}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block w-full px-4 py-2 text-sm text-left text-gray-700"
+                                "flex flex-row items-center gap-1 w-full px-4 py-2 text-lg text-left text-gray-700"
                               )}
                             >
+                              <ArrowRightOnRectangleIcon className='w-5 h-5' />
                               Cerrar sesión
                             </button>
                           )}

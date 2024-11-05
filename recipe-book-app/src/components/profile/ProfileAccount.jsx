@@ -17,7 +17,7 @@ const ProfileAccount = ({
   useEffect(() => {
     if (confirm) {
       console.log(deleteAll.current.checked)
-      // handleDeleteAccount(profile.usuario, deleteAll.current.checked)
+      handleDeleteAccount(profile.usuario, deleteAll.current.checked)
       setConfirm(false)
     }
     if (cancel) {

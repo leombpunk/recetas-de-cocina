@@ -89,7 +89,7 @@ const Comments = ({ recipeId, onNotLogin }) => {
           <div className="flex flex-row gap-2">
             {comment.usuario?.imagen ? (
               <img
-                src={`${RoutesAPI.avatarFiles}/${comment.usuario?.imagen}`}
+                src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
                 alt='imagen de perfil'
                 className='w-11 h-11 rounded-full'
               />

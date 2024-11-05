@@ -7,17 +7,14 @@ import { sequelize } from "../config/mysql.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
-// import Receta from "../models/receta.js"
-// import Archivo from "../models/archivos.js"
-// import Usuario from "../models/usuario.js"
 import models from "../models/index.js"
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
-  "../public/images/recipes"
+  "../public/images/users"
 )
 
-//endpoints publicos
+//endpoints públicos
 const getAllRecetasPublic = async (req, res) => {
   try {
     const { search, username, page, order, likes, publicated } = req.query
@@ -26,7 +23,7 @@ const getAllRecetasPublic = async (req, res) => {
     const whereOptions = {
       [Op.and]: [
         { visibilidad: 1 },
-        { titulo: { [Op.like]: `%${search || ""}%` } },
+        { titulo: { [Op.like]: `%${search ? search : ""}%` } },
         username && { "$usuario.usuario$": username },
       ],
     }
@@ -71,7 +68,6 @@ const getAllRecetasPublic = async (req, res) => {
 const getRecetaPublic = async (req, res) => {
   try {
     //intentar recuperar el id del usuario para saber si dio like, el tema es que esto es un metodo publico, donde no se controla si esta logeado o no
-    //nuevo
     const token = req.headers.authorization?.split(" ").pop()
     let include = [
       { model: models.Usuario.scope("basicUserData"), required: true },
@@ -90,11 +86,6 @@ const getRecetaPublic = async (req, res) => {
           where: { idUsuario: usuario.id },
         }
       )
-      // include.push({
-      //   model: models.SaveRecipe,
-      //   required: false,
-      //   where: { idUsuario: usuario.id },
-      // })
     } else {
       include.push(
         {
@@ -108,13 +99,7 @@ const getRecetaPublic = async (req, res) => {
           where: { idUsuario: 0 },
         }
       )
-      // include.push({
-      //   model: models.SaveRecipe,
-      //   required: false,
-      //   where: { idUsuario: 0 },
-      // })
     }
-    //-----
     const { id } = req.params
     const result = await models.Receta.findByPk(id, {
       include: include,
@@ -242,6 +227,7 @@ const getReceta = async (req, res) => {
 
 const createReceta = async (req, res) => {
   try {
+    const today = new Date()
     const token = req.headers.authorization.split(" ").pop()
     const tokenData = await verifyToken(token)
     const body = matchedData(req)
@@ -251,8 +237,8 @@ const createReceta = async (req, res) => {
       duracion = "",
       comensales = "",
       visibilidad = 0,
-      ingredientes = [],
-      pasos = [],
+      ingredientes = [{ name: "" }],
+      pasos = [{ paso: "", imagen: "" }],
       imagen = "",
       checked = "",
     } = body
@@ -280,6 +266,7 @@ const createReceta = async (req, res) => {
             checked: 0,
             ingredientes,
             pasos,
+            createAt: today.toISOString(),
           },
           { transaction: t }
         )
@@ -298,10 +285,53 @@ const createReceta = async (req, res) => {
   }
 }
 
+const patchReceta = async (req, res) => {
+  try {
+    const { id } = req.params
+    const token = req.headers.authorization.split(" ").pop()
+    const tokenData = await verifyToken(token)
+    const { imagen, pasos } = matchedData(req)
+    const receta = await models.Receta.findOne({
+      where: { id: id, idUsuario: tokenData.id },
+    })
+    if (receta) {
+      //actualizar con los datos recibidos
+      if (imagen && imagen !== "") {
+        // console.log({ imagen })
+        receta.imagen = imagen
+      }
+      if (pasos && pasos.length) {
+        // console.log({ pasos })
+        receta.pasos = pasos
+      }
+      //test
+      // handleResponse(res, 200, "oli", { id, imagen, pasos, receta })
+      // return
+      receta.save()
+      if (receta.changed()) {
+        handleResponse(res, 200, "Receta actaulizada parcialmente", receta)
+        return
+      } else {
+        handleResponse(res, 400, "Algo mario sal", receta)
+        return
+      }
+    } else {
+      handleResponse(res, 400, "La receta no existe", receta)
+      return
+    }
+  } catch (error) {
+    httpError(res, error)
+    return
+  }
+}
+
 const updateReceta = async (req, res) => {
   try {
-    //tiene que si o si validar que todos los cmapos esten correctos
+    //tiene que si o si validar que todos los campos esten correctos
+    const today = new Date()
     const idReceta = req.params.id
+    const token = req.headers.authorization.split(" ").pop()
+    const tokenData = await verifyToken(token)
     const body = matchedData(req)
     const {
       titulo = "",
@@ -325,8 +355,9 @@ const updateReceta = async (req, res) => {
         pasos,
         imagen,
         checked: 1,
+        updateAt: today.toISOString(),
       },
-      { where: { id: idReceta } }
+      { where: { id: idReceta, idUsuario: tokenData.id } }
     )
     console.log({ result: result }) //retorna 1 cuando actualizo, 0 cuando no hubo falta actaulizar
     if (result) {
@@ -352,6 +383,7 @@ const deleteReceta = async (req, res) => {
     const date = new Date()
     //buscar la receta
     const receta = await models.Receta.findOne({ where: { id: idReceta } })
+    //esto pa que?
     receta.ingredientes = JSON.parse(receta.ingredientes)
     receta.pasos = JSON.parse(receta.pasos)
     //capturar las imágenes
@@ -368,21 +400,23 @@ const deleteReceta = async (req, res) => {
       console.log({ weas: files })
       //borrar las imágenes
       files.forEach(async (filename) => {
-        fs.unlink(`${publicPath}/${filename}`, (error) => {
+        fs.unlink(`${publicPath}/${usuario.usuario}/${filename}`, (error) => {
           if (error) {
             // throw new Error("El archivo que desea borrar no existe")
-            httpError(res, { message: "No es posible borrar la receta" })
-            return
+            console.log("cb: mensaje del metodo fs.unlink mal borrado")
+            // httpError(res, { message: "No es posible borrar la receta" })
+            // return
           } else {
-            console.log("cb: mensaje del metodo fs.unlink equisde")
+            console.log("cb: mensaje del metodo fs.unlink bien borrado")
           }
         })
+
         //actualizar la tabla de archivos
-        const archivos = await models.Archivo.update(
-          { deleteAt: date.toISOString() },
-          { where: { idUsuario: usuario.id, imagen: filename } }
-        )
-        console.log({ arch: archivos })
+        // const archivos = await models.Archivo.update(
+        //   { deleteAt: date.toISOString() },
+        //   { where: { idUsuario: usuario.id, imagen: filename } }
+        // )
+        // console.log({ arch: archivos })
       })
       //borrar la receta
       const result = await models.Receta.destroy({
@@ -468,6 +502,7 @@ export {
   getAllRecetas,
   getReceta,
   createReceta,
+  patchReceta,
   updateReceta,
   deleteReceta,
   updateVisibilidad,

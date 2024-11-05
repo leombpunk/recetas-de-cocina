@@ -3,6 +3,7 @@ import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import useDropzone from "./useDropzone"
 import { useEffect } from "react"
 import { RoutesAPI } from "../../utils/RoutesAPI"
+import { useContextUser } from "../../providers/UserProvider"
 
 //manejar el tamaño del dropzone
 /**
@@ -29,6 +30,7 @@ const Dropzone = ({
   filePreload,
   index = undefined,
 }) => {
+  const {user} = useContextUser()
   const {
     ref,
     files,
@@ -40,21 +42,19 @@ const Dropzone = ({
     openDropzone,
   } = useDropzone({ isMultiple })
 
-  // console.log({ filePreload: filePreload, f:files })
+  console.log({ filePreload: filePreload, f:files })
 
   const handleClickDelete = (e) => {
     e.preventDefault()
     //comprobar si filePreload es distinto de null
     if (filePreload) {
-      // console.log("estoy en filepreload")
+      console.log("estoy en filepreload")
       handleDelete(filePreload, index)
     }
     //o si files es distinto de null
-    else {
-      if (files) {
-        // console.log("estoy en files")
-        deleteFile()
-      }
+    if (files) {
+      console.log("estoy en files")
+      deleteFile()
     }
   }
 
@@ -84,7 +84,7 @@ const Dropzone = ({
                 title='Imagen descriptiva del paso'
                 style={{
                   backgroundImage: `url(${filePreload ? 
-                    RoutesAPI.staticFiles.concat("/", filePreload) :
+                    RoutesAPI.public.concat("/",user.usuario,"/", filePreload) :
                     URL.createObjectURL(files)
                   }`,
                   filter: `${!disabled ? "none" : "grayscale(100%)"}`,

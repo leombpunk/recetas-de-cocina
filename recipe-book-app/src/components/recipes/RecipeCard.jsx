@@ -2,14 +2,13 @@ import { Link } from "react-router-dom"
 import { RoutesAPI } from "../../utils/RoutesAPI"
 import { PhotoIcon } from "@heroicons/react/20/solid"
 import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline"
+import { useContextUser } from "../../providers/UserProvider"
 
 const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
+  const { user } = useContextUser()
   return (
     <Link
-      to={`${
-        // eslint-disable-next-line no-script-url
-        linkActive ? `${navigation}/${recipe.id}` : "javascript:void(0);"
-      }`}
+      to={`${linkActive ? `${navigation}/${recipe.id}` : "#"}`}
       title={recipe.titulo}
       className={`${
         linkActive ? "" : "hover:cursor-default"
@@ -19,7 +18,9 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
       <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
         {recipe.imagen ? (
           <img
-            src={`${RoutesAPI.staticFiles}/${recipe.imagen}`}
+            src={`${RoutesAPI.public}/${
+              recipe.usuario?.usuario ?? user.usuario
+            }/${recipe.imagen}`}
             alt={recipe.imagen}
             className='h-full w-full object-cover object-center group-hover:opacity-90'
           />
@@ -41,16 +42,18 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
           <ChatBubbleOvalLeftIcon className='h-5 w-5' /> comentarios
         </p>
       </div>
-      {recipe.visibilidad ? <p>
-        Estado:{" "}
-        <span>
-          {!recipe.checked
-            ? "Borrador"
-            : recipe.visibilidad
-            ? "Público"
-            : "Privado"}
-        </span>
-      </p>:null}
+      {recipe.visibilidad !== undefined ? (
+        <p>
+          Estado:{" "}
+          <span>
+            {!recipe.checked
+              ? "Borrador"
+              : recipe.visibilidad
+              ? "Público"
+              : "Privado"}
+          </span>
+        </p>
+      ) : null}
     </Link>
   )
 }

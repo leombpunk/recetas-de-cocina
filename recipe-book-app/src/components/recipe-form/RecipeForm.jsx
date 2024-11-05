@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
@@ -10,13 +10,14 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline"
-import IngredientsList from "../dragableLists/ingredientsList"
-import StepsList from "../dragableLists/stepsList"
+import IngredientsList from "../dragableLists/IngredientsList"
+import StepsList from "../dragableLists/StepsList"
 import Dropzone from "../../components/dropzone/Dropzone"
 import useFiles from "../../hooks/useFiles"
 import { getRecipeLocal, saveRecipeLocal } from "../../utils/RecipeLocal"
 import recipeSchema from "../../utils/RecipeResolver"
 import { useContextNotification } from "../../providers/NotificationProvider"
+import CustomModal from "../modals/CustomModal"
 
 const RecipeForm = ({
   title = "",
@@ -24,12 +25,16 @@ const RecipeForm = ({
   data = null,
   handleSave,
   handleDelete,
+  handlePatch,
 }) => {
   const { files, uploadFiles, deleteFiles } = useFiles()
   const [editMode, setEditMode] = useState(false)
   const [portada, setPortada] = useState(null)
   const [pasosImg, setPasosImg] = useState(null)
-  const {addNotification} = useContextNotification()
+  const { addNotification } = useContextNotification()
+  const [openModal, setOpenModal] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+  const [cancel, setCancel] = useState(false)
 
   // console.log({ data: data })
 
@@ -41,7 +46,7 @@ const RecipeForm = ({
     getValues,
     setValue,
     // setError,
-    // reset,
+    reset,
     watch,
   } = useForm({
     defaultValues: {
@@ -76,14 +81,14 @@ const RecipeForm = ({
   //realiza un focusout (onBlur) en el formulario de receta, si es diferente
   //a lo guardado en localStorage lo actualiza y replica en el back, si no
   //pues naa
-  const formRecipeData = useWatch({ control: control }) // only re-render at the custom hook level, when firstName changes
+  const [imagen, pasos] = useWatch({ control: control, name:["imagen","pasos"] }) // only re-render at the custom hook level, when firstName changes
 
-  // console.log({ watch: watch() })
+  console.log([imagen, pasos])
 
   const handlePortadaUpload = async (file) => {
     if (file) {
       const recipe = getRecipeLocal()
-      const result = await uploadFiles(recipe.id, file)
+      const result = await uploadFiles(data.id, file)
       console.log(result)
       setValue("imagen", `${result?.filename || ""}`)
       saveRecipeLocal(watch())
@@ -94,7 +99,7 @@ const RecipeForm = ({
   const handlePortadaDelete = async (filename) => {
     if (filename) {
       const recipe = getRecipeLocal()
-      const result = await deleteFiles(recipe.id, filename)
+      const result = await deleteFiles(data.id, filename)
       console.log(result)
       setValue("imagen", "")
       saveRecipeLocal(watch())
@@ -103,29 +108,29 @@ const RecipeForm = ({
   }
 
   //pasarle estos dos metodos al componente stepsList
-  const handleUploadFileSteps = async (file, index) => {
-    console.log({ i: index, f: file })
-    if (file) {
-      const recipe = getRecipeLocal()
-      const result = await uploadFiles(recipe.id, file)
-      console.log(result)
-      setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
-      saveRecipeLocal(watch())
-      return result
-    }
-  }
+  // const handleUploadFileSteps = async (file, index) => {
+  //   console.log({ i: index, f: file })
+  //   if (file) {
+  //     const recipe = getRecipeLocal()
+  //     const result = await uploadFiles(data.id, file)
+  //     console.log(result)
+  //     setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
+  //     saveRecipeLocal(watch())
+  //     return result
+  //   }
+  // }
 
-  const handleDeleteFilesSteps = async (filename, index) => {
-    console.log({ i: index, f: filename })
-    if (filename) {
-      const recipe = getRecipeLocal()
-      const result = await deleteFiles(recipe.id, filename)
-      console.log(result)
-      setValue(`pasos.${index}.imagen`, "")
-      saveRecipeLocal(watch())
-      return result
-    }
-  }
+  // const handleDeleteFilesSteps = async (filename, index) => {
+  //   console.log({ i: index, f: filename })
+  //   if (filename) {
+  //     const recipe = getRecipeLocal()
+  //     const result = await deleteFiles(data.id, filename)
+  //     console.log(result)
+  //     setValue(`pasos.${index}.imagen`, "")
+  //     saveRecipeLocal(watch())
+  //     return result
+  //   }
+  // }
 
   //que mierda hace esto?
   //recibe un mensaje, tipo y detalle para mostrar una notificacion al usuario
@@ -153,6 +158,7 @@ const RecipeForm = ({
   const handleClickCancelBtn = (event) => {
     event.preventDefault()
     setEditMode(!editMode)
+    reset()
   }
   const handleClickDeleteBtn = (event) => {
     event.preventDefault()
@@ -161,18 +167,40 @@ const RecipeForm = ({
     //al terminar de forma correcta
     //volver a la lista de recetas
     // setEditMode(!editMode)
+    setOpenModal(true)
+    // handleDelete(data.id) //testear
   }
 
   const handleSaveForm = (data) => {
     // console.log({recetaPe:data})
-    handleSave(data).then((result) => {
-      console.log({resultForm:result})
-    }).finally((result) => {
-      console.log({resultFormFinally:result})
-      addNotification({message:'Receta actualizada',type:'success'})
-      setEditMode(!editMode)
-    })
+    handleSave(data)
+      .then((result) => {
+        console.log({ resultForm: result })
+      })
+      .finally((result) => {
+        console.log({ resultFormFinally: result })
+        addNotification({ message: "Receta actualizada", type: "success" })
+        setEditMode(!editMode)
+      })
   }
+
+  useEffect(() => {
+    if (confirm) {
+      handleDelete()
+      setConfirm(false)
+    }
+
+    if (cancel) {
+      setCancel(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [confirm, cancel])
+
+  //para ocupar el patch de imagen de portada y pasos
+  useState(() => {
+    
+
+  },[imagen, pasos])
 
   return (
     <>
@@ -190,7 +218,7 @@ const RecipeForm = ({
           <div className='flex flex-row items-center gap-2'>
             <button
               style={{ display: `${!editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
+              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
               type='submit'
               title='Guardar receta'
               onClick={(e) => handleClickSaveBtn(e)}
@@ -199,7 +227,7 @@ const RecipeForm = ({
             </button>
             <button
               style={{ display: `${editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
+              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
               type='button'
               title='Editar receta'
               onClick={(e) => handleClickEditBtn(e)}
@@ -208,7 +236,7 @@ const RecipeForm = ({
             </button>
             <button
               style={{ display: `${!editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 hover:scale-105 duration-500'
+              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
               type='button'
               title='Cancelar acción'
               onClick={(e) => handleClickCancelBtn(e)}
@@ -221,7 +249,7 @@ const RecipeForm = ({
                 editMode
                   ? "bg-gray-500 hover:cursor-not-allowed"
                   : "bg-orange-500 hover:scale-105"
-              } rounded-lg p-1.5  duration-500`}
+              } rounded-lg p-1.5 shadow-md hover:shadow-black/50 duration-500`}
               type='button'
               title='Borrar receta'
               onClick={(e) => handleClickDeleteBtn(e)}
@@ -233,7 +261,7 @@ const RecipeForm = ({
         <div className='bg-orange-200 rounded-lg mt-4'>
           <div className='flex flex-col gap-3 items-center p-4 w-full'>
             <Dropzone
-              title="Agrega una imagen para la portada de la receta"
+              title='Agrega una imagen para la portada de la receta'
               isMultiple={false}
               maxFiles={1}
               handleFiles={setPortada}
@@ -342,18 +370,34 @@ const RecipeForm = ({
               editMode={editMode}
             />
             <StepsList
-              control={control}
-              register={register}
-              errors={errors}
+              recipeId={data.id}
+              formData={{control, register, errors, setValue}}
+              // control={control}
+              // register={register}
+              // errors={errors}
               editMode={editMode}
-              fileUpload={handleUploadFileSteps}
-              fileDelete={handleDeleteFilesSteps}
+              handlePatch={handlePatch}
+              uploadFiles={uploadFiles}
+              deleteFiles={deleteFiles}
               handleErrorFile={handleErrorFile}
               setPasosImg={setPasosImg}
             />
           </div>
         </div>
       </form>
+      <CustomModal
+        open={openModal}
+        setOpen={setOpenModal}
+        confirm={true}
+        setConfirm={setConfirm}
+        setCancel={setCancel}
+      >
+        <div className='pt-12 pb-6'>
+          <p className='font-semibold text-2xl text-center'>
+            ¿Deseas borrar esta receta?
+          </p>
+        </div>
+      </CustomModal>
     </>
   )
 }

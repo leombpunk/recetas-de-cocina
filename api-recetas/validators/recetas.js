@@ -45,6 +45,10 @@ const validateCreate = [
   },
 ]
 
+//establecer un parametro para "saltar" el chequeo
+//si la actualizacion es parcial o total
+//si es parcial sería solo para actualizar la imagen 
+//de portada o agregar imagenes en los pasos
 const validateReceta = [
   check("titulo")
     .exists().isLength({ max: 50 }).not().isEmpty(),
@@ -70,6 +74,8 @@ const validateReceta = [
   check("pasos.*.paso")
     .exists().isLength({ max: 500 }).not().isEmpty(),
   check("pasos.*.imagen")
+    .exists()
+    .isLength({ max: 100 })
     .optional(),
   (request, response, next) => {
     validateResult(request, response, next)
@@ -92,4 +98,18 @@ const validateVisibility = [
   },
 ]
 
-export { validateCreate, validateReceta, validateVisibility }
+const validatePatch = [
+  check("imagen")
+    .exists().isLength({ max: 100 }).optional(),
+  check("pasos.*.paso")
+    .exists().optional(),
+  check("pasos.*.imagen")
+    .exists()
+    .isLength({ max: 100 })
+    .optional(),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  },
+]
+
+export { validateCreate, validateReceta, validateVisibility, validatePatch }

@@ -38,7 +38,7 @@ const validateDelete = [
   check("borrarTodo")
     .exists()
     .not().isEmpty()
-    .isBoolean(),
+    .isBoolean().toBoolean(),
   (request, response, next) => {
     validateResult(request, response, next)
   }

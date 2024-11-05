@@ -7,7 +7,7 @@ const Pagination = ({
   setPage,
   isDisabled = false,
 }) => {
-  console.log({ page, totalPages, totalRows, isDisabled })
+  // console.log({ page, totalPages, totalRows, isDisabled })
   const handleClick = (page) => {
     setPage(page)
   }

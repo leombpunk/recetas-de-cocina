@@ -33,7 +33,7 @@ const deletePerfil = async (username, deleteAll) => {
       Authorization: token,
     },
   }
-  const url = `${RoutesAPI.profile}/${username}?borrarTodo=${deleteAll}`
+  const url = `${RoutesAPI.profile}/perfil/${username}?borrarTodo=${deleteAll}`
   const request = axios.delete(url, config)
   return request.then((response) => response).catch((error) => error)
 }

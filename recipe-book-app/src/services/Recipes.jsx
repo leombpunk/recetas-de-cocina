@@ -66,6 +66,19 @@ const createRecipe = async (recipe) => {
   return request.then((response) => response)
 }
 
+const patchRecipe = async (id, data) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  console.log({data})
+  const url = `${RoutesAPI.recipes}/${id}`
+  const request = axios.patch(url, data, config)
+  return request.then((response) => response)
+}
+
 const updateRecipe = async (id, recipe) => {
   const token = getToken()
   const config = {
@@ -74,7 +87,7 @@ const updateRecipe = async (id, recipe) => {
     },
   }
   const url = `${RoutesAPI.recipes}/${id}`
-  const request = axios.patch(url, recipe, config)
+  const request = axios.put(url, recipe, config)
   return request.then((response) => response)
 }
 
@@ -108,6 +121,7 @@ const RecipesServices = {
   getRecipesByUser,
   getRecipe,
   createRecipe,
+  patchRecipe,
   updateRecipe,
   deleteRecipe,
   sharedRecipes,

@@ -71,9 +71,9 @@ const RecipeContainer = ({ title }) => {
     setEditMode(!editMode)
   }
 
-  console.log({ recetas: recipes })
+  // console.log({ recetas: recipes })
 
-  console.log({ form: formShared.getValues() })
+  // console.log({ form: formShared.getValues() })
 
   return (
     <>
@@ -142,17 +142,17 @@ const RecipeContainer = ({ title }) => {
                     <Menu.Items className='absolute right-0 mt-3 origin-top-right rounded-lg bg-orange-100 shadow-lg p-3 ring-1 ring-black/5 focus:outline-none'>
                       <form
                         onSubmit={handleSubmit(onSubmitForm)}
-                        className='flex flex-col lg:flex-row items-center gap-3'
+                        className='flex flex-col lg:flex-row items-center gap-3 w-full min-w-[280px] md:min-w-[450px] lg:min-w-[850px] md:max-w-full'
                       >
                         <input
                           type='text'
                           placeholder='Titulo de receta'
-                          className='rounded-lg placeholder:text-gray-500'
+                          className='rounded-lg placeholder:text-gray-500 w-full'
                           {...register("search")}
                         />
                         <select
                           {...register("likes")}
-                          className='rounded-lg text-gray-500'
+                          className='rounded-lg text-gray-500 w-full'
                         >
                           <option value={"ASC"} defaultValue>
                             Ordenar por likes
@@ -162,7 +162,7 @@ const RecipeContainer = ({ title }) => {
                         </select>
                         <select
                           {...register("order")}
-                          className='rounded-lg text-gray-500'
+                          className='rounded-lg text-gray-500 w-full'
                         >
                           <option value={"ASC"} defaultValue>
                             Ordenar por titulo
@@ -170,23 +170,26 @@ const RecipeContainer = ({ title }) => {
                           <option value={"ASC"}>Ascendente</option>
                           <option value={"DESC"}>Descendente</option>
                         </select>
-                        <button
-                          disabled={false}
-                          type='submit'
-                          className='flex flex-row items-center bg-orange-500 font-semibold p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500'
-                        >
-                          <CheckIcon className='h-6 w-6' />
-                          Filtrar
-                        </button>
-                        <button
-                          title='Limpiar campos'
-                          onClick={() => reset()}
-                          disabled={false}
-                          type='button'
-                          className='bg-red-500 font-semibold p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500'
-                        >
-                          <ArchiveBoxXMarkIcon className='h-6 w-6' />
-                        </button>
+                        <div className="flex flex-row gap-3 self-end">
+
+                          <button
+                            disabled={false}
+                            type='submit'
+                            className='flex flex-row self-end items-center bg-orange-500 font-semibold p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500'
+                          >
+                            <CheckIcon className='h-6 w-6' />
+                            Filtrar
+                          </button>
+                          <button
+                            title='Limpiar campos'
+                            onClick={() => reset()}
+                            disabled={false}
+                            type='button'
+                            className='bg-red-500 self-end font-semibold p-2 border border-orange-700 rounded-lg hover:scale-105 shadow-md hover:shadow-black/50 duration-500'
+                          >
+                            <ArchiveBoxXMarkIcon className='h-6 w-6' />
+                          </button>
+                        </div>
                       </form>
                     </Menu.Items>
                   </Transition>

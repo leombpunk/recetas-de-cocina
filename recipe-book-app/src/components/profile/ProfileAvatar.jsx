@@ -46,7 +46,7 @@ const ProfileAvatar = ({ profile, resources }) => {
             <picture>
               {profile.imagen ? (
                 <img
-                  src={`${RoutesAPI.avatarFiles}/${profile.imagen}`}
+                  src={`${RoutesAPI.public}/${profile.usuario}/${profile.imagen}`}
                   alt='soy tu imagen de perfil'
                   className='w-36 h-36 bg-gray-200 rounded-full border border-gray-500 shadow-md shadow-black/50'
                 />

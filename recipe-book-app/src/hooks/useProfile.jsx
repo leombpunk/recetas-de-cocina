@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react"
 import ProfileServices from "../services/Profile"
 import { useContextUser } from "../providers/UserProvider"
+import NavigationRoutes from "../utils/NavigationRoutes"
+import { useNavigate } from "react-router-dom"
 
 const useProfile = (username) => {
-  const { user, setUser } = useContextUser()
+  const { user, setUser, handleLogout } = useContextUser()
+  const navigate = useNavigate()
   const [profile, setProfile] = useState({})
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState([])
@@ -150,6 +153,14 @@ const useProfile = (username) => {
       setLoading(true)
       const result = await ProfileServices.deletePerfil(username, deleteAll)
       console.log(result)
+      if (result.status === 200) {
+        //ejecutar el logout y volver a la home
+        handleLogout()
+        navigate(NavigationRoutes.Home)
+      } else {
+        //informar que weas pasó
+        setNotifyUpload({ message: result?.response?.data?.message, type: "error" })
+      }
     } catch (error) {
       setErrors([error])
       setLoading(false)

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useFieldArray, useWatch } from "react-hook-form"
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd"
 import {
@@ -12,28 +12,41 @@ import Dropzone from "../dropzone/Dropzone"
 
 const StepsList = ({
   steps = [],
-  fileUpload,
-  fileDelete,
+  recipeId,
+  formData,
+  uploadFiles,
+  deleteFiles,
   handleErrorFile,
+  handlePatch,
   setPasosImg,
-  control,
-  register,
-  errors,
+  // control,
+  // register,
+  // errors,
   editMode,
 }) => {
+  const [changed, setChanged] = useState(false)
   const { fields, append, remove, move } = useFieldArray({
     name: "pasos",
-    control: control,
+    control: formData.control,
   })
 
-  const pasos = useWatch({ control:control, name: "pasos"})
+  const pasos = useWatch({ control: formData.control, name: "pasos" })
 
-  // console.log({ pasos: fields })
-  // console.log({guach: pasos})
+  console.log({ pasos: fields })
+  console.log({ guach: pasos })
 
   const [stepsArray, setStepesArray] = useState(
     steps.length ? steps : [{ order: "", content: "", image: "" }]
   )
+
+  useEffect(() => {
+    if (changed) {
+      //user el metodo patch para actualizar la db -> mandar pasos
+      handlePatch({imagen: "", pasos: pasos})
+      setChanged(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [changed])
 
   const addItem = () => {
     append({ paso: "", imagen: "" })
@@ -72,6 +85,33 @@ const StepsList = ({
   }
   // console.log({ datos: stepsArray })
 
+  //pasarle estos dos metodos al componente stepsList
+  const handleUpload = async (file, index) => {
+    console.log({ i: index, f: file })
+    if (file) {
+      // const recipe = getRecipeLocal()
+      const result = await uploadFiles(recipeId, file)
+      console.log(result)
+      setChanged(true)
+      formData.setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
+      // saveRecipeLocal(watch())
+      return result
+    }
+  }
+
+  const handleDelete = async (filename, index) => {
+    console.log({ i: index, f: filename })
+    if (filename) {
+      // const recipe = getRecipeLocal()
+      const result = await deleteFiles(recipeId, filename)
+      console.log(result)
+      setChanged(true)
+      formData.setValue(`pasos.${index}.imagen`, "")
+      // saveRecipeLocal(watch())
+      return result
+    }
+  }
+
   return (
     <div className='flex flex-col items-start w-full gap-2'>
       <h3 className='text-lg font-semibold'>Pasos:</h3>
@@ -98,13 +138,14 @@ const StepsList = ({
                       className={`${
                         !editMode ? "" : "shadow-black/50 shadow-sm"
                       } border-gray-500 border flex flex-col items-start rounded-lg w-full p-1 pb-2 gap-2 ${
-                        errors.pasos?.[index] && "border border-red-600"
+                        formData.errors.pasos?.[index] &&
+                        "border border-red-600"
                       }`}
                     >
                       <div className='flex flex-row items-start rounded-lg w-full p-1'>
                         <Bars4Icon className='h-6 w-6' />
                         <textarea
-                          {...register(`pasos.${index}.paso`)}
+                          {...formData.register(`pasos.${index}.paso`)}
                           type='text'
                           rows={4}
                           placeholder='Describe el proceso de preparación en pasos'
@@ -132,22 +173,22 @@ const StepsList = ({
                           <TrashIcon className='w-6 h-6' />
                         </button>
                       </div>
-                      {errors.pasos?.[index] && (
+                      {formData.errors.pasos?.[index] && (
                         <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>
                           <ExclamationCircleIcon className='h-6 w-6' />
-                          {errors.pasos[index].paso.message}
+                          {formData.errors.pasos[index].paso.message}
                         </span>
                       )}
                       <Dropzone
-                        title="(Opcional) Agrega una imagen descriptiva del paso"
+                        title='(Opcional) Agrega una imagen descriptiva del paso'
                         isMultiple={false}
                         maxFiles={1}
                         handleFiles={setPasosImg}
-                        handleUpload={fileUpload}
-                        handleDelete={fileDelete}
+                        handleUpload={handleUpload}
+                        handleDelete={handleDelete}
                         handleError={handleErrorFile}
                         disabled={!editMode}
-                        filePreload={fields[index].imagen}
+                        filePreload={pasos[index].imagen}
                         index={index}
                       />
                     </div>

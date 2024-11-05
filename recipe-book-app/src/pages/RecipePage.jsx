@@ -1,15 +1,22 @@
+import { useParams } from "react-router-dom"
 import RecipeForm from "../components/recipe-form/RecipeForm"
 import { useContextNotification } from "../providers/NotificationProvider"
-
 import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
-import { useParams } from "react-router-dom"
+import { useContextUser } from "../providers/UserProvider"
+import { useEffect } from "react"
 
 const RecipePage = () => {
   const { id } = useParams()
-  // console.log(id)
+  console.log(id)
+  const { user } = useContextUser()
   const { addNotification } = useContextNotification()
-  const { loading, recipe, updateRecipe, deleteRecipe } = useRecipe(id)
+  const { loading, recipe, notify, updateRecipe, deleteRecipe, patchRecipe } = useRecipe(id, user.usuario)
+
+  useEffect(() => {
+    addNotification(notify)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notify])
 
   return (
     <>
@@ -25,6 +32,7 @@ const RecipePage = () => {
                 data={recipe}
                 handleSave={updateRecipe}
                 handleDelete={deleteRecipe}
+                handlePatch={patchRecipe}
               />
             ) : (
               <Loader />
