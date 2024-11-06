@@ -33,7 +33,7 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
           </div>
         )}
       </div>
-      <h3 className='mt-2 text-lg text-gray-700'>{recipe.titulo}</h3>
+      <h3 className='mt-2 text-lg text-gray-700'>{recipe.titulo !== "" ? recipe.titulo : 'Sin tittulo'}</h3>
       <div className='grid grid-cols-2'>
         <p className='flex flex-row items-center gap-1'>
           <HeartIcon className='h-5 w-5' /> me gusta
