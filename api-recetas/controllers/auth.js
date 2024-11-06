@@ -8,8 +8,8 @@ import models from "../models/index.js"
 
 const login = async (req, res) => {
   try {
-    req = matchedData(req)
-    const { usuario, contrasena } = req
+    const body = matchedData(req)
+    const { usuario, contrasena } = body
     const result = await models.Usuario.getUsuarioByUserwPass(usuario)
     console.log(result)
     if (!result) {
@@ -41,8 +41,8 @@ const login = async (req, res) => {
 
 const registro = async (req, res) => {
   try {
-    req = matchedData(req)
-    const { nombres, apellidos, usuario, contrasena, mail } = req
+    const body = matchedData(req)
+    const { nombres, apellidos, usuario, contrasena, mail } = body
     const contraHash = await encrypt(contrasena)
     const result = await sequelize.transaction(async (t) => {
       const { id } = await models.Usuario.create(
