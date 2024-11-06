@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import useLogin from "../hooks/useLogin"
 import loginSchema from "../utils/LoginResolver"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
+import { Link } from "react-router-dom"
+import NavigationRoutes from "../utils/NavigationRoutes"
 
 const LoginPage = () => {
   const [show, setShow] = useState(true)
@@ -47,12 +49,14 @@ const LoginPage = () => {
               className='focus:outline-none text-lg mt-4 font-medium leading-none text-gray-500 text-center'
             >
               Aún no tienes una cuenta?{" "}
-              <a
-                href='#asd'
+              <Link
+                to={`${NavigationRoutes.Register}`}
+                title="Registrate"
+                aria-label="Registrate"
                 className='hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-lg font-medium leading-none  text-gray-800 cursor-pointer'
               >
                 Registrate aquí
-              </a>
+              </Link>
             </p>
             <button
               aria-label='Continue with google'
@@ -104,7 +108,7 @@ const LoginPage = () => {
                 <input
                   id='username'
                   type='text'
-                  className='bg-gray-200 border rounded text-lg font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
+                  className='bg-gray-200 border rounded-xl text-lg font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
                   {...register("username")}
                   aria-invalid={errors.username ? "true" : "false"}
                 />
@@ -123,7 +127,7 @@ const LoginPage = () => {
                   <input
                     id='password'
                     type={show ? "password" : "text"}
-                    className='bg-gray-200 border rounded text-lg font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
+                    className='bg-gray-200 border rounded-xl text-lg font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2'
                     {...register("password")}
                   />
                   <div className='absolute right-0 mt-3 mr-3 cursor-pointer'>
@@ -144,7 +148,7 @@ const LoginPage = () => {
                 <button
                   type='submit'
                   disabled={loading}
-                  className={`${loading ? 'hover:cursor-not-allowedr bg-gray-600' : 'bg-orange-600 hover:bg-orange-500'} focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none border rounded  py-4 w-full`}
+                  className={`${loading ? 'hover:cursor-not-allowedr bg-gray-600' : 'bg-orange-600 hover:bg-orange-500'} focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none border rounded-xl py-4 w-full`}
                 >
                   Iniciar Sesión
                 </button>
