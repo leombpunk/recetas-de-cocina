@@ -77,18 +77,18 @@ const Header = () => {
                       className='w-full'
                       onSubmit={(e) => handleSubmitSearch(e)}
                     >
-                      <div className='relative rounded-md shadow-sm'>
+                      <div className='relative rounded-md shadow-sm overflow-hidden'>
                         <input
                           type='search'
                           name='searchBar'
                           id='searchBar'
-                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-20 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 text-base sm:leading-6'
+                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-12 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 text-base sm:leading-6'
                           placeholder='Buscar recetas'
                           onChange={(event) => setSearch(event.target.value)}
                         />
                         <button
                           type='submit'
-                          className='absolute inset-y-0 right-2 text-gray-600 flex items-center'
+                          className='absolute inset-y-0 right-2 text-gray-600 flex items-center p-2'
                         >
                           <MagnifyingGlassIcon className='w-5 h-5 ' />
                         </button>
