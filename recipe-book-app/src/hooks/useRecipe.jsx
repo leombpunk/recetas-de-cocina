@@ -113,7 +113,8 @@ const useRecipe = (recetaId, username) => {
       const result = await RecipesServices.deleteRecipe(recipe.id)
       console.log({ delete: result })
       if (result) {
-        setRecipe(null)
+        setRecipe(undefined)
+        setNotify({ message: "Receta eliminada", type: "success" })
       }
     } catch (error) {
       console.log(error)

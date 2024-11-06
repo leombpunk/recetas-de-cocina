@@ -1,14 +1,16 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import RecipeForm from "../components/recipe-form/RecipeForm"
 import { useContextNotification } from "../providers/NotificationProvider"
 import useRecipe from "../hooks/useRecipe"
 import Loader from "../components/loader/Loader"
 import { useContextUser } from "../providers/UserProvider"
 import { useEffect } from "react"
+import NavigationRoutes from "../utils/NavigationRoutes"
 
 const RecipePage = () => {
   const { id } = useParams()
   console.log(id)
+  const navigate = useNavigate()
   const { user } = useContextUser()
   const { addNotification } = useContextNotification()
   const { loading, recipe, notify, updateRecipe, deleteRecipe, patchRecipe } = useRecipe(id, user.usuario)
@@ -17,6 +19,14 @@ const RecipePage = () => {
     addNotification(notify)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notify])
+
+  useEffect(() => {
+    if (recipe === undefined) {
+      console.log("la receta es nula")
+      navigate(NavigationRoutes.Recipes)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[recipe])
 
   return (
     <>
