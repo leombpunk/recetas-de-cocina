@@ -25,10 +25,12 @@ import {
   faInstagram,
   faXTwitter,
   faLinkedin,
+  faReddit,
+  faTelegram,
 } from "@fortawesome/free-brands-svg-icons"
 import { faEnvelope, faLink } from "@fortawesome/free-solid-svg-icons"
 
-library.add(faFacebook, faWhatsapp, faInstagram, faXTwitter, faEnvelope, faLink, faLinkedin)
+library.add(faFacebook, faWhatsapp, faInstagram, faXTwitter, faEnvelope, faLink, faLinkedin, faReddit, faTelegram)
 
 const App = () => {
   return (

@@ -25,6 +25,16 @@ import useSaves from "../hooks/useSaves"
 import Comments from "../components/comments/Comments"
 import NavigationRoutes from "../utils/NavigationRoutes"
 
+const redirectURLs = {
+  facebook:'https://www.facebook.com/sharer/sharer.php?u=', //url
+  equis:'https://twitter.com/intent/tweet?url=', //url &text= para agregar un mensaje personalizado
+  reddit:'https://www.reddit.com/submit?url=', //url
+  mailto:'mailto:?subject=¡Mira%20esta%20receta!&body=', //body el mensaje en cuestion
+  whatsapp:'https://wa.me/?text=', //texto/mensaje
+  linkedin:'https://www.linkedin.com/shareArticle?mini=true&url=', //url
+  telegram:'https://t.me/share/url?url=', //url &text= para agregar un mensaje personalizado
+}
+
 const RecipePublicPage = () => {
   const [openModal, setOpenModal] = useState(false)
   const [openModalShare, setOpenModalShare] = useState(false)
@@ -95,6 +105,13 @@ const RecipePublicPage = () => {
   const onClickShared = () => {
     setOpenModalShare(true)
     console.log(openModalShare)
+  }
+
+  const copyToClipboard = (event) => {
+    event.preventDefault()
+    // console.log(window.location.href)
+    navigator.clipboard.writeText(window.location.href)
+    addNotification({ message: "Enlace copiado al portapapeles", type: "info" })
   }
 
   return (
@@ -296,28 +313,31 @@ const RecipePublicPage = () => {
               <>
                 <div className="mt-6">
                   <h2 className="text-2xl font-semibold text-center">Comparte en tus redes 🥰</h2>
-                  <div className="flex flex-row items-center justify-center gap-6 w-full my-8">
-                    <button type="button" className="group">
+                  <div className="grid grid-cols-5 items-center justify-center gap-6 w-full my-8">
+                    <button type="button" className="group" title="Copiar en portapapeles" onClick={(e) => copyToClipboard(e)}>
+                      <FontAwesomeIcon icon="fa-solid fa-link" size="3x" className="group-hover:scale-105 duration-300 text-gray-800" />
+                    </button>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.facebook}${window.location.href}`}>
                       <FontAwesomeIcon icon="fa-brands fa-facebook" size="3x" className="group-hover:scale-105 duration-300 text-blue-700" />
-                    </button>
-                    <button type="button" className="group">
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.whatsapp}${window.location.href}`}>
+                      <FontAwesomeIcon icon="fa-brands fa-whatsapp" size="3x" className="group-hover:scale-105 duration-300 text-green-500" />
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.telegram}${window.location.href}`}>
+                      <FontAwesomeIcon icon="fa-brands fa-telegram" size="3x" className="group-hover:scale-105 duration-300 text-sky-500" />
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.reddit}${window.location.href}`}>
+                      <FontAwesomeIcon icon="fa-brands fa-reddit" size="3x" className="group-hover:scale-105 duration-300 text-orange-600" />
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.equis}${window.location.href}`}>
                       <FontAwesomeIcon icon="fa-brands fa-x-twitter" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
-                    <button type="button" className="group">
-                      <FontAwesomeIcon icon="fa-brands fa-instagram" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
-                    <button type="button" className="group">
-                      <FontAwesomeIcon icon="fa-brands fa-whatsapp" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
-                    <button type="button" className="group">
-                      <FontAwesomeIcon icon="fa-brands fa-linkedin" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
-                    <button type="button" className="group">
-                      <FontAwesomeIcon icon="fa-solid fa-envelope" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
-                    <button type="button" className="group">
-                      <FontAwesomeIcon icon="fa-solid fa-link" size="3x" className="group-hover:scale-105 duration-300" />
-                    </button>
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.linkedin}${window.location.href}`}>
+                      <FontAwesomeIcon icon="fa-brands fa-linkedin" size="3x" className="group-hover:scale-105 duration-300 text-blue-800" />
+                    </Link>
+                    <Link className="group" target="_blank" title="" to={`${redirectURLs.mailto}${window.location.href}`}>
+                      <FontAwesomeIcon icon="fa-solid fa-envelope" size="3x" className="group-hover:scale-105 duration-300 text-gray-700" />
+                    </Link>
                   </div>
                 </div>
               </>
