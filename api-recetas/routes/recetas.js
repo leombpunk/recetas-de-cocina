@@ -22,17 +22,10 @@ import { checkReceta } from "../middlewares/receta.js"
 const router = Router()
 
 //endpoint recetas publicas
-//getall
-router.get("/public", getAllRecetasPublic) //filtros aplicados y paginado también
-//get
+router.get("/public", getAllRecetasPublic) //filtros aplicados y paginado también //agregar que también filtre por ingredientes 
 router.get("/public/:id", getRecetaPublic)
-// router.get('/public/:id', getFullRecetaById) //retorna una receta segun su ID
-//este endpoint es ambiguo porque el endpoint de arriba ya filtra por nombre de usuario
-// router.get('/public/usuario/:nombreUsuario', getRecetasByUsername) //nombreUsuario = usuario -> retorna la lista de recetas de un usuario especifico
 
 //endpoint recetas con control de token
-//getAll by username
-//get by username
 router.get("/", checkAuth, getAllRecetas) //trae las recetas del usuario logeado
 router.get("/:id", checkAuth, getReceta) //trae la receta segun id del usuario loagado
 
