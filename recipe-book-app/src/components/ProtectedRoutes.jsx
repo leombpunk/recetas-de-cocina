@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useContextUser } from "../providers/UserProvider"
 import { useContextNotification } from "../providers/NotificationProvider"
@@ -12,6 +12,7 @@ const protectedLocations = [
 ]
 
 const ProtectedRoutes = () => {
+  const [count, setCoutn] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
   const { user, handleInitUserProvider } = useContextUser()
@@ -31,7 +32,12 @@ const ProtectedRoutes = () => {
       }
     }
     else {
-      if (protectedLocations.includes(location.pathname) & !user) {
+      //crear otreo useEffect y mover esta lógica
+      //cada vez que la location cambie que verifique
+      //que no sea una ruta protegida o login/registro
+      //y le niege el acceso dependiendo de si el estado
+      //usuario tiene algo guardado
+      if (protectedLocations.includes(location.pathname) && !user) {
         //revisar porque usuario es null
         console.log({ protected: user })
         navigate(NavigationRoutes.Home)
@@ -39,9 +45,11 @@ const ProtectedRoutes = () => {
       }
     }
   }
-
+  console.log({count})
   useEffect(() => {
     check()
+    setCoutn(count => count +1)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   //no se si se arregló
