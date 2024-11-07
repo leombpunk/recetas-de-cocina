@@ -80,7 +80,7 @@ const RecipeContainer = ({ title }) => {
       {loading ? (
         <Loader />
       ) : (
-        <div className='bg-orange-300'>
+        <div className='bg-orange-300 min-h-[60svh]'>
           <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             <div className='sticky top-0 z-10 flex flex-row items-center bg-orange-300 py-4'>
               <h2 className='w-full text-3xl font-bold tracking-tight text-gray-900'>
