@@ -1,4 +1,5 @@
 import home from '../assets/images/vecteezy_ai-generated-cartoon-chef-with-thumbs-up-suitable-for-food_41642037.png'
+
 const HomePage = () => {
   return (
     <>

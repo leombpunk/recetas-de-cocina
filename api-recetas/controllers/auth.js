@@ -1,5 +1,4 @@
 import { matchedData } from "express-validator"
-import { sequelize } from "../config/mysql.js"
 import { httpError } from "../helpers/handleErrors.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { tokenSign, verifyToken } from "../helpers/generateToken.js"
@@ -20,17 +19,13 @@ const login = async (req, res) => {
     const checkPass = await compare(contrasena, result.contrasena)
     if (checkPass) {
       const token = await tokenSign(result)
-      const status = 200
-      const message = ""
       delete result.dataValues.id
       delete result.dataValues.contrasena
       const data = { ...result.dataValues, token: token }
-      handleResponse(res, status, message, data)
+      handleResponse(res, 200, "", data)
       return
     } else {
-      const status = 404
-      const message = "Credentials not valid"
-      handleResponse(res, status, message)
+      handleResponse(res, 404, "Usuario o contrasseña no válidos")
       return
     }
   } catch (error) {
@@ -41,22 +36,35 @@ const login = async (req, res) => {
 
 const registro = async (req, res) => {
   try {
+    const today = new Date()
     const body = matchedData(req)
-    const { nombres, apellidos, usuario, contrasena, mail } = body
+    const { usuario, contrasena, mail } = body
     const contraHash = await encrypt(contrasena)
-    const result = await sequelize.transaction(async (t) => {
-      const { id } = await models.Usuario.create(
-        { nombres, apellidos, usuario, contrasena: contraHash, mail },
-        { transaction: t }
-      )
-      return await models.Usuario.findOne({ where: { id: id } })
+
+    const user = await models.Usuario.create({
+      nombres: "",
+      apellidos: "",
+      usuario,
+      contrasena: contraHash,
+      mail,
+      createAt: today.toISOString(),
     })
-    const status = 201
-    const message = "User registrer done"
-    const data = result
-    handleResponse(res, status, message, data)
+
+    if (user) {
+      const token = await tokenSign(user)
+      delete user.dataValues.id
+      delete user.dataValues.contrasena
+      const data = { ...user.dataValues, token: token }
+      handleResponse(res, 201, "Usuario registrado correctamente", data)
+      return
+
+    } else {
+      handleResponse(res, 400, "Ha ocurrido un problema al crear el usuario, intentalo mas tarde", user)
+      return
+    }
   } catch (error) {
     httpError(res, error)
+    return
   }
 }
 
@@ -68,7 +76,7 @@ const refreshUserData = async (req, res) => {
     const tokenData = await verifyToken(token)
 
     const result = await models.Usuario.findOne({
-      where: { id: tokenData.id, /*usuario: tokenData.usuario*/ }, //si actualizo el nombre de usuario de un perfil el where no encontrará al usuario
+      where: { id: tokenData.id /*usuario: tokenData.usuario*/ }, //si actualizo el nombre de usuario de un perfil el where no encontrará al usuario
     })
     console.log(result)
     if (!result) {

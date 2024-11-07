@@ -5,7 +5,7 @@ import { checkAuth } from '../middlewares/auth.js'
 
 const router = Router()
 
-router.post('/login', validateAuth, login) //TESTEADO
+router.post('/login', validateAuth, login)
 router.post('/registro', validateRegistro, registro) //TESTEAR ENDPOINT
 router.post('/verifyToken', checkAuth, refreshUserData) //verficar si el token no expiro y si el usuario existe
 // router.post('/logout') //ELIMINAR

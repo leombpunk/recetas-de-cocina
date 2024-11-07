@@ -19,7 +19,7 @@ const validateRegistro = [
     check('usuario')
         .exists()
         .not().isEmpty()
-        .isLength({ min:8, max:16 }),
+        .isLength({ min:6, max:16 }),
     check('contrasena')
         .exists()
         .not().isEmpty()
