@@ -15,6 +15,7 @@ import {
   RegisterPage,
   SearchPage,
   RecipePublicPage,
+  FavoritesPage,
 } from "./pages/index"
 import ProtectedRoutes from "./components/ProtectedRoutes"
 //iconos fontawesome
@@ -30,7 +31,17 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import { faEnvelope, faLink } from "@fortawesome/free-solid-svg-icons"
 
-library.add(faFacebook, faWhatsapp, faInstagram, faXTwitter, faEnvelope, faLink, faLinkedin, faReddit, faTelegram)
+library.add(
+  faFacebook,
+  faWhatsapp,
+  faInstagram,
+  faXTwitter,
+  faEnvelope,
+  faLink,
+  faLinkedin,
+  faReddit,
+  faTelegram
+)
 
 const App = () => {
   return (
@@ -49,6 +60,10 @@ const App = () => {
                 <Route
                   path={NavigationRoutes.Profile}
                   element={<ProfilePage />}
+                />
+                <Route
+                  path={NavigationRoutes.Favorites}
+                  element={<FavoritesPage />}
                 />
                 <Route
                   path={NavigationRoutes.RecipeCreate}

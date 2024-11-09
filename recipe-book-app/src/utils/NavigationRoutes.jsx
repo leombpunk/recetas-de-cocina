@@ -9,6 +9,7 @@ const NavigationRoutes = {
     Notifications: '/notifications',
     Search: '/search',
     SearchRecipe: '/search/recipe/:id',
+    Favorites: '/favorites',
 }
 
 export default NavigationRoutes

@@ -22,7 +22,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
-const filterSearch = ["/recipes","/recipe"]
+const filterSearch = ["/recipes","/recipe","/favorites"]
 
 const Header = () => {
   const [search, setSearch] = useState("")
@@ -194,7 +194,7 @@ const Header = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              to={NavigationRoutes.Recipes}
+                              to={NavigationRoutes.Favorites}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"

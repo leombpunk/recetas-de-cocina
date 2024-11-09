@@ -50,6 +50,7 @@ const RecipeContainerPublic = () => {
     // console.log(data)
     // filters.setSearch(data.search)
     filters.setOrder(data.order)
+    filters.setPage(1)
   }
 
   const handleClickBadge = (event) => {

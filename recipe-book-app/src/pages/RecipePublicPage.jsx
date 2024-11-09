@@ -99,7 +99,7 @@ const RecipePublicPage = () => {
   }
 
   const onClickSave = () => {
-    user ? handleClickSave() : setOpenModal(true)
+    user ? handleClickSave(id) : setOpenModal(true)
   }
 
   const onClickShared = () => {
