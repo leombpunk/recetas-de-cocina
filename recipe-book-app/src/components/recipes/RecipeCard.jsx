@@ -3,9 +3,14 @@ import { RoutesAPI } from "../../utils/RoutesAPI"
 import { PhotoIcon } from "@heroicons/react/20/solid"
 import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline"
 import { useContextUser } from "../../providers/UserProvider"
+import useLikes from "../../hooks/useLikes"
 
 const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
   const { user } = useContextUser()
+  //agregado contador de likes
+  const { count } = useLikes(recipe.id)
+  //agregar contador de comentarios + respuestas
+  // --> aquí
   return (
     <Link
       to={`${linkActive ? `${navigation}/${recipe.id}` : "#"}`}
@@ -33,10 +38,12 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
           </div>
         )}
       </div>
-      <h3 className='mt-2 text-lg text-gray-700'>{recipe.titulo !== "" ? recipe.titulo : 'Sin tittulo'}</h3>
+      <h3 className='mt-2 text-lg text-gray-700'>
+        {recipe.titulo !== "" ? recipe.titulo : "Sin tittulo"}
+      </h3>
       <div className='grid grid-cols-2'>
         <p className='flex flex-row items-center gap-1'>
-          <HeartIcon className='h-5 w-5' /> me gusta
+          <HeartIcon className='h-5 w-5' /> {count}
         </p>
         <p className='flex flex-row items-center gap-1'>
           <ChatBubbleOvalLeftIcon className='h-5 w-5' /> comentarios

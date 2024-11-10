@@ -35,9 +35,7 @@ const getLikesDetails = async (req, res) => {
       res,
       200,
       `Usuarios que dieron like a la receta con id: ${id}`,
-      {
-        users: usuarios,
-      }
+      usuarios
     )
     return
   } catch (error) {

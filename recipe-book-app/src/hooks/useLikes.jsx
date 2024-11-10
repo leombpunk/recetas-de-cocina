@@ -4,7 +4,7 @@ import LikeServices from "../services/Likes"
 const useLikes = (id) => {
   const [loading, setLoading] = useState(true)
   const [count, setCount] = useState(0)
-  const [likes, setLikes] = useState({})
+  const [likes, setLikes] = useState([])
   const [errors, setErrors] = useState([])
   const [update, setUpdate] = useState(false)
   const [liked, setLiked] = useState(false)
@@ -36,6 +36,7 @@ const useLikes = (id) => {
     try {
       setLoading(true)
       const result = await LikeServices.getLikesDetails(id)
+      console.log(result)
       if (result.status === 200) {
         setLikes(result.data.data)
       } else {

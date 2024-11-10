@@ -72,7 +72,7 @@ const RecipeContainer = ({ title }) => {
     setEditMode(!editMode)
   }
 
-  // console.log({ recetas: recipes })
+  console.log({ recetas: recipes })
 
   // console.log({ form: formShared.getValues() })
 

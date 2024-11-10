@@ -10,14 +10,19 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline"
+import { ChatBubbleLeftRightIcon, HeartIcon } from "@heroicons/react/24/solid"
+import { useContextNotification } from "../../providers/NotificationProvider"
+import { getRecipeLocal, saveRecipeLocal } from "../../utils/RecipeLocal"
+import useFiles from "../../hooks/useFiles"
+import useLikes from "../../hooks/useLikes"
+import CustomModal from "../modals/CustomModal"
 import IngredientsList from "../dragableLists/IngredientsList"
 import StepsList from "../dragableLists/StepsList"
 import Dropzone from "../../components/dropzone/Dropzone"
-import useFiles from "../../hooks/useFiles"
-import { getRecipeLocal, saveRecipeLocal } from "../../utils/RecipeLocal"
+import LikesDrawer from "../drawers/LikesDrawer"
+import CommentsDrawer from "../drawers/CommentsDrawer"
 import recipeSchema from "../../utils/RecipeResolver"
-import { useContextNotification } from "../../providers/NotificationProvider"
-import CustomModal from "../modals/CustomModal"
+import useComments from "../../hooks/useComments"
 
 const RecipeForm = ({
   title = "",
@@ -33,10 +38,23 @@ const RecipeForm = ({
   const [pasosImg, setPasosImg] = useState(null)
   const { addNotification } = useContextNotification()
   const [openModal, setOpenModal] = useState(false)
+  const [openLikes, setOpenLikes] = useState(false)
+  const [openComments, setOpenComments] = useState(false)
   const [confirm, setConfirm] = useState(false)
   const [cancel, setCancel] = useState(false)
 
-  // console.log({ data: data })
+  /*likes*/
+  const {
+    loading: likeLoading,
+    errors: likeErrors,
+    count,
+    getLikesDetails,
+    likes,
+  } = useLikes(data.id)
+
+  const { loading, comments, deleteComment } = useComments(data.id)
+
+  console.log({ data: data })
 
   const {
     control,
@@ -45,7 +63,6 @@ const RecipeForm = ({
     handleSubmit,
     getValues,
     setValue,
-    // setError,
     reset,
     watch,
   } = useForm({
@@ -76,12 +93,27 @@ const RecipeForm = ({
     resolver: yupResolver(recipeSchema),
   })
 
+  const onClickBtnLikes = (event) => {
+    event.preventDefault()
+    getLikesDetails()
+    setOpenLikes(true)
+  }
+
+  const onClickBtnComments = (event) => {
+    event.preventDefault()
+    // getLikesDetails()
+    setOpenComments(true)
+  }
+
   //cada vez que cambie el form se podria mandar al back, validar y guardar
   //o en todo caso crear una arrowfunction que cada vez que el usuario
   //realiza un focusout (onBlur) en el formulario de receta, si es diferente
   //a lo guardado en localStorage lo actualiza y replica en el back, si no
   //pues naa
-  const [imagen, pasos] = useWatch({ control: control, name:["imagen","pasos"] }) // only re-render at the custom hook level, when firstName changes
+  const [imagen, pasos] = useWatch({
+    control: control,
+    name: ["imagen", "pasos"],
+  }) // only re-render at the custom hook level, when firstName changes
 
   console.log([imagen, pasos])
 
@@ -106,31 +138,6 @@ const RecipeForm = ({
       return result
     }
   }
-
-  //pasarle estos dos metodos al componente stepsList
-  // const handleUploadFileSteps = async (file, index) => {
-  //   console.log({ i: index, f: file })
-  //   if (file) {
-  //     const recipe = getRecipeLocal()
-  //     const result = await uploadFiles(data.id, file)
-  //     console.log(result)
-  //     setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
-  //     saveRecipeLocal(watch())
-  //     return result
-  //   }
-  // }
-
-  // const handleDeleteFilesSteps = async (filename, index) => {
-  //   console.log({ i: index, f: filename })
-  //   if (filename) {
-  //     const recipe = getRecipeLocal()
-  //     const result = await deleteFiles(data.id, filename)
-  //     console.log(result)
-  //     setValue(`pasos.${index}.imagen`, "")
-  //     saveRecipeLocal(watch())
-  //     return result
-  //   }
-  // }
 
   //que mierda hace esto?
   //recibe un mensaje, tipo y detalle para mostrar una notificacion al usuario
@@ -198,9 +205,8 @@ const RecipeForm = ({
 
   //para ocupar el patch de imagen de portada y pasos
   useState(() => {
-    
-
-  },[imagen, pasos])
+    //equisde
+  }, [imagen, pasos])
 
   return (
     <>
@@ -215,47 +221,68 @@ const RecipeForm = ({
           <h3 className='flex flex-row items-center gap-1 text-3xl font-semibold'>
             <BookOpenIcon className='h-7 w-7' /> {title}
           </h3>
-          <div className='flex flex-row items-center gap-2'>
-            <button
-              style={{ display: `${!editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
-              type='submit'
-              title='Guardar receta'
-              onClick={(e) => handleClickSaveBtn(e)}
-            >
-              <CheckIcon className='h-7 w-7' />
-            </button>
-            <button
-              style={{ display: `${editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
-              type='button'
-              title='Editar receta'
-              onClick={(e) => handleClickEditBtn(e)}
-            >
-              <PencilSquareIcon className='h-7 w-7' />
-            </button>
-            <button
-              style={{ display: `${!editMode ? "none" : ""}` }}
-              className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
-              type='button'
-              title='Cancelar acción'
-              onClick={(e) => handleClickCancelBtn(e)}
-            >
-              <NoSymbolIcon className='h-7 w-7' />
-            </button>
-            <button
-              disabled={editMode}
-              className={`${
-                editMode
-                  ? "bg-gray-500 hover:cursor-not-allowed"
-                  : "bg-orange-500 hover:scale-105"
-              } rounded-lg p-1.5 shadow-md hover:shadow-black/50 duration-500`}
-              type='button'
-              title='Borrar receta'
-              onClick={(e) => handleClickDeleteBtn(e)}
-            >
-              <TrashIcon className='h-7 w-7' />
-            </button>
+          <div className='flex flex-col md:flex-row items-center gap-2'>
+            <div className='flex flex-row items-center gap-2'>
+              <button
+                style={{ display: `${!editMode ? "none" : ""}` }}
+                className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
+                type='submit'
+                title='Guardar receta'
+                onClick={(e) => handleClickSaveBtn(e)}
+              >
+                <CheckIcon className='h-7 w-7' />
+              </button>
+              <button
+                style={{ display: `${editMode ? "none" : ""}` }}
+                className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
+                type='button'
+                title='Editar receta'
+                onClick={(e) => handleClickEditBtn(e)}
+              >
+                <PencilSquareIcon className='h-7 w-7' />
+              </button>
+              <button
+                style={{ display: `${!editMode ? "none" : ""}` }}
+                className='bg-orange-500 rounded-lg p-1.5 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
+                type='button'
+                title='Cancelar acción'
+                onClick={(e) => handleClickCancelBtn(e)}
+              >
+                <NoSymbolIcon className='h-7 w-7' />
+              </button>
+              <button
+                disabled={editMode}
+                className={`${
+                  editMode
+                    ? "bg-gray-500 hover:cursor-not-allowed"
+                    : "bg-orange-500 hover:scale-105"
+                } rounded-lg p-1.5 shadow-md hover:shadow-black/50 duration-500`}
+                type='button'
+                title='Borrar receta'
+                onClick={(e) => handleClickDeleteBtn(e)}
+              >
+                <TrashIcon className='h-7 w-7' />
+              </button>
+            </div>
+            <div className='flex flex-row items-center gap-2'>
+              <button
+                title='Likes'
+                type='button'
+                className='flex flex-row items-center gap-2 text-xl font-medium bg-orange-500 rounded-lg py-1.5 px-2 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
+                onClick={(e) => onClickBtnLikes(e)}
+              >
+                <HeartIcon className='h-7 w-7' /> {count}
+              </button>
+              <button
+                title='Comentarios'
+                type='button'
+                className='flex flex-row items-center gap-2 text-xl font-medium bg-orange-500 rounded-lg py-1.5 px-2 shadow-md hover:shadow-black/50 hover:scale-105 duration-500'
+                onClick={(e) => onClickBtnComments(e)}
+              >
+                <ChatBubbleLeftRightIcon className='h-7 w-7' />{" "}
+                {comments.length}
+              </button>
+            </div>
           </div>
         </div>
         <div className='bg-orange-200 rounded-lg mt-4'>
@@ -371,7 +398,7 @@ const RecipeForm = ({
             />
             <StepsList
               recipeId={data.id}
-              formData={{control, register, errors, setValue}}
+              formData={{ control, register, errors, setValue }}
               // control={control}
               // register={register}
               // errors={errors}
@@ -398,6 +425,19 @@ const RecipeForm = ({
           </p>
         </div>
       </CustomModal>
+      <LikesDrawer
+        open={openLikes}
+        setOpen={setOpenLikes}
+        loading={likeLoading}
+        likes={likes}
+      />
+      <CommentsDrawer
+        open={openComments}
+        setOpen={setOpenComments}
+        comments={comments}
+        deleteComment={deleteComment}
+        loading={loading}
+      />
     </>
   )
 }

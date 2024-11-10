@@ -39,13 +39,15 @@ const ProtectedRoutes = () => {
       //usuario tiene algo guardado
       if (protectedLocations.includes(location.pathname) && !user) {
         //revisar porque usuario es null
-        console.log({ protected: user })
+        // console.log({ protected: user })
         navigate(NavigationRoutes.Home)
         // return <Navigate to={NavigationRoutes.Home} replace />
       }
     }
   }
-  console.log({count})
+
+  // console.log({count})
+  
   useEffect(() => {
     check()
     setCoutn(count => count +1)
