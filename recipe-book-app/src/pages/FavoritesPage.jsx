@@ -27,12 +27,15 @@ const FavoritesPage = () => {
     setOrder,
     setPage,
     // setReload,
-    setSearch, totalPages, totalRows, page,
+    setSearch,
+    totalPages,
+    totalRows,
+    page,
   } = useSaves()
   // eslint-disable-next-line no-unused-vars
   const [editMode, setEditMode] = useState(false)
   const { register, reset, handleSubmit } = useForm({
-    defaultValues: {},
+    defaultValues: { search: "", sortby: "", order: "" },
   })
 
   // const handleClickEditMode = () => {
@@ -49,10 +52,13 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     if (errors.length) {
-      addNotification({ message: "Se produjo un error, intentelo de nuevo", type: "error" })
+      addNotification({
+        message: "Se produjo un error, intentelo de nuevo",
+        type: "error",
+      })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[errors])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors])
 
   return (
     <main className='bg-orange-300 min-h-[60svh]'>
@@ -126,11 +132,21 @@ const FavoritesPage = () => {
                       {...register("search")}
                     />
                     <select
-                      {...register("order")}
-                      className='rounded-lg text-gray-500 w-full'
+                      {...register("sortby")}
+                      className='rounded-lg text-gray-500'
                     >
-                      <option value={"ASC"} defaultValue>
-                        Ordenar por fecha
+                      <option value={""} defaultValue>
+                        Ordenar por
+                      </option>
+                      <option value={"titulo"}>Titulo</option>
+                      <option value={"createAt"}>Fecha de guardado</option>
+                    </select>
+                    <select
+                      {...register("order")}
+                      className='rounded-lg text-gray-500'
+                    >
+                      <option value={""} defaultValue>
+                        Ordenar
                       </option>
                       <option value={"ASC"}>Ascendente</option>
                       <option value={"DESC"}>Descendente</option>
@@ -161,15 +177,17 @@ const FavoritesPage = () => {
           </div>
         </div>
         <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-1'>
-          {fetch ? <Loader /> : recipes.length ? (
-                recipes.map((recipe, index) => (
-                  <RecipeCard
-                    recipe={recipe.receta}
-                    key={`recipe-card-${index}`}
-                    navigation={NavigationRoutes.Recipes}
-                    linkActive={!editMode}
-                  >
-                    {/* <div
+          {fetch ? (
+            <Loader />
+          ) : recipes.length ? (
+            recipes.map((recipe, index) => (
+              <RecipeCard
+                recipe={recipe.receta}
+                key={`recipe-card-${index}`}
+                navigation={NavigationRoutes.Recipes}
+                linkActive={!editMode}
+              >
+                {/* <div
                       className={`checkbox-wrapper-18 ${
                         editMode ? "" : "hidden"
                       }`}
@@ -187,11 +205,11 @@ const FavoritesPage = () => {
                         {formShared.setValue(`recetas.${index}.visibilidad`,recipe.visibilidad)}
                       </div>
                     </div> */}
-                  </RecipeCard>
-                ))
-              ) : (
-                <div>Sin resultados</div>
-              )}
+              </RecipeCard>
+            ))
+          ) : (
+            <div>Sin resultados</div>
+          )}
         </div>
         <Pagination
           page={page}

@@ -5,18 +5,21 @@ import models from "../models/index.js"
 import { Op } from "sequelize"
 import { sequelize } from "../config/mysql.js"
 
+const sortedOption = ["titulo", "createAt"]
+const orderOption = ["ASC", "DESC"]
+
 const getAllSaves = async (req, res) => {
   try {
     //paginado y filtro para busquedas
     //pero primero la consulta normal
-    const { search, page, order, saved } = req.query
+    const { search, page, order, sortby } = req.query
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const limit = 10
     const offset = limit * (page ? page - 1 : 0)
     const orderOptions = [
-      ["createAt", order ? order : "ASC"], //para ordenar por fecha asc o desc
-      [sequelize.col("receta.titulo"), "ASC"], //ASC a-z DESC z-a
+      sortedOption.includes(sortby) && orderOption.includes(order) ? [sequelize.literal(sortby), order] : ["createAt", "DESC"], //para ordenar por fecha asc o desc
+      // [sequelize.col("receta.titulo"), "ASC"], //ASC a-z DESC z-a
     ]
     const { count, rows } = await models.SaveRecipe.findAndCountAll({
       include: [

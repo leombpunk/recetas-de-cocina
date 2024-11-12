@@ -10,7 +10,8 @@ const useSaves = () => {
   const [recipes, setRecipes] = useState([])
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
-  const [order, setOrder] = useState("ASC") //ordenar por fecha asc/desc
+  const [order, setOrder] = useState("") //ordenar por fecha asc/desc
+  const [sortby, setsortBy] = useState("")
   const [totalPages, setTotalPages] = useState(0)
   const [totalRows, setTotalRows] = useState(0)
   const [reload, setReload] = useState(false)
@@ -21,7 +22,8 @@ const useSaves = () => {
       const result = await SaveRecipeServices.getAllSavesRecipes(
         search,
         page,
-        order
+        order,
+        sortby
       )
       console.log(result)
       if (result.status === 200) {
@@ -79,7 +81,7 @@ const useSaves = () => {
   useEffect(() => {
     fetchSaves()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload, search, page, order])
+  }, [reload, search, page, order, sortby])
 
   return {
     loading,
@@ -87,12 +89,14 @@ const useSaves = () => {
     save,
     fetch,
     search,
+    sortby,
     page,
     recipes,
     totalPages,
     totalRows,
     setReload,
     setPage,
+    setsortBy,
     setOrder,
     setSearch,
     setSave,
