@@ -3,8 +3,8 @@ import { RoutesAPI } from "../utils/RoutesAPI"
 import { getToken } from "../utils/Token"
 
 //servicios publicos -> sin auth
-const getRecipesPublic = async (search, page, order, username) => {
-  const url = `${RoutesAPI.recipesPublic}?search=${search}&page=${page}&order=${order}&username=${username}`
+const getRecipesPublic = async (search, page, order, username, sortby) => {
+  const url = `${RoutesAPI.recipesPublic}?search=${search}&page=${page}&order=${order}&username=${username}&sortby=${sortby}`
   const request = axios.get(url)
   return request.then((response) => response)
 }
@@ -24,14 +24,14 @@ const getRecipePublic = async (id) => {
 }
 
 //servicios privados -> con auth
-const getRecipes = async (search, page, order) => {
+const getRecipes = async (search, page, order, sortby) => {
   const token = getToken()
   const config = {
     headers: {
       Authorization: token,
     },
   }
-  const url = `${RoutesAPI.recipes}/?search=${search}&page=${page}&order=${order}`
+  const url = `${RoutesAPI.recipes}/?search=${search}&page=${page}&order=${order}&sortby=${sortby}`
   const request = axios.get(url, config)
   return request.then((response) => response)
 }

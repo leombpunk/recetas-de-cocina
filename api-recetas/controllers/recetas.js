@@ -14,10 +14,13 @@ const publicPath = join(
   "../public/images/users"
 )
 
+const sortedOption = ["titulo", "createAt", "countLikes"]
+const orderOption = ["ASC", "DESC"]
+
 //endpoints públicos
 const getAllRecetasPublic = async (req, res) => {
   try {
-    const { search, username, page, order, likes, publicated } = req.query
+    const { search, username, page, order, sortby, } = req.query
     const limit = 10
     const offset = limit * (page ? page - 1 : 0)
     const whereOptions = {
@@ -28,21 +31,36 @@ const getAllRecetasPublic = async (req, res) => {
       ],
     }
     const orderOptions = [
-      ["titulo", order ? order : "ASC"], //ASC a-z DESC z-a
-      // ["likes", likes ? likes : "ASC"],
-      // ["updateAt", publicated ? publicated : "ASC"],
+      // ["createAt", "DESC"],
+      sortedOption.includes(sortby) && orderOption.includes(order) ? [sequelize.literal(sortby), order] : ["createAt", "DESC"],
+      // ["titulo", order ? order : "ASC"], //ASC a-z DESC z-a
+      // [sequelize.literal("countLikes"), likes ? likes : "DESC"], //testear
     ]
     // console.log({ equisde: orderOptions })
 
     const { count, rows } = await models.Receta.scope(
       "publicData"
     ).findAndCountAll({
-      include: {
-        model: models.Usuario.scope("basicUserData"),
-        required: true,
-        // where: username && { usuario: username },
-      },
+      attributes: { include: [
+        "recetas.*",
+        // [sequelize.fn("COUNT", sequelize.col("likes.id")), "countLikes"],
+        [sequelize.literal(`(SELECT COUNT(*) FROM likes AS li WHERE li.idReceta = recetas.id)`), "countLikes"]
+      ]},
+      include: [
+        {
+          model: models.Usuario.scope("basicUserData"),
+          required: true,
+          // where: username && { usuario: username },
+        },
+        // con esta mierda hace cagada el ORM
+        // {
+        //   model: models.Like,
+        //   required: false,
+        //   attributes: [],
+        // },
+      ],
       where: whereOptions,
+      // group: ["recetas.id"],
       order: orderOptions,
       limit: limit,
       offset: offset,

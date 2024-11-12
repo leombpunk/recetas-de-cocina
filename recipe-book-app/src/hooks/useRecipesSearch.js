@@ -8,6 +8,7 @@ const useRecipesSearch = () => {
   const [search, setSearch] = useState("")
   const [username, setUsername] = useState("")
   const [page, setPage] = useState(1)
+  const [sortBy, setsortBy] = useState("")
   const [order, setOrder] = useState("ASC")
   const [totalPages, setTotalPages] = useState(0)
   const [totalRows, setTotalRows] = useState(0)
@@ -20,10 +21,11 @@ const useRecipesSearch = () => {
         search,
         page,
         order,
-        username
+        username,
+        sortBy
       )
+      console.log(response)
       if (response?.status === 200) {
-        // console.log(response.status)
         setRecipes(response.data.data.results)
         setTotalPages(response.data.data.total_pages)
         setTotalRows(response.data.data.total_rows)
@@ -45,7 +47,7 @@ const useRecipesSearch = () => {
   useEffect(() => {
     fetchRecipesPublic()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, page, order, username])
+  }, [search, page, order, username, sortBy])
 
   return {
     loading,
@@ -55,10 +57,12 @@ const useRecipesSearch = () => {
     totalRows,
     filters: {
       page,
+      sortBy,
       order,
       search,
       username,
       setOrder,
+      setsortBy,
       setPage,
       setUsername,
       setSearch,

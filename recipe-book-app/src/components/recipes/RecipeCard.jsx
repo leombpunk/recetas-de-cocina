@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { RoutesAPI } from "../../utils/RoutesAPI"
-import { PhotoIcon } from "@heroicons/react/20/solid"
-import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline"
+import { PhotoIcon, HeartIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/solid"
+// import {  } from "@heroicons/react/24/outline"
 import { useContextUser } from "../../providers/UserProvider"
 import useLikes from "../../hooks/useLikes"
 
@@ -43,10 +43,10 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
       </h3>
       <div className='grid grid-cols-2'>
         <p className='flex flex-row items-center gap-1'>
-          <HeartIcon className='h-5 w-5' /> {count}
+          <HeartIcon className='h-6 w-6 text-red-600' title="likes" /> {count}
         </p>
         <p className='flex flex-row items-center gap-1'>
-          <ChatBubbleOvalLeftIcon className='h-5 w-5' /> comentarios
+          <ChatBubbleBottomCenterTextIcon className='h-6 w-6 text-gray-600' title="comentarios" /> comentarios
         </p>
       </div>
       {recipe.visibilidad !== undefined ? (

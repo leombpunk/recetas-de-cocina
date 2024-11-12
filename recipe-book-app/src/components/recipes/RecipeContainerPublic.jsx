@@ -1,19 +1,19 @@
 import { Fragment, useEffect } from "react"
-import { Menu, Transition } from "@headlessui/react"
+// import { Menu, Transition } from "@headlessui/react"
 import { useSearchParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import {
   CheckIcon,
   ArchiveBoxXMarkIcon,
-  PlusIcon,
+  // PlusIcon,
 } from "@heroicons/react/24/outline"
+import { XMarkIcon } from "@heroicons/react/24/solid"
 import Loader from "../../components/loader/Loader"
+import NavigationRoutes from "../../utils/NavigationRoutes"
 import RecipeCard from "./RecipeCard"
 import Pagination from "../pagination/Pagination"
-import NavigationRoutes from "../../utils/NavigationRoutes"
 import { useContextNotification } from "../../providers/NotificationProvider"
 import useRecipesSearch from "../../hooks/useRecipesSearch"
-import { XMarkIcon } from "@heroicons/react/20/solid"
 
 const RecipeContainerPublic = () => {
   const { addNotification } = useContextNotification()
@@ -21,7 +21,7 @@ const RecipeContainerPublic = () => {
     useRecipesSearch()
   const [searchParams, setSearchParams] = useSearchParams()
   const { register, handleSubmit, reset } = useForm({
-    defaultValues: { likes: "ASC", order: "ASC" },
+    defaultValues: { sortby: "", order: "" },
   })
 
   useEffect(() => {
@@ -45,10 +45,9 @@ const RecipeContainerPublic = () => {
   }, [errors, addNotification])
 
   const onSubmitForm = (data, e) => {
-    // console.log(e)
     e.preventDefault()
-    // console.log(data)
     // filters.setSearch(data.search)
+    filters.setsortBy(data.sortby)
     filters.setOrder(data.order)
     filters.setPage(1)
   }
@@ -70,9 +69,6 @@ const RecipeContainerPublic = () => {
             <div className='sticky top-0 z-10 flex flex-col bg-orange-300 py-4 border-b border-gray-500'>
               {filters.username?.length ? (
                 <>
-                  {/* <h2 className='w-full text-3xl font-bold tracking-tight text-gray-900'>
-                    Recetas del usuario "{filters.username}"
-                  </h2> */}
                   <span className='flex flex-row justify-around bg-orange-400 max-w-xs p-1 rounded-2xl font-medium text-lg'>
                     Recetas del usuario "{filters.username}"
                     <button
@@ -94,28 +90,29 @@ const RecipeContainerPublic = () => {
                     ? `Mostrando resultados para "${filters.search}"`
                     : `Mostrando todas las recetas`}
                 </h2>
-                <div className='flex flex-row items-center gap-2 justify-end w-full pb-3 pt-6'>
+                <div className='flex flex-row items-center gap-2 justify-end w-full pb-3 py-6 lg:py-0'>
                   <form
                     onSubmit={handleSubmit(onSubmitForm)}
                     className='flex flex-row items-center gap-3 w-full'
                   >
-                    <div className='flex flex-col w-full md:flex-row gap-3'>
+                    <div className='flex flex-col w-full md:flex-row gap-3 md:justify-around lg:justify-end'>
                       <select
-                        {...register("likes")}
+                        {...register("sortby")}
                         className='rounded-lg text-gray-500'
                       >
-                        <option value={"ASC"} defaultValue>
-                          Ordenar por likes
+                        <option value={""} defaultValue>
+                          Ordenar por
                         </option>
-                        <option value={"ASC"}>Ascendente</option>
-                        <option value={"DESC"}>Descendente</option>
+                        <option value={"titulo"}>Titulo</option>
+                        <option value={"countLikes"}>Cantidad de likes</option>
+                        <option value={"createAt"}>Fecha de publicación</option>
                       </select>
                       <select
                         {...register("order")}
                         className='rounded-lg text-gray-500'
                       >
-                        <option value={"ASC"} defaultValue>
-                          Ordenar por titulo
+                        <option value={""} defaultValue>
+                          Ordenar
                         </option>
                         <option value={"ASC"}>Ascendente</option>
                         <option value={"DESC"}>Descendente</option>
@@ -142,7 +139,7 @@ const RecipeContainerPublic = () => {
                         >
                           <ArchiveBoxXMarkIcon className='h-6 w-6' />
                         </button>
-                        <Menu
+                        {/* <Menu
                           as={"div"}
                           className='relative inline-block text-left'
                         >
@@ -166,9 +163,20 @@ const RecipeContainerPublic = () => {
                             leaveFrom='transform opacity-100 scale-100'
                             leaveTo='transform opacity-0 scale-95'
                           >
-                            <Menu.Items className='absolute right-0 mt-3 origin-top-right rounded-lg bg-orange-100 shadow-lg p-3 ring-1 ring-black/5 focus:outline-none'></Menu.Items>
+                            <Menu.Items className='absolute right-0 mt-3 origin-top-right rounded-lg bg-orange-100 shadow-lg p-3 ring-1 ring-black/5 focus:outline-none'>
+                              <select
+                                {...register("fecha")}
+                                className='rounded-lg text-gray-500'
+                              >
+                                <option value={""} defaultValue>
+                                  Ordenar por fecha
+                                </option>
+                                <option value={"DESC"}>Más recientes</option>
+                                <option value={"ASC"}>Más antiguas</option>
+                              </select>
+                            </Menu.Items>
                           </Transition>
-                        </Menu>
+                        </Menu> */}
                       </div>
                     </div>
                   </form>
@@ -198,7 +206,7 @@ const RecipeContainerPublic = () => {
             />
           </div>
         </div>
-      )}{" "}
+      )}
     </>
   )
 }
