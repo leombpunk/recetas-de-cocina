@@ -29,10 +29,11 @@ const RecipeContainer = ({ title }) => {
     setPage,
     setOrder,
     setSearch,
+    setSortBy,
     setReload,
   } = useRecipes()
   const { register, handleSubmit, reset } = useForm({
-    defaultValues: { search: "", likes: "ASC", order: "ASC" },
+    defaultValues: { search: "", sortby: "", order: "" },
   })
   const {
     formShared,
@@ -51,6 +52,7 @@ const RecipeContainer = ({ title }) => {
     // console.log(data)
     setSearch(data.search)
     setOrder(data.order)
+    setSortBy(data.sortby)
     setPage(1)
   }
 
@@ -152,27 +154,27 @@ const RecipeContainer = ({ title }) => {
                           {...register("search")}
                         />
                         <select
-                          {...register("likes")}
+                          {...register("sortby")}
                           className='rounded-lg text-gray-500 w-full'
                         >
-                          <option value={"ASC"} defaultValue>
-                            Ordenar por likes
+                          <option value={""} defaultValue>
+                            Ordenar por
                           </option>
-                          <option value={"ASC"}>Ascendente</option>
-                          <option value={"DESC"}>Descendente</option>
+                          <option value={"titulo"}>Titulo</option>
+                          <option value={"countLikes"}>Cantidad de likes</option>
+                          <option value={"createAt"}>Fecha de creación</option>
                         </select>
                         <select
                           {...register("order")}
                           className='rounded-lg text-gray-500 w-full'
                         >
-                          <option value={"ASC"} defaultValue>
-                            Ordenar por titulo
+                          <option value={""} defaultValue>
+                            Ordenar
                           </option>
                           <option value={"ASC"}>Ascendente</option>
                           <option value={"DESC"}>Descendente</option>
                         </select>
-                        <div className="flex flex-row gap-3 self-end">
-
+                        <div className='flex flex-row gap-3 self-end'>
                           <button
                             disabled={false}
                             type='submit'
@@ -197,7 +199,7 @@ const RecipeContainer = ({ title }) => {
                 </Menu>
               </div>
             </div>
-            <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 py-1'>
+            <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-1 py-1'>
               {recipes.length ? (
                 recipes.map((recipe, index) => (
                   <RecipeCard
@@ -221,7 +223,10 @@ const RecipeContainer = ({ title }) => {
                           )}
                         />
                         <label htmlFor={`checkbox-${index}`}></label>
-                        {formShared.setValue(`recetas.${index}.visibilidad`,recipe.visibilidad)}
+                        {formShared.setValue(
+                          `recetas.${index}.visibilidad`,
+                          recipe.visibilidad
+                        )}
                       </div>
                     </div>
                   </RecipeCard>

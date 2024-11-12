@@ -141,17 +141,21 @@ const getRecetaPublic = async (req, res) => {
 //endpoints privados
 const getAllRecetas = async (req, res) => {
   try {
-    const { search, page, order, likes, publicated } = req.query
+    const { search, page, order, sortby } = req.query
     const token = req.headers.authorization.split(" ").pop()
     const usuario = await verifyToken(token)
     const limit = 10
     const offset = limit * (page ? page - 1 : 0)
     const orderOptions = [
-      ["titulo", order ? order : "ASC"], //ASC a-z DESC z-a
-      // ["likes", likes ? likes : "ASC"],
-      // ["updateAt", publicated ? publicated : "ASC"],
+      sortedOption.includes(sortby) && orderOption.includes(order) ? [sequelize.literal(sortby), order] : ["createAt", "DESC"], 
     ]
     const { count, rows } = await models.Receta.findAndCountAll({
+      attributes: { include: [
+        "recetas.*",
+        // [sequelize.fn("COUNT", sequelize.col("likes.id")), "countLikes"],
+        [sequelize.literal(`(SELECT COUNT(*) FROM likes AS li WHERE li.idReceta = recetas.id)`), "countLikes"],
+        [sequelize.literal(`(SELECT COUNT(*) FROM comentarios AS co WHERE co.idReceta = recetas.id)`), "countComments"]
+      ]},
       where: {
         [Op.and]: [
           { idUsuario: usuario.id },

@@ -9,6 +9,7 @@ const useRecipes = () => {
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
   const [order, setOrder] = useState("ASC")
+  const [sortBy, setSortBy] = useState("")
   const [errors, setErrors] = useState([])
   const [totalPages, setTotalPages] = useState(0)
   const [totalRows, setTotalRows] = useState(0)
@@ -16,7 +17,7 @@ const useRecipes = () => {
   const fetchRecipes = async () => {
     try {
       setLoading(true)
-      const result = await RecipesServices.getRecipes(search, page, order)
+      const result = await RecipesServices.getRecipes(search, page, order, sortBy)
       // console.log(result)
       if (result?.status === 200) {
         // console.log(result.status)
@@ -40,7 +41,7 @@ const useRecipes = () => {
   useEffect(() => {
     fetchRecipes()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, page, order, reload])
+  }, [search, page, order, sortBy, reload])
 
   return {
     reload,
@@ -49,10 +50,12 @@ const useRecipes = () => {
     page,
     search,
     order,
+    sortBy,
     totalPages,
     totalRows,
     errors,
     setPage,
+    setSortBy,
     setSearch,
     setOrder,
     setReload,
