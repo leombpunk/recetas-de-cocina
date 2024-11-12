@@ -1,6 +1,6 @@
-import home from "../../assets/images/vecteezy_ai-generated-cartoon-chef-with-thumbs-up-suitable-for-food_41642037.png"
+import home from "../../assets/images/vecteezy_ai-generated-cartoon-chef-with-thumbs-up-suitable-for-food_41642037.webp"
 // import bring from "../../assets/images/sparkles.webp"
-import bgHome from "../../assets/images/bg-home.jpg"
+import bgHome from "../../assets/images/bg-home.webp"
 
 const HeroMain = () => {
   return (
