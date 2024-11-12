@@ -19,6 +19,11 @@ const orderOption = ["ASC", "DESC"]
 
 //endpoints públicos
 const getAllRecetasPublic = async (req, res) => {
+  /*BUSQUEDA POR INGREDIENTES*/
+  /*SELECT re.*, JSON_SEARCH(re.ingredientes, 'all', '%ajo%') AS filtrito 
+    FROM recetas AS re
+    WHERE re.visibilidad = 1 AND (re.titulo LIKE '%ajo%' OR (JSON_SEARCH(re.ingredientes, 'one', '%ajo%') IS NOT null));*/
+  /*-----------FIN----------*/
   try {
     const { search, username, page, order, sortby, } = req.query
     const limit = 10
