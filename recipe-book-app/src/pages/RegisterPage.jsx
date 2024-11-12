@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import bgImage from "../assets/images/vectorstock_49097965.png"
+import bgImage from "../assets/images/vectorstock_49097965.webp"
 import NavigationRoutes from "../utils/NavigationRoutes"
 import logo from "../assets/images/logo-y-nombre.png"
 import RegisterSchema from "../utils/RegisterResolver"
