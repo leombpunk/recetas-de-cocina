@@ -2,13 +2,13 @@ import { Link } from "react-router-dom"
 import { RoutesAPI } from "../../utils/RoutesAPI"
 import { PhotoIcon, HeartIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/solid"
 // import {  } from "@heroicons/react/24/outline"
+// import useLikes from "../../hooks/useLikes"
 import { useContextUser } from "../../providers/UserProvider"
-import useLikes from "../../hooks/useLikes"
 
 const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
   const { user } = useContextUser()
   //agregado contador de likes
-  const { count } = useLikes(recipe.id)
+  // const { count } = useLikes(recipe.id)
   //agregar contador de comentarios + respuestas
   // --> aquí
   return (
@@ -41,12 +41,12 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
       <h3 className='mt-2 text-lg text-gray-700'>
         {recipe.titulo !== "" ? recipe.titulo : "Sin tittulo"}
       </h3>
-      <div className='grid grid-cols-2'>
-        <p className='flex flex-row items-center gap-1'>
-          <HeartIcon className='h-6 w-6 text-red-600' title="likes" /> {count}
+      <div className='flex flex-row w-full justify-end gap-4 items-center px-2'>
+        <p className='flex flex-row items-center gap-1 font-medium'>
+          <HeartIcon className='h-6 w-6 text-red-600' title="likes" /> {recipe?.countLikes}
         </p>
-        <p className='flex flex-row items-center gap-1'>
-          <ChatBubbleBottomCenterTextIcon className='h-6 w-6 text-gray-600' title="comentarios" /> comentarios
+        <p className='flex flex-row items-center gap-1 font-medium'>
+          <ChatBubbleBottomCenterTextIcon className='h-6 w-6 text-gray-600' title="comentarios" /> {recipe?.countComments}
         </p>
       </div>
       {recipe.visibilidad !== undefined ? (
