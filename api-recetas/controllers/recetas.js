@@ -44,7 +44,8 @@ const getAllRecetasPublic = async (req, res) => {
       attributes: { include: [
         "recetas.*",
         // [sequelize.fn("COUNT", sequelize.col("likes.id")), "countLikes"],
-        [sequelize.literal(`(SELECT COUNT(*) FROM likes AS li WHERE li.idReceta = recetas.id)`), "countLikes"]
+        [sequelize.literal(`(SELECT COUNT(*) FROM likes AS li WHERE li.idReceta = recetas.id)`), "countLikes"],
+        [sequelize.literal(`(SELECT COUNT(*) FROM comentarios AS co WHERE co.idReceta = recetas.id)`), "countComments"]
       ]},
       include: [
         {
