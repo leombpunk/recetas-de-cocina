@@ -83,7 +83,7 @@ const Header = () => {
                           name='searchBar'
                           id='searchBar'
                           className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-12 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 text-base sm:leading-6'
-                          placeholder='Buscar recetas'
+                          placeholder='Buscar por receta o ingrediente'
                           onChange={(event) => setSearch(event.target.value)}
                         />
                         <button
