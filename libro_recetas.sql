@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 18:46:37
+-- Tiempo de generación: 16-11-2024 a las 03:37:03
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -65,6 +65,19 @@ CREATE TABLE `guardadas` (
   `createAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `guardadas`
+--
+
+INSERT INTO `guardadas` (`id`, `idUsuario`, `idReceta`, `createAt`) VALUES
+(4, 6, 1, '2024-11-08 19:53:40'),
+(5, 6, 2, '2024-11-08 19:53:40'),
+(6, 6, 3, '2024-11-08 19:53:40'),
+(7, 6, 4, '2024-11-08 19:53:40'),
+(14, 6, 25, '2024-11-08 19:53:40'),
+(15, 6, 28, '2024-11-08 19:53:40'),
+(19, 6, 33, '2024-11-08 19:53:40');
+
 -- --------------------------------------------------------
 
 --
@@ -84,7 +97,6 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`id`, `idUsuario`, `idReceta`, `createAt`) VALUES
-(1, 1, 5, '2024-10-04 19:56:38'),
 (9, 1, 2, '2024-10-06 17:22:25');
 
 -- --------------------------------------------------------
@@ -116,26 +128,13 @@ CREATE TABLE `recetas` (
 --
 
 INSERT INTO `recetas` (`id`, `idUsuario`, `titulo`, `detalle`, `imagen`, `visibilidad`, `comensales`, `duracion`, `checked`, `ingredientes`, `pasos`, `createAt`, `updateAt`, `deleteAt`) VALUES
-(1, 1, 'pan con manteca', 'primero compras el pan, lo cortas con un cuchillo, abrís la manteca y la untas sobre el pan', '', 1, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(2, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', 'file-1726512404785.webp', 1, '5 persianas', '30 minutos', 1, '[{\"name\":\"1kg de harina\"},{\"name\":\"50gr de leudante\"}]', '[{\"paso\":\"merzclar las weas en un recipiente limpio\",\"imagen\":\"\"}]', NULL, NULL, NULL),
-(3, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 1, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(4, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(5, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(6, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(7, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(8, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(9, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(10, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(12, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(13, 1, 'bizcochuelo marmolado', 'mezcla todo como venga', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(25, 1, 'receta test', 'test', '', 1, '2 weones', '2 horas', 1, '[]', '[]', NULL, NULL, NULL),
-(26, 1, 'bizcochuelo marmolado test', 'mezcla todo como venga ameo', '', 1, '5 personas', '1 hora', 1, '[]', '[]', NULL, NULL, NULL),
-(28, 1, 'te con leche', 'es un te con leche pa', '', 1, '2 personas', '15 minutos', 1, '[]', '[]', NULL, NULL, NULL),
-(29, 1, 'bizcochuelo marmolado test', 'mezcla todo como venga ameo', '', 1, '5 personas', '1 hora', 1, '[]', '[]', NULL, NULL, NULL),
-(30, 1, 'test middleware', '', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(31, 1, 'test middleware', '', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(32, 1, 'test middleware', '', '', 0, '', '', 1, '[]', '[]', NULL, NULL, NULL),
-(33, 1, 'test middleware', '', '', 0, '', '', 0, '[]', '[]', NULL, NULL, NULL);
+(1, 1, 'Pastafrola de membrillo', 'primero compras el pan, lo cortas con un cuchillo, abrís la manteca y la untas sobre el pan', 'file-1731713274793.webp', 1, '4 personas', '50 minutos', 1, '[{\"name\":\"750 gr de membrillo en barra\"}]', '[{\"paso\":\"mezcle mezcle\",\"imagen\":\"\"}]', '2024-11-01 18:06:01', '2024-11-15 20:27:57', NULL),
+(2, 1, 'Bizcochuelo marmolado', 'mezcla todo como venga', 'file-1731712647760.jpg', 1, '5 persianas', '30 minutos', 1, '[{\"name\":\"1kg de harina\"},{\"name\":\"50gr de leudante\"}]', '[{\"paso\":\"merzclar las weas en un recipiente limpio\",\"imagen\":\"\"}]', '2024-11-01 19:06:08', '2024-11-15 20:17:30', NULL),
+(3, 1, 'Tarta de jamón y queso', 'mezcla todo como venga', 'file-1731712731247.webp', 1, '4 personas', '50 minutos', 1, '[{\"name\":\"250 gr de queso\"}]', '[{\"paso\":\"jamón y queso gil\",\"imagen\":\"\"}]', '2024-11-02 18:06:28', '2024-11-15 20:19:49', NULL),
+(4, 1, 'Ñoquis de papa con pollito', 'mezcla todo como venga', 'file-1731713443052.jpg', 0, '2 personas', '1 hora', 1, '[{\"name\":\"2 papas medianas\"}]', '[{\"paso\":\"comer, comiendo\",\"imagen\":\"\"}]', NULL, '2024-11-15 20:31:41', NULL),
+(25, 1, 'Chipa guasu', 'test', 'file-1731712912189.webp', 1, '4 personas', '2 horas', 1, '[{\"name\":\"500 gr de choclo\"},{\"name\":\"250 gr de queso\"}]', '[{\"paso\":\"mezcla las weas pe\",\"imagen\":\"\"}]', '2024-11-03 18:06:34', '2024-11-15 20:22:45', NULL),
+(28, 1, 'Canelones de carne con salsa blanca', 'es un te con leche pa', 'file-1731710980348.jpg', 1, '2 personas', '45 minutos', 1, '[{\"name\":\"1/2 de carne molida\"}]', '[{\"paso\":\"cocinar bien todo po wn\",\"imagen\":\"\"}]', '2024-11-09 18:06:37', '2024-11-15 19:49:44', NULL),
+(33, 2, 'Pastel de papas', 'soy un pastel de papas', 'file-1731722132996.webp', 1, '5 personas', '40 minutos', 1, '[{\"name\":\"3 papas grandes\"}]', '[{\"paso\":\"y pisas las papas amigo\",\"imagen\":\"\"}]', '2024-10-08 15:04:58', '2024-11-15 22:55:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -198,9 +197,10 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `apellidos`, `nombres`, `mail`, `imagen`, `createAt`, `deleteAt`) VALUES
 (1, 'usuario123', '$2a$10$KXf7W6z9q1K3sbnezjq2KuhIytGXDExScqcP.3JwHx.ps0BUHqShG', 'jiji jiji', 'pepito', 'mail_123@update.com', 'usuario123-1729711637629.webp', NULL, NULL),
-(2, 'usuario456', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', '', '', 'usu456@ario.com', NULL, NULL, NULL),
-(3, 'usuario124', '$2a$10$733Dv09gafNx74PombmlW.9CtTu2HolqqTxJ3bW2lRxLkTbN5vYEu', '', '', 'mail@testeo.com', NULL, NULL, NULL),
-(5, 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', '', '', 'mail_equisde@testeo.com', NULL, NULL, NULL);
+(2, 'usuario456', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'usu456@ario.com', NULL, NULL, NULL),
+(3, 'usuario124', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'mail@testeo.com', NULL, NULL, NULL),
+(5, 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', '', '', 'mail_equisde@testeo.com', NULL, NULL, NULL),
+(6, 'paquito5', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', 'paqueton', 'paquete', 'test@example.us', 'file-1731005679250.jpg', '2024-11-07 15:44:26', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -272,7 +272,7 @@ ALTER TABLE `comentarios`
 -- AUTO_INCREMENT de la tabla `guardadas`
 --
 ALTER TABLE `guardadas`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `likes`
@@ -284,7 +284,7 @@ ALTER TABLE `likes`
 -- AUTO_INCREMENT de la tabla `recetas`
 --
 ALTER TABLE `recetas`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `respuestas`
@@ -296,7 +296,7 @@ ALTER TABLE `respuestas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
