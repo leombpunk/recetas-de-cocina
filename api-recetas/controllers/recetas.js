@@ -31,7 +31,8 @@ const getAllRecetasPublic = async (req, res) => {
     const whereOptions = {
       [Op.and]: [
         { visibilidad: 1 },
-        { titulo: { [Op.like]: `%${search ? search : ""}%` } },
+        {[Op.or]: [{ titulo: { [Op.like]: `%${search ? search : ""}%` } }, sequelize.literal(`(JSON_SEARCH(recetas.ingredientes, 'one', '%${search}%') IS NOT null)`) ]},
+        
         username && { "$usuario.usuario$": username },
       ],
     }
