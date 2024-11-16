@@ -17,6 +17,7 @@ import {
 import { useContextUser } from "../../providers/UserProvider"
 import NavigationRoutes from "../../utils/NavigationRoutes"
 import { RoutesAPI } from "../../utils/RoutesAPI"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -101,7 +102,7 @@ const Header = () => {
               <div className='inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto ml-2.5 sm:ml-6 sm:pr-0 gap-2'>
                 <button
                   type='button'
-                  className='relative rounded-full hover:scale-125 duration-500 bg-orange-500 p-1 text-gray-900 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'
+                  className='hidden lg:inline relative rounded-full hover:scale-125 duration-500 bg-orange-500 p-1 text-gray-900 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'
                 >
                   <span className='absolute -inset-1.5' />
                   <span className='sr-only'>Ver notificaciones</span>
@@ -227,11 +228,12 @@ const Header = () => {
                   <button
                     type='button'
                     onClick={(e) => handleClickSignIn(e)}
-                    className='relative rounded-xl py-2 px-3 hover:scale-110 duration-500 bg-orange-400 text-gray-900 hover:text-black font-semibold shadow-black/50 hover:shadow-md'
+                    className='flex flex-row gap-2 items-center relative rounded-xl py-2 px-3 hover:scale-110 duration-500 bg-orange-400 text-gray-900 hover:text-black font-semibold shadow-black/50 hover:shadow-md'
                   >
                     <span className='absolute -inset-1.5' />
                     <span className='sr-only'>Iniciar sesión</span>
-                    Conectate
+                    <FontAwesomeIcon icon={"fa-solid fa-right-to-bracket"} />
+                    <span className="hidden md:inline">Conectar</span>
                   </button>
                 )}
               </div>

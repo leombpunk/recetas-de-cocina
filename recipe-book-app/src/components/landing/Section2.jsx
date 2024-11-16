@@ -2,7 +2,7 @@ const Section2 = () => {
   return (
     <section className='about w-full h-[80vh] bg-orange-500 flex items-center flex-wrap gap-8'>
       <div className='image flex-[1_1_42rem]'>
-        <img src='image/about.png' className='w-full' alt='' />
+        <img src='image/about.png' className='w-full' alt='equisde' />
       </div>
       <div className='content flex-[1_1_42rem]'>
         <h3 className='text-orange-900 text-7xl'>the future is today</h3>

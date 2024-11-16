@@ -16,7 +16,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 const Feedback = () => {
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <section className="isolate bg-orange-400 px-6 py-24 sm:py-32 lg:px-8 w-full">
       {/* <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -30,14 +30,14 @@ const Feedback = () => {
         />
       </div> */}
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Contact sales</h2>
-        <p className="mt-2 text-lg/8 text-gray-600">Aute magna irure deserunt veniam aliqua magna enim voluptate.</p>
+        <h2 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Retroalimentación</h2>
+        <p className="mt-2 text-lg/8 text-gray-600">Tu opinión y comentarios me ayudan a crecer y mejorar el producto!</p>
       </div>
       <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">
-              First name
+              Nombre (opcional)
             </label>
             <div className="mt-2.5">
               <input
@@ -169,7 +169,7 @@ const Feedback = () => {
           </button>
         </div>
       </form>
-    </div>
+    </section>
   )
 }
 

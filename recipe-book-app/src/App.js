@@ -29,7 +29,7 @@ import {
   faReddit,
   faTelegram,
 } from "@fortawesome/free-brands-svg-icons"
-import { faEnvelope, faLink } from "@fortawesome/free-solid-svg-icons"
+import { faEnvelope, faLink, faRightToBracket } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
   faFacebook,
@@ -40,7 +40,8 @@ library.add(
   faLink,
   faLinkedin,
   faReddit,
-  faTelegram
+  faTelegram,
+  faRightToBracket
 )
 
 const App = () => {

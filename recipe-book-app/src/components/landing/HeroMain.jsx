@@ -1,10 +1,9 @@
 import home from "../../assets/images/vecteezy_ai-generated-cartoon-chef-with-thumbs-up-suitable-for-food_41642037.webp"
-// import bring from "../../assets/images/sparkles.webp"
 import bgHome from "../../assets/images/bg-home.webp"
 
 const HeroMain = () => {
   return (
-    <section className='home relative w-full bg-orange-400 bg-cover bg-center lg:max-h-[90svh]'>
+    <section className='home relative w-full bg-orange-400 bg-cover bg-center min-h-[90svh]'>
       <div className='container mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 h-max'>
         <div className='landing flex flex-col lg:flex-row flex-wrap items-center gap-6'>
           <div className='content'>
@@ -12,14 +11,6 @@ const HeroMain = () => {
               Recipe App
             </span>
             <h3 className='text-black text-7xl uppercase py-2'>
-              {/* <span className="flex flex-row">
-                {" "}
-                crea
-                <picture>
-                  <source srcset={bring} type='image/webp' />
-                  <img src={bring} alt='✨' width='72' height='72' />
-                </picture>
-              </span> */}
               Crea ✨<br /> Comparte 🤝 <br /> Disfruta 😋
             </h3>
             <a

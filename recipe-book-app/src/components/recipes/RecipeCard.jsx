@@ -17,7 +17,7 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
       title={recipe.titulo}
       className={`${
         linkActive ? "" : "hover:cursor-default"
-      } group border border-gray-500 rounded-lg shadow-md hover:shadow-black/50 p-1 duration-500`}
+      } group border border-gray-600 bg-orange-400 rounded-lg shadow-md hover:shadow-black/50 p-1 duration-500`}
     >
       {children}
       <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
@@ -38,7 +38,7 @@ const RecipeCard = ({ linkActive, recipe, navigation, children }) => {
           </div>
         )}
       </div>
-      <h3 className='mt-2 text-lg text-gray-700'>
+      <h3 className='mt-2 text-lg text-gray-900 font-medium truncate'>
         {recipe.titulo !== "" ? recipe.titulo : "Sin tittulo"}
       </h3>
       <div className='flex flex-row w-full justify-end gap-4 items-center px-2'>
