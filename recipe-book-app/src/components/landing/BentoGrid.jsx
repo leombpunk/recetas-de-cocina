@@ -1,5 +1,6 @@
 import movilDesign from '../../assets/images/captura.png'
-import creaIdea from '../../assets/images/crea-idea.svg'
+import creaIdea from '../../assets/images/crea-cocina-2.svg'
+import compartir from '../../assets/images/compartir-6-1.svg'
 
 const BentoGrid = () => {
   return (
@@ -64,14 +65,14 @@ const BentoGrid = () => {
                   Comparte
                 </p>
                 <p className='mt-2 max-w-lg text-lg/6 text-gray-600 max-lg:text-center'>
-                  Da a conocer tus recetas, o inspirate con las recetas de cientos de usuario.
+                  Da a conocer tus recetas, comparte con amigos, falimiares, vecinos otros usuarios, o inspirate con las recetas de cientos de entusiastas como tú.
                 </p>
               </div>
-              <div className='flex flex-1 items-center [container-type:inline-size] max-lg:py-6 lg:pb-2'>
+              <div className='flex flex-1 items-center justify-center px-8 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-2'>
                 <img
-                  className='h-[min(152px,40cqw)] object-cover object-center'
-                  src='https://tailwindui.com/plus/img/component-images/bento-03-security.png'
-                  alt=''
+                  className='w-full max-lg:max-w-xs'
+                  src={compartir}
+                  alt='comparte tus creaciones'
                 />
               </div>
             </div>

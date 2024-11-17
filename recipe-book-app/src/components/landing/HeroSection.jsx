@@ -26,7 +26,6 @@ const HeroSection = () => {
             className='lg:w-1/2 rounded-3xl shadow-md shadow-black/50'
             style={{ backgroundImage: `url(${bgHome})`, backgroundPosition:'center', backgroundSize:"cover" }}
           >
-            {" "}
             <img src={home} className='w-full' alt='imagen de chefsito' />
           </div>
         </div>
