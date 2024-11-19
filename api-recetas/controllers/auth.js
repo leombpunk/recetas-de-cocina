@@ -68,7 +68,16 @@ const registro = async (req, res) => {
   }
 }
 
-const registroGoogle = async (req, res) => {}
+const googleOAuth = async (req, res) => {
+  //la wea del passport
+
+}
+
+const callbackGoogleOAuth = async (req, res) => {
+  //la wea callback
+  console.log({req})
+  res.redirect(`http://localhost:3000/login?token=${req.user.token}`);
+}
 
 const refreshUserData = async (req, res) => {
   try {
@@ -99,4 +108,4 @@ const logout = async (req, res) => {
   // nones
 }
 
-export { login, logout, registro, refreshUserData }
+export { login, logout, registro, refreshUserData, googleOAuth, callbackGoogleOAuth }

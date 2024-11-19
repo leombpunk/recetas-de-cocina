@@ -1,13 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import useLogin from "../hooks/useLogin"
 import loginSchema from "../utils/LoginResolver"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import NavigationRoutes from "../utils/NavigationRoutes"
+import { RoutesAPI } from "../utils/RoutesAPI"
+import { setToken } from "../utils/Token"
 
 const LoginPage = () => {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [show, setShow] = useState(true)
   const {
     register,
@@ -20,10 +24,24 @@ const LoginPage = () => {
     },
     resolver: yupResolver(loginSchema),
   })
-  const { loading, login } = useLogin()
+  const { loading, login, googleLogin } = useLogin()
   const onSubmit = (data) => {
     login({ user: data.username, pass: data.password })
   }
+
+  const handleClickRegisterGoogle = (event) => {
+    event.preventDefault()
+    window.location.href = `${RoutesAPI.auth}/google`;
+    // googleLogin()
+  }
+
+  useEffect(() => {
+    if (searchParams.get("token")) {
+      console.log(searchParams.get("token"))
+      setToken(searchParams.get("token"))
+      navigate(NavigationRoutes.Home)
+    }
+  }, [searchParams])
 
   return (
     <>
@@ -51,14 +69,16 @@ const LoginPage = () => {
               Aún no tienes una cuenta?{" "}
               <Link
                 to={`${NavigationRoutes.Register}`}
-                title="Registrate"
-                aria-label="Registrate"
+                title='Registrate'
+                aria-label='Registrate'
                 className='hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-lg font-medium leading-none  text-gray-800 cursor-pointer'
               >
                 Registrate aquí
               </Link>
             </p>
             <button
+              onClick={(e) => handleClickRegisterGoogle(e)}
+              type='button'
               aria-label='Continue with google'
               className='focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10'
             >
@@ -148,7 +168,11 @@ const LoginPage = () => {
                 <button
                   type='submit'
                   disabled={loading}
-                  className={`${loading ? 'hover:cursor-not-allowedr bg-gray-600' : 'bg-orange-600 hover:bg-orange-500'} focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none border rounded-xl py-4 w-full`}
+                  className={`${
+                    loading
+                      ? "hover:cursor-not-allowedr bg-gray-600"
+                      : "bg-orange-600 hover:bg-orange-500"
+                  } focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 text-lg font-semibold leading-none text-black focus:outline-none border rounded-xl py-4 w-full`}
                 >
                   Iniciar Sesión
                 </button>

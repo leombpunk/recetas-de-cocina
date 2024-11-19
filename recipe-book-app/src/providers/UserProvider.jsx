@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react"
 import { getToken, deleteToken, setToken } from "../utils/Token"
-import { verifyToken } from "../services/Login"
+import AuthServices from "../services/Auth"
 
 const UserContext = createContext()
 
@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
     else {
       const userToken = getToken() //contiene el token de sesion
       if (userToken) {
-        const result = await verifyToken(userToken)
+        const result = await AuthServices.verifyToken(userToken)
         if ((result?.status >= 200) & (result?.status < 300)) {
           setToken(result.data.data.token)
           setUser(result.data.data)

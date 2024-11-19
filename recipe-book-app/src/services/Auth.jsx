@@ -32,4 +32,19 @@ const verifyToken = async (token) => {
   }
 }
 
-export { signIn, signOut, verifyToken }
+const register = async (data) => {
+  const url = `${RoutesAPI.auth}/registro`
+  const { username: usuario, password: contrasena, mail } = data
+  const request = axios.post(url, { usuario, contrasena, mail })
+  return request.then((response) => response)
+}
+
+const googleOAuth = async () => {
+  const url = `${RoutesAPI.auth}/google`
+  const request = axios.get(url)
+  return request.then((response) => { console.log(response); return response})
+}
+
+const AuthServices = { register, googleOAuth, signIn, signOut, verifyToken }
+
+export default AuthServices

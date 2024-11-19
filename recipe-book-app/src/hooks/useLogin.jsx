@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom"
-import { signIn } from "../services/Login"
-import { useContextUser } from "../providers/UserProvider"
-import NavigationRoutes from "../utils/NavigationRoutes"
-import { useContextNotification } from "../providers/NotificationProvider"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useContextUser } from "../providers/UserProvider"
+import { useContextNotification } from "../providers/NotificationProvider"
+import AuthServices from "../services/Auth"
+import NavigationRoutes from "../utils/NavigationRoutes"
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false)
@@ -14,7 +14,7 @@ const useLogin = () => {
   const login = async ({ user, pass }) => {
     try {
       setLoading(true)
-      const response = await signIn({ username: user, password: pass })
+      const response = await AuthServices.signIn({ username: user, password: pass })
       if (response.status === 200) {
         const userData = response.data.data
         handleLogin(userData)
@@ -38,9 +38,14 @@ const useLogin = () => {
     }
   }
 
+  const googleLogin = async () => {
+    await AuthServices.googleOAuth()
+  }
+
   return {
     loading,
     login,
+    googleLogin,
   }
 }
 

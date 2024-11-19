@@ -1,6 +1,6 @@
 import { useState } from "react"
-import RegisterServices from "../services/Register"
 import { useContextUser } from "../providers/UserProvider"
+import AuthServices from "../services/Auth"
 
 const useRegister = () => {
   const { handleLogin } = useContextUser()
@@ -13,7 +13,7 @@ const useRegister = () => {
   const userRegister = async (data) => {
     try {
       setLoading(true)
-      const result = await RegisterServices.register(data)
+      const result = await AuthServices.register(data)
       console.log({ result })
       if (result.status) {
         setResponse(result)
@@ -37,12 +37,17 @@ const useRegister = () => {
     }
   }
 
+  const googleRegister = async () => {
+    AuthServices.googleOAuth()
+  }
+
   return {
     loading,
     notify,
     response,
     errors,
     userRegister,
+    googleRegister,
   }
 }
 

@@ -6,6 +6,7 @@ import NavigationRoutes from "../utils/NavigationRoutes"
 // import Loader from "./loader/Loader"
 
 const protectedLocations = [
+  NavigationRoutes.Favorites,
   NavigationRoutes.Profile,
   NavigationRoutes.Recipe,
   NavigationRoutes.Recipes,
@@ -46,11 +47,11 @@ const ProtectedRoutes = () => {
     }
   }
 
-  // console.log({count})
+  console.log({count})
   
   useEffect(() => {
     check()
-    setCoutn(count => count +1)
+    setCoutn(count => count + 1)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
