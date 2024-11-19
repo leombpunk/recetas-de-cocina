@@ -7,6 +7,11 @@ import Archivo from "./archivos.js"
 const Usuario = sequelize.define(
   "usuarios",
   {
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
     nombres: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -22,7 +27,7 @@ const Usuario = sequelize.define(
     },
     contrasena: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     mail: {
       type: DataTypes.STRING,

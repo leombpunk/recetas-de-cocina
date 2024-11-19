@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2024 a las 03:37:03
+-- Tiempo de generación: 19-11-2024 a las 00:58:05
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -181,8 +181,9 @@ INSERT INTO `respuestas` (`id`, `idComentario`, `idUsuario`, `idUsuarioMension`,
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int(11) UNSIGNED NOT NULL,
+  `googleId` varchar(30) DEFAULT NULL,
   `usuario` varchar(16) NOT NULL,
-  `contrasena` varchar(255) NOT NULL COMMENT 'pass: usuario123',
+  `contrasena` varchar(255) DEFAULT NULL COMMENT 'pass: usuario123',
   `apellidos` varchar(100) NOT NULL,
   `nombres` varchar(100) NOT NULL,
   `mail` varchar(50) NOT NULL,
@@ -195,12 +196,13 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `apellidos`, `nombres`, `mail`, `imagen`, `createAt`, `deleteAt`) VALUES
-(1, 'usuario123', '$2a$10$KXf7W6z9q1K3sbnezjq2KuhIytGXDExScqcP.3JwHx.ps0BUHqShG', 'jiji jiji', 'pepito', 'mail_123@update.com', 'usuario123-1729711637629.webp', NULL, NULL),
-(2, 'usuario456', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'usu456@ario.com', NULL, NULL, NULL),
-(3, 'usuario124', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'mail@testeo.com', NULL, NULL, NULL),
-(5, 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', '', '', 'mail_equisde@testeo.com', NULL, NULL, NULL),
-(6, 'paquito5', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', 'paqueton', 'paquete', 'test@example.us', 'file-1731005679250.jpg', '2024-11-07 15:44:26', NULL);
+INSERT INTO `usuarios` (`id`, `googleId`, `usuario`, `contrasena`, `apellidos`, `nombres`, `mail`, `imagen`, `createAt`, `deleteAt`) VALUES
+(1, NULL, 'usuario123', '$2a$10$KXf7W6z9q1K3sbnezjq2KuhIytGXDExScqcP.3JwHx.ps0BUHqShG', 'jiji jiji', 'pepito', 'mail_123@update.com', 'usuario123-1729711637629.webp', NULL, NULL),
+(2, NULL, 'usuario456', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'usu456@ario.com', NULL, NULL, NULL),
+(3, NULL, 'usuario124', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', '', '', 'mail@testeo.com', NULL, NULL, NULL),
+(5, NULL, 'usuarioTest', '$2a$10$DiZim3xEPrsAmcuZuqx6pepMxXDfxwf8Q7aFkscnKZ9WENCR8LI3i', '', '', 'mail_equisde@testeo.com', NULL, NULL, NULL),
+(6, NULL, 'paquito5', '$2a$10$L7FWKsh6xWsJqRuK1rqml.9.REB/b1gZcWgKOCtiuPS2We9yLeeUW', 'paqueton', 'paquete', 'test@example.us', 'file-1731005679250.jpg', '2024-11-07 15:44:26', NULL),
+(9, '103365611127727801585', 'Leandro Boos', NULL, 'Boos', 'Leandro', 'leandroboos@gmail.com', 'file-1731973698985.jpg', '2024-11-18 20:43:44', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -255,8 +257,10 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uq_usuario` (`usuario`) USING BTREE,
   ADD UNIQUE KEY `uq_mail` (`mail`) USING BTREE,
+  ADD UNIQUE KEY `uq_googleId` (`googleId`),
   ADD KEY `ix_usuario` (`usuario`) USING BTREE,
-  ADD KEY `ix_mail` (`mail`) USING BTREE;
+  ADD KEY `ix_mail` (`mail`) USING BTREE,
+  ADD KEY `ix_googleId` (`googleId`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -296,7 +300,7 @@ ALTER TABLE `respuestas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
