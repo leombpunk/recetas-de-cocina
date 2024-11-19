@@ -1,6 +1,7 @@
 import movilDesign from '../../assets/images/captura.png'
 import creaIdea from '../../assets/images/crea-cocina-2.svg'
 import compartir from '../../assets/images/compartir-6-1.svg'
+import disfrutar from '../../assets/images/disfrutar.svg'
 
 const BentoGrid = () => {
   return (
@@ -91,7 +92,7 @@ const BentoGrid = () => {
               </div>
               <div className='relative min-h-[30rem] w-full grow'>
                 <div className='absolute bottom-0 left-10 right-0 top-10 overflow-hidden rounded-tl-xl bg-gray-900 shadow-2xl'>
-                  <div className='flex bg-gray-800/40 ring-1 ring-white/5'>
+                  {/* <div className='flex bg-gray-800/40 ring-1 ring-white/5'>
                     <div className='-mb-px flex text-sm/6 font-medium text-gray-400'>
                       <div className='border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white'>
                         NotificationSetting.jsx
@@ -102,10 +103,24 @@ const BentoGrid = () => {
                     </div>
                   </div>
                   <div className='px-6 pb-14 pt-6'>
-                    {/* Your code example */}
-                  </div>
+                    Your code example 
+                  </div> */}
+                  <img
+                    className='size-full h-full w-auto object-cover object-top'
+                    src={disfrutar}
+                    alt='diseño movil adpatable'
+                  />
                 </div>
               </div>
+              {/* <div className='relative min-h-[30rem] w-full grow [container-type:inline-size] max-lg:mx-auto max-lg:max-w-sm'>
+                <div className='absolute inset-x-10 bottom-0 top-10 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw] border-gray-700 bg-gray-900 shadow-2xl'>
+                  <img
+                    className='size-full object-cover object-top'
+                    src={disfrutar}
+                    alt='diseño movil adpatable'
+                  />
+                </div>
+              </div> */}
             </div>
             <div className='pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]'></div>
           </div>
