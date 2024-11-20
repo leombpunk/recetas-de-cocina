@@ -68,6 +68,7 @@ const registro = async (req, res) => {
   }
 }
 
+//esta wea ni la use
 const googleOAuth = async (req, res) => {
   //la wea del passport
 

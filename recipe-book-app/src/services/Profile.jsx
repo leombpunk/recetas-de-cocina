@@ -78,6 +78,32 @@ const updatePassword = async (data) => {
   return request.then((response) => response).catch((error) => error)
 }
 
+const linkGoogleAccount = async (googleId) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const url = `${RoutesAPI.profile}/perfil/google/linkAccount/`
+  const request = axios.patch(url, {googleId}, config)
+  console.log(request)
+  return request.then((response) => response).catch((error) => error)
+}
+
+const unlinkGoogleAccount = async (googleId) => {
+  const token = getToken()
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const url = `${RoutesAPI.profile}/perfil/google/unlinkAccount/`
+  const request = axios.patch(url, {googleId}, config)
+  console.log(request)
+  return request.then((response) => response).catch((error) => error)
+}
+
 const ProfileServices = {
   getPerfil,
   updatePerfil,
@@ -85,6 +111,8 @@ const ProfileServices = {
   updatePhoto,
   deletePhoto,
   updatePassword,
+  linkGoogleAccount,
+  unlinkGoogleAccount,
 }
 
 export default ProfileServices

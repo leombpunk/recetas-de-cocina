@@ -24,7 +24,7 @@ const LoginPage = () => {
     },
     resolver: yupResolver(loginSchema),
   })
-  const { loading, login, googleLogin } = useLogin()
+  const { loading, login } = useLogin()
   const onSubmit = (data) => {
     login({ user: data.username, pass: data.password })
   }

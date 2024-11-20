@@ -83,7 +83,7 @@ const checkUsername = async (request, response, next) => {
       })
     }
   } catch (error) {
-    console.log("/* checkCoherence middleware (catch) */")
+    console.log("/* checkUsername middleware (catch) */")
     console.log(error)
     response.status(401)
     response.send({

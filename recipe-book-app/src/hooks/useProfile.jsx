@@ -119,9 +119,9 @@ const useProfile = (username) => {
       setErrors([error])
       setLoading(false)
       setNotifyUpload({
-          message: "Algo ha salido muy mal! Vuelve a intentarlo!",
-          type: "error",
-        })
+        message: "Algo ha salido muy mal! Vuelve a intentarlo!",
+        type: "error",
+      })
     } finally {
       setLoading(false)
       // setNotifyUpload({})
@@ -138,7 +138,10 @@ const useProfile = (username) => {
         setNotifyUpload({ message: "Contraseña actualizada", type: "success" })
       } else {
         //informar el error
-        setNotifyUpload({ message: result?.response?.data?.message, type: "error" })
+        setNotifyUpload({
+          message: result?.response?.data?.message,
+          type: "error",
+        })
       }
     } catch (error) {
       setErrors([error])
@@ -159,7 +162,72 @@ const useProfile = (username) => {
         navigate(NavigationRoutes.Home)
       } else {
         //informar que weas pasó
-        setNotifyUpload({ message: result?.response?.data?.message, type: "error" })
+        setNotifyUpload({
+          message: result?.response?.data?.message,
+          type: "error",
+        })
+      }
+    } catch (error) {
+      setErrors([error])
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const linkGoogleAccount = async (googleId) => {
+    try {
+      setLoading(true)
+      const result = await ProfileServices.linkGoogleAccount(googleId)
+      console.log(result)
+      if (result.status === 200) {
+        //la password se actualizo
+        setNotifyUpload({ message: "Cuenta de google vinculada", type: "success" })
+        setProfile({
+          ...profile,
+          googleId
+        })
+        setUser({
+          ...user,
+          googleId
+        })
+      } else {
+        //informar el error
+        setNotifyUpload({
+          message: result?.response?.data?.message,
+          type: "error",
+        })
+      }
+    } catch (error) {
+      setErrors([error])
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const unlinkGoogleAccount = async (googleId) => {
+    try {
+      setLoading(true)
+      const result = await ProfileServices.unlinkGoogleAccount(googleId)
+      console.log(result)
+      if (result.status === 200) {
+        //la password se actualizo
+        setNotifyUpload({ message: "Cuenta de google desvinculada", type: "success" })
+        setProfile({
+          ...profile,
+          googleId: null
+        })
+        setUser({
+          ...user,
+          googleId: null
+        })
+      } else {
+        //informar el error
+        setNotifyUpload({
+          message: result?.response?.data?.message,
+          type: "error",
+        })
       }
     } catch (error) {
       setErrors([error])
@@ -186,6 +254,8 @@ const useProfile = (username) => {
     updateProfile,
     updatePassword,
     deleteProfile,
+    linkGoogleAccount,
+    unlinkGoogleAccount,
   }
 }
 

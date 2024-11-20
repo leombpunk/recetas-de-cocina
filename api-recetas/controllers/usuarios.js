@@ -229,6 +229,72 @@ const deleteUsuario = async (req, res) => {
   }
 }
 
+//link account
+const linkGoogleAccountCallback = async (req, res) => {
+  console.log({ req })
+  res.redirect(`http://localhost:3000/profile?googleId=${req.user.id}`) //redireccionar a otra ruta, por ejemplo la del perfil y le envio el
+}
+
+const linkGoogleAccount = async (req, res) => {
+  //asignar el google id a la cuenta e informar
+  try {
+    const token = req.headers.authorization?.split(" ").pop()
+    const usuarioToken = await verifyToken(token)
+    const { googleId } = req.body
+    console.log(googleId)
+    const usuario = await models.Usuario.findOne({
+      where: { id: usuarioToken.id },
+    })
+    if (usuario && googleId) {
+      usuario.googleId = googleId
+      usuario.save({ fields: ["googleId"] })
+      if (usuario.changed()) {
+        handleResponse(res, 200, "Cuenta de google vinculada", usuario)
+        return
+      } else {
+        handleResponse(res, 404, "Paso alguito", usuario)
+        return
+      }
+    } else {
+      handleResponse(res, 400, "El usuario no existe")
+      return
+    }
+  } catch (error) {
+    httpError(res, error)
+    return
+  }
+}
+
+const unlinkGoogleAccount = async (req, res) => {
+  //poner el google id en NULL y retornar el resultado
+  try {
+    const token = req.headers.authorization?.split(" ").pop()
+    const usuarioToken = await verifyToken(token)
+    const { googleId } = req.body
+    console.log(googleId)
+    const usuario = await models.Usuario.findOne({
+      where: { id: usuarioToken.id, googleId: googleId },
+    })
+    if (usuario && googleId) {
+      usuario.googleId = null
+      usuario.save({ fields: ["googleId"] })
+      if (usuario.changed()) {
+        handleResponse(res, 200, "Cuenta de google desvinculada", usuario)
+        return
+      } else {
+        handleResponse(res, 404, "Paso alguito", usuario)
+        return
+      }
+    } else {
+      handleResponse(res, 400, "El usuario no existe")
+      return
+    }
+  } catch (error) {
+    httpError(res, error)
+    return
+  }
+}
+
 export {
   getUsuario,
   getRecetasByUserId,
@@ -236,4 +302,7 @@ export {
   updateUsuario,
   deleteUsuario,
   updateUsuarioPass,
+  linkGoogleAccountCallback,
+  linkGoogleAccount,
+  unlinkGoogleAccount,
 }

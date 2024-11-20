@@ -36,6 +36,8 @@ const ProfilePage = () => {
     updateProfile,
     deleteProfile,
     updatePassword,
+    linkGoogleAccount,
+    unlinkGoogleAccount,
     notifyUpload,
     errors,
     loadPhoto,
@@ -48,7 +50,7 @@ const ProfilePage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notifyUpload])
-  // console.log(profile)
+  console.log(profile)
   return (
     <>
       <section className='bg-orange-300'>
@@ -79,7 +81,7 @@ const ProfilePage = () => {
                           title={tab.name}
                         >
                           <tab.icon className='w-6 h-6 text-gray-900' />
-                          <span className="hidden md:inline">{tab.name}</span>
+                          <span className='hidden md:inline'>{tab.name}</span>
                         </Tab>
                         <hr />
                       </Fragment>
@@ -108,10 +110,17 @@ const ProfilePage = () => {
                       </div>
                     </Tab.Panel>
                     <Tab.Panel className='w-full px-5 pt-4'>
-                      <ProfileSecurity profile={profile} handleUpdatePassword={updatePassword} />
+                      <ProfileSecurity
+                        profile={profile}
+                        handleUpdatePassword={updatePassword}
+                      />
                     </Tab.Panel>
                     <Tab.Panel className='w-full px-5 pt-4'>
-                      <ProfileAccount profile={profile} handleDeleteAccount={deleteProfile} syncSocialAccount={null}/>
+                      <ProfileAccount
+                        profile={profile}
+                        handleDeleteAccount={deleteProfile}
+                        syncSocialAccount={{link: linkGoogleAccount, unlink: unlinkGoogleAccount}}
+                      />
                     </Tab.Panel>
                   </Tab.Panels>
                 </div>

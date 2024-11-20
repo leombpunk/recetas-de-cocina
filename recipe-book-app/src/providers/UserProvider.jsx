@@ -16,15 +16,16 @@ const UserProvider = ({ children }) => {
       const userToken = getToken() //contiene el token de sesion
       if (userToken) {
         const result = await AuthServices.verifyToken(userToken)
+        console.log({result})
         if ((result?.status >= 200) & (result?.status < 300)) {
           setToken(result.data.data.token)
           setUser(result.data.data)
-          return { type: "success", message: "Sesión correcta" }
+          return { type: "success", message: "Sesión correcta", user: 1 }
         } else {
-          return { type: "error", message: "Tu sesión a expirado" }
+          return { type: "error", message: "Tu sesión a expirado", user: 0 }
         }
       } else {
-        return { type: "info", message: "No hay token" }
+        return { type: "info", message: "No hay token", user: 0 }
       }
     }
   }

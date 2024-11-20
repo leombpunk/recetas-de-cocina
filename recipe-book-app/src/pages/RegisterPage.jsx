@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import bgImage from "../assets/images/vectorstock_49097965.webp"
@@ -8,9 +8,12 @@ import RegisterSchema from "../utils/RegisterResolver"
 import useRegister from "../hooks/useRegister"
 import { useEffect } from "react"
 import { useContextNotification } from "../providers/NotificationProvider"
+import { RoutesAPI } from "../utils/RoutesAPI"
+import { setToken } from "../utils/Token"
 
 const RegisterPage = () => {
   const { addNotification } = useContextNotification()
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const {
     errors: registerError,
@@ -37,6 +40,20 @@ const RegisterPage = () => {
     console.log({ data })
     userRegister(data)
   }
+
+  const handleClickRegisterGoogle = (event) => {
+    event.preventDefault()
+    window.location.href = `${RoutesAPI.auth}/google`;
+    // googleLogin()
+  }
+
+  useEffect(() => {
+    if (searchParams.get("token")) {
+      console.log(searchParams.get("token"))
+      setToken(searchParams.get("token"))
+      navigate(NavigationRoutes.Profile)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     if (notify) {
@@ -97,6 +114,7 @@ const RegisterPage = () => {
 
               <div className='mt-0'>
                 <button
+                  onClick={(e) => handleClickRegisterGoogle(e)}
                   type='button'
                   aria-label='Continue with google'
                   className='focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-xl border-gray-500 bg-gray-200 flex items-center w-full mt-0 shadow-md'
