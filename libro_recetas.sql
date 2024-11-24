@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-06-2023 a las 23:44:03
+-- Tiempo de generación: 24-11-2024 a las 17:29:10
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -26,18 +26,44 @@ USE `libro_recetas`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ingredientes`
+-- Estructura de tabla para la tabla `comentarios`
 --
 
-DROP TABLE IF EXISTS `ingredientes`;
-CREATE TABLE `ingredientes` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `cantidad` decimal(8,3) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `comentarios`;
+CREATE TABLE `comentarios` (
+  `id` int(11) UNSIGNED NOT NULL,
   `idReceta` int(11) UNSIGNED NOT NULL,
-  `idUnidadMedida` int(11) UNSIGNED NOT NULL,
-  `detalle` varchar(255) DEFAULT NULL,
-  `imagen` varchar(100) DEFAULT NULL
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `comentario` varchar(1000) NOT NULL,
+  `createAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `guardadas`
+--
+
+DROP TABLE IF EXISTS `guardadas`;
+CREATE TABLE `guardadas` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `idReceta` int(11) UNSIGNED NOT NULL,
+  `createAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+CREATE TABLE `likes` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `idReceta` int(11) UNSIGNED NOT NULL,
+  `createAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -49,22 +75,35 @@ CREATE TABLE `ingredientes` (
 DROP TABLE IF EXISTS `recetas`;
 CREATE TABLE `recetas` (
   `id` int(11) UNSIGNED NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `detalle` varchar(500) NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
-  `imagen` varchar(100) DEFAULT NULL
+  `titulo` varchar(50) NOT NULL,
+  `detalle` varchar(500) NOT NULL,
+  `imagen` varchar(100) NOT NULL,
+  `visibilidad` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `comensales` varchar(20) NOT NULL,
+  `duracion` varchar(20) NOT NULL,
+  `checked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0=no verificado 1=verificado',
+  `ingredientes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[{"name":""}]',
+  `pasos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[{"paso":"","imagen":""}]',
+  `createAt` datetime DEFAULT NULL,
+  `updateAt` datetime DEFAULT NULL,
+  `deleteAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `unidades_medidas`
+-- Estructura de tabla para la tabla `respuestas`
 --
 
-DROP TABLE IF EXISTS `unidades_medidas`;
-CREATE TABLE `unidades_medidas` (
+DROP TABLE IF EXISTS `respuestas`;
+CREATE TABLE `respuestas` (
   `id` int(11) UNSIGNED NOT NULL,
-  `nombre` varchar(30) NOT NULL
+  `idComentario` int(11) UNSIGNED NOT NULL COMMENT 'id del comentario origen',
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `idUsuarioMension` int(11) UNSIGNED NOT NULL,
+  `respuesta` varchar(1000) NOT NULL,
+  `createAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -76,10 +115,15 @@ CREATE TABLE `unidades_medidas` (
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int(11) UNSIGNED NOT NULL,
+  `googleId` varchar(30) DEFAULT NULL,
   `usuario` varchar(16) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
+  `contrasena` varchar(255) DEFAULT NULL COMMENT 'pass: usuario123',
+  `apellidos` varchar(100) NOT NULL,
+  `nombres` varchar(100) NOT NULL,
   `mail` varchar(50) NOT NULL,
-  `imagen` varchar(100) DEFAULT NULL
+  `imagen` varchar(100) DEFAULT NULL,
+  `createAt` datetime DEFAULT NULL,
+  `deleteAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -87,41 +131,80 @@ CREATE TABLE `usuarios` (
 --
 
 --
--- Indices de la tabla `ingredientes`
+-- Indices de la tabla `comentarios`
 --
-ALTER TABLE `ingredientes`
+ALTER TABLE `comentarios`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_receta` (`idReceta`),
-  ADD KEY `fk_unidad_medida` (`idUnidadMedida`);
+  ADD KEY `fk_receta_comentario` (`idReceta`),
+  ADD KEY `fk_usuario_comentario` (`idUsuario`);
+
+--
+-- Indices de la tabla `guardadas`
+--
+ALTER TABLE `guardadas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_usuario_receta` (`idUsuario`,`idReceta`) USING BTREE,
+  ADD KEY `ix_idUsuario` (`idUsuario`) USING BTREE,
+  ADD KEY `ix_idReceta` (`idReceta`) USING BTREE;
+
+--
+-- Indices de la tabla `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_usuario_receta` (`idUsuario`,`idReceta`) USING BTREE,
+  ADD KEY `ix_idUsuario` (`idUsuario`) USING BTREE,
+  ADD KEY `ix_idReceta` (`idReceta`) USING BTREE;
 
 --
 -- Indices de la tabla `recetas`
 --
 ALTER TABLE `recetas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_usuario` (`idUsuario`);
+  ADD KEY `ix_usuario` (`idUsuario`) USING BTREE;
 
 --
--- Indices de la tabla `unidades_medidas`
+-- Indices de la tabla `respuestas`
 --
-ALTER TABLE `unidades_medidas`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `respuestas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ix_comentario` (`idComentario`),
+  ADD KEY `ix_usuario` (`idUsuario`),
+  ADD KEY `ix_idUsuarioMension` (`idUsuarioMension`);
 
 --
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_usuario` (`usuario`) USING BTREE,
+  ADD UNIQUE KEY `uq_mail` (`mail`) USING BTREE,
+  ADD UNIQUE KEY `uq_googleId` (`googleId`),
+  ADD KEY `ix_usuario` (`usuario`) USING BTREE,
+  ADD KEY `ix_mail` (`mail`) USING BTREE,
+  ADD KEY `ix_googleId` (`googleId`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `ingredientes`
+-- AUTO_INCREMENT de la tabla `comentarios`
 --
-ALTER TABLE `ingredientes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `comentarios`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `guardadas`
+--
+ALTER TABLE `guardadas`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `recetas`
@@ -130,9 +213,9 @@ ALTER TABLE `recetas`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `unidades_medidas`
+-- AUTO_INCREMENT de la tabla `respuestas`
 --
-ALTER TABLE `unidades_medidas`
+ALTER TABLE `respuestas`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -146,17 +229,39 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Filtros para la tabla `ingredientes`
+-- Filtros para la tabla `comentarios`
 --
-ALTER TABLE `ingredientes`
-  ADD CONSTRAINT `fk_receta` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_unidad_medida` FOREIGN KEY (`idUnidadMedida`) REFERENCES `unidades_medidas` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `comentarios`
+  ADD CONSTRAINT `fk_receta_comentario` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_comentario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `guardadas`
+--
+ALTER TABLE `guardadas`
+  ADD CONSTRAINT `fk_receta_favorito` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_favorito` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `fk_recetas_likes` FOREIGN KEY (`idReceta`) REFERENCES `recetas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuarios_likes` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `recetas`
 --
 ALTER TABLE `recetas`
-  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `respuestas`
+--
+ALTER TABLE `respuestas`
+  ADD CONSTRAINT `fk_comentario_respuesta` FOREIGN KEY (`idComentario`) REFERENCES `comentarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_mension` FOREIGN KEY (`idUsuarioMension`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_respuesta` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

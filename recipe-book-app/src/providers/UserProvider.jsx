@@ -1,41 +1,56 @@
-import { createContext, useContext, useState } from 'react'
-import { getUserLocalStorage,deleteUserLocalStorage, setUserLocalStorage } from '../utils/Token'
+import { createContext, useContext, useState } from "react"
+import { getToken, deleteToken, setToken } from "../utils/Token"
+import AuthServices from "../services/Auth"
 
 const UserContext = createContext()
 
-const UserProvider = ({children}) => {
-    const [user, setUser] = useState(null)
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
+  // console.log({ provider: user })
 
-    const handleLogin = (user) => {
-        setUserLocalStorage(user)
-        setUser(user)
+  const handleInitUserProvider = async () => {
+    if (user) {
+      return { type: "success", message: "Sesión correcta" }
     }
-
-    const handleLogout = () => {
-        deleteUserLocalStorage()
-        setUser(null)
-    }
-
-    const userLocalData = getUserLocalStorage()
-
-    if (!user && userLocalData) {
-        try {
-            const userData = JSON.parse(userLocalData)
-            setUser(userData)
-        } catch (error) {
-            console.log({ 'error': error })
+    else {
+      const userToken = getToken() //contiene el token de sesion
+      if (userToken) {
+        const result = await AuthServices.verifyToken(userToken)
+        console.log({result})
+        if ((result?.status >= 200) & (result?.status < 300)) {
+          setToken(result.data.data.token)
+          setUser(result.data.data)
+          return { type: "success", message: "Sesión correcta", user: 1 }
+        } else {
+          return { type: "error", message: "Tu sesión a expirado", user: 0 }
         }
+      } else {
+        return { type: "info", message: "No hay token", user: 0 }
+      }
     }
+  }
 
-    return (
-        <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
-            {children}
-        </UserContext.Provider>
-    )
+  const handleLogin = (userData) => {
+    setToken(userData.token)
+    setUser(userData)
+  }
+
+  const handleLogout = () => {
+    deleteToken()
+    setUser(null)
+  }
+
+  return (
+    <UserContext.Provider
+      value={{ user, setUser, handleInitUserProvider, handleLogin, handleLogout }}
+    >
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 const useContextUser = () => {
-    return useContext(UserContext)
+  return useContext(UserContext)
 }
 
 export { useContextUser, UserProvider }

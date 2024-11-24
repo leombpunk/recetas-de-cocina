@@ -1,15 +1,15 @@
 import { Outlet } from "react-router-dom"
 import Footer from "./footer/Footer"
-import Header2 from "./header/Header2"
+import Header from "./header/Header"
 
 const AppContainer = () => {
-    return (
-        <>
-            <Header2 />
-            <Outlet />
-            <Footer />   
-        </>
-    )
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  )
 }
 
 export default AppContainer

@@ -1,58 +1,95 @@
-import { DataTypes, Op } from 'sequelize'
-import { sequelize } from '../config/mysql.js'
-import Usuario from './usuario.js'
-import Ingrediente from './ingrediente.js'
-import UnidadMedida from './unidadesMedidas.js'
-import { getRecetasByUsername } from '../controllers/recetas.js'
+import { DataTypes, Op } from "sequelize"
+import { sequelize } from "../config/mysql.js"
+import Usuario from "./usuario.js"
+// import Ingrediente from "./ingrediente.js"
 
-const Receta = sequelize.define('recetas',{
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
+//actualizar
+const Receta = sequelize.define(
+  "recetas",
+  {
+    titulo: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     detalle: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     imagen: {
-        type: DataTypes.STRING,
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     visibilidad: {
-        type: DataTypes.TINYINT,
-        allowNull: false
+      type: DataTypes.TINYINT,
+      allowNull: false,
     },
     idUsuario: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, { timestamps: false, })
-
-//asocianciones
-//no entiendo como hace las asociaciones
-//o el problema vendra porque es include esta mal planteado
-// Usuario.hasMany(Receta, { foreignKey: 'idUsuario' }) //un usuario tiene muchas recetas
-// Receta.belongsTo(Usuario, { foreignKey: 'idUsuario' }) //una receta pertenece a un usuario
-
-Receta.hasMany(Ingrediente, { foreignKey: 'idReceta' }) //una receta tiene muchos ingredientes
-// Ingrediente.belongsTo(Receta, { foreignKey: 'id' }) //un ingrediente pertenece a una receta //no es necesario
-
-Ingrediente.belongsTo(UnidadMedida, { foreignKey: 'idUnidadMedida' }) //un ingrediente pertenece a una unidad de medida
-// UnidadMedida.hasMany(Ingrediente, { foreignKey: 'id' }) //una unidad de medida tiene muchos ingredientes //no es necesario
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    comensales: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    duracion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ingredientes: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
+    pasos: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
+    checked: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+    },
+    createAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updateAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    deleteAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+  },
+  {
+    timestamps: false,
+    defaultScope: { attributes: { exclude: ["idUsuario"] } },
+    scopes: {
+      publicData: {
+        attributes: { exclude: ["idUsuario", "visibilidad", "checked"] },
+      },
+      allData: { attributes: {} },
+    },
+  }
+)
 
 //metodos personalizados
 Receta.getFullRecetaById = async (id) => {
-    return await Receta.findOne({
-        where: { id }, 
-        include: [{ model: Usuario, required: true },{ model: Ingrediente, include: { model: UnidadMedida, required: true }, required: true }],
-    })
+  return await Receta.findOne({
+    where: { id },
+    include: [{ model: Usuario.scope("basicUserData"), required: true }],
+  })
 }
 
 Receta.getFullRecetaByUsername = async (username) => {
-    return await Receta.findAll({
-        // where: { username }, 
-        include: [{ model: Usuario.scope('withoutUserData'), required: true, where: { usuario: username } }/*,{ model: Ingrediente, include: { model: UnidadMedida, required: true }, required: true }*/],
-    })
+  return await Receta.findAll({
+    include: [
+      {
+        model: Usuario.scope("basicUserData"),
+        required: true,
+        where: { usuario: username },
+      },
+    ],
+  })
 }
 
 export default Receta

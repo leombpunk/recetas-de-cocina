@@ -2,11 +2,14 @@ const NavigationRoutes = {
     Home: '/',
     Profile: '/profile',
     Recipes: '/recipes',
-    Recipe: '/recipe',
+    RecipeCreate: '/recipes/create',
+    Recipe: '/recipes/:id',
     Login: '/login',
     Register: '/register',
     Notifications: '/notifications',
-    TopOfTheWeek: '/topOfTheWeek',
+    Search: '/search',
+    SearchRecipe: '/search/recipe/:id',
+    Favorites: '/favorites',
 }
 
 export default NavigationRoutes

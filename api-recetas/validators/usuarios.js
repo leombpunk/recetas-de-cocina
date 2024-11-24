@@ -2,27 +2,46 @@ import { check } from 'express-validator'
 import { validateResult } from '../helpers/validateResult.js'
 
 const validateUsuario = [
-    check('usuario')
-        .exists()
-        .not().isEmpty()
-        .isLength({ min:8, max:16 }),
-    check('mail')
-        .exists()
-        .not().isEmpty()
-        .isEmail(),
-    (request, response, next) => {
-        validateResult(request, response, next)
-    }
+  check('nombres')
+    .exists()
+    .not().isEmpty()
+    .isLength({ min:2, max:100 }),
+  check('apellidos')
+    .exists()
+    .not().isEmpty()
+    .isLength({ min:2, max:100 }),
+  check('mail')
+    .exists()
+    .not().isEmpty()
+    .isLength({ max:50 })
+    .isEmail(),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  }
 ]
 
 const validatePass = [
-    check('contrasena')
-        .exists()
-        .not().isEmpty()
-        .isLength({ min:8, max:16 }),
-    (request, response, next) => {
-        validateResult(request, response, next)
-    }
+  check('oldPassword')
+    .exists()
+    .not().isEmpty()
+    .isLength({ min:8, max:16 }),
+  check('newPassword')
+    .exists()
+    .not().isEmpty()
+    .isLength({ min:8, max:16 }),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  }
 ]
 
-export { validateUsuario, validatePass }
+const validateDelete = [
+  check("borrarTodo")
+    .exists()
+    .not().isEmpty()
+    .isBoolean().toBoolean(),
+  (request, response, next) => {
+    validateResult(request, response, next)
+  }
+]
+
+export { validateUsuario, validatePass, validateDelete }

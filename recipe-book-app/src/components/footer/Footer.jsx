@@ -2,7 +2,7 @@ const Footer = () => {
     return (
         <>
             <footer>
-                <div className=" bg-orange-500">
+                <div className=" bg-orange-700">
                     <div className="max-w-2xl mx-auto text-black py-10">
                         <div className="text-center">
                             <h3 className="text-3xl mb-3">Descargate la App</h3>
@@ -25,7 +25,7 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-800">
-                            <p className="order-2 md:order-1 mt-8 md:mt-0"> &copy; CookingBook App, 2023. </p>
+                            <p className="order-2 md:order-1 mt-8 md:mt-0">Recipe App</p>
                             <div className="order-1 md:order-2">
                                 <span className="px-2">Acerca de</span>
                                 <span className="px-2 border-l border-black">Contactanos</span>

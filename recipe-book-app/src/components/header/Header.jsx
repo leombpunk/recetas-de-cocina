@@ -1,204 +1,248 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import { Fragment, useState } from "react"
+import { Link, useNavigate, useLocation } from "react-router-dom"
+import { Disclosure, Menu, Transition } from "@headlessui/react"
 import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-
-const products = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#stop', icon: ChartPieIcon },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#stop', icon: CursorArrowRaysIcon },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#stop', icon: FingerPrintIcon },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#stop', icon: SquaresPlusIcon },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#stop', icon: ArrowPathIcon },
-]
-const callsToAction = [
-  { name: 'Watch demo', href: '#stop', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#stop', icon: PhoneIcon },
-]
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline"
+import {
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+  BookmarkIcon,
+  DocumentPlusIcon,
+  DocumentTextIcon,
+  IdentificationIcon,
+} from "@heroicons/react/24/solid"
+import { useContextUser } from "../../providers/UserProvider"
+import NavigationRoutes from "../../utils/NavigationRoutes"
+import { RoutesAPI } from "../../utils/RoutesAPI"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ")
 }
 
+const filterSearch = ["/recipes","/recipe","/favorites"]
+
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [search, setSearch] = useState("")
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { user, handleLogout } = useContextUser()
+
+  const handleClickEndSesion = (e) => {
+    e.preventDefault()
+    handleLogout()
+    navigate(NavigationRoutes.Home)
+  }
+
+  const handleClickSignIn = (e) => {
+    e.preventDefault()
+    navigate(NavigationRoutes.Login)
+  }
+
+  const handleSubmitSearch = (event) => {
+    event.preventDefault()
+    // console.log(event.target[0].value)
+    // console.log({ buscador: search })
+    navigate(`${NavigationRoutes.Search}/?search=${search}`)
+    // navigate({ pathname: NavigationRoutes.Search, search: search })
+  }
+
+  // console.log({location})
 
   return (
-    <header className="bg-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div className="flex lg:flex-1">
-          <a href="#stop" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-          </a>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-              Product
-              <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-            </Popover.Button>
-
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+    <Disclosure as='nav' className='bg-orange-500'>
+      {({ open }) => (
+        <>
+          <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+            <div className='relative flex h-16 items-center justify-between'>
+              <div className='flex flex-1 items-center sm:items-stretch sm:justify-start'>
+                <Link
+                  className='flex flex-shrink-0 items-center gap-2'
+                  to={NavigationRoutes.Home}
+                >
+                  <img
+                    className='h-8 w-auto hover:scale-110 duration-500'
+                    src={require("D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/cooking-book-logo (8).png")}
+                    alt='Cooking Book App'
+                  />
+                  <span className='pacifico-regular text-2xl hidden md:block'>
+                    Recipe App
+                  </span>
+                </Link>
+                {!filterSearch.includes(location.pathname) && <div className='ml-2.5 sm:ml-6 w-full'>
+                  <div className='flex'>
+                    <form
+                      className='w-full'
+                      onSubmit={(e) => handleSubmitSearch(e)}
                     >
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
-                      </div>
-                      <div className="flex-auto">
-                        <a href={item.href} className="block font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                    >
-                      <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </Popover>
-
-          <a href="#stop" className="text-sm font-semibold leading-6 text-gray-900">
-            Features
-          </a>
-          <a href="#stop" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#stop" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
-        </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#stop" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </nav>
-      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#stop" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
-            </a>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Product
-                        <ChevronDownIcon
-                          className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
-                          aria-hidden="true"
+                      <div className='relative rounded-md shadow-sm overflow-hidden'>
+                        <input
+                          type='search'
+                          name='searchBar'
+                          id='searchBar'
+                          className='block w-full rounded-2xl border-0 py-1.5 pl-7 pr-12 bg-orange-300 text-gray-900 ring-1 ring-inset ring-gray-600 placeholder:text-gray-600 text-base sm:leading-6'
+                          placeholder='Buscar por receta o ingrediente'
+                          onChange={(event) => setSearch(event.target.value)}
                         />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
-                          <Disclosure.Button
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </Disclosure.Button>
-                        ))}
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-                <a
-                  href="#stop"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Features
-                </a>
-                <a
-                  href="#stop"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Marketplace
-                </a>
-                <a
-                  href="#stop"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Company
-                </a>
+                        <button
+                          type='submit'
+                          className='absolute inset-y-0 right-2 text-gray-600 flex items-center p-2'
+                        >
+                          <MagnifyingGlassIcon className='w-5 h-5 ' />
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>}
+                
               </div>
-              <div className="py-6">
-                <a
-                  href="#stop"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+              <div className='inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto ml-2.5 sm:ml-6 sm:pr-0 gap-2'>
+                <button
+                  type='button'
+                  className='hidden lg:inline relative rounded-full hover:scale-125 duration-500 bg-orange-500 p-1 text-gray-900 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'
                 >
-                  Log in
-                </a>
+                  <span className='absolute -inset-1.5' />
+                  <span className='sr-only'>Ver notificaciones</span>
+                  <BellIcon className='h-6 w-6' aria-hidden='true' />
+                </button>
+
+                {/* Profile dropdown */}
+                {user ? (
+                  <Menu as='div' className='relative ml-3'>
+                    <div>
+                      <Menu.Button className='relative flex rounded-full hover:scale-110 duration-500 bg-orange-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'>
+                        <span className='absolute -inset-1.5' />
+                        <span className='sr-only'>Abrir menu de usuario</span>
+                        {user.imagen ? (
+                          <img
+                            className='h-10 w-10 rounded-full'
+                            src={`${RoutesAPI.public}/${user.usuario}/${user.imagen}`}
+                            alt='imagen de perfil'
+                          />
+                        ) : (
+                          <UserCircleIcon className='h-8 w-8 bg-gray-300 rounded-full text-gray-900 hover:text-black' />
+                        )}
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter='transition ease-out duration-100'
+                      enterFrom='transform opacity-0 scale-95'
+                      enterTo='transform opacity-100 scale-100'
+                      leave='transition ease-in duration-75'
+                      leaveFrom='transform opacity-100 scale-100'
+                      leaveTo='transform opacity-0 scale-95'
+                    >
+                      <Menu.Items className='absolute right-0 z-20 mt-2 w-52 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <span
+                              className={classNames(
+                                active ? "bg-gray-200" : "",
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700 font-semibold hover:cursor-default"
+                              )}
+                            >
+                              <UserIcon className='w-5 h-5' />
+                              {user.usuario}
+                            </span>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
+                              )}
+                              to={NavigationRoutes.Profile}
+                            >
+                              <IdentificationIcon className='w-5 h-5' />
+                              Perfil
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={NavigationRoutes.Recipes}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
+                              )}
+                            >
+                              <DocumentTextIcon className='w-5 h-5' />
+                              Mis Recetas
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={NavigationRoutes.RecipeCreate}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
+                              )}
+                            >
+                              <DocumentPlusIcon className='w-5 h-5' />
+                              Nueva Receta
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={NavigationRoutes.Favorites}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "flex flex-row items-center gap-1 px-4 py-2 text-lg text-gray-700"
+                              )}
+                            >
+                              <BookmarkIcon className='w-5 h-5' />
+                              Mis Favoritos
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              type='button'
+                              onClick={(e) => handleClickEndSesion(e)}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "flex flex-row items-center gap-1 w-full px-4 py-2 text-lg text-left text-gray-700"
+                              )}
+                            >
+                              <ArrowRightOnRectangleIcon className='w-5 h-5' />
+                              Cerrar sesión
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                ) : (
+                  <button
+                    type='button'
+                    onClick={(e) => handleClickSignIn(e)}
+                    className='flex flex-row gap-2 items-center relative rounded-xl py-2 px-3 hover:scale-110 duration-500 bg-orange-400 text-gray-900 hover:text-black font-semibold shadow-black/50 hover:shadow-md'
+                  >
+                    <span className='absolute -inset-1.5' />
+                    <span className='sr-only'>Iniciar sesión</span>
+                    <FontAwesomeIcon icon={"fa-solid fa-right-to-bracket"} />
+                    <span className="hidden md:inline">Conectar</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
-        </Dialog.Panel>
-      </Dialog>
-    </header>
+        </>
+      )}
+    </Disclosure>
   )
 }
 
-export default Header;
+export default Header
