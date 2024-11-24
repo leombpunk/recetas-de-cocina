@@ -12,7 +12,7 @@ import CustomModal from "../modals/CustomModal"
 import Comment from "./Comment"
 
 const Comments = ({ recipeId, onNotLogin }) => {
-  const { loading, errors, comments, createComment, deleteComment } =
+  const { loading, comments, createComment, deleteComment } =
     useComments(recipeId)
   const { user } = useContextUser()
   const { addNotification } = useContextNotification()
@@ -84,9 +84,9 @@ const Comments = ({ recipeId, onNotLogin }) => {
   return (
     <div className='px-2 flex flex-col gap-3 mt-10'>
       <h2 className='text-3xl font-semibold'>Comentarios</h2>
-      <div className='w-full bg-orange-400 rounded-2xl shadow-sm shadow-black/30 p-5'>
-        <form className='w-full mt-3 pt-3 pb-5 pl-8 pr-3 border-b-2 border-black/40'>
-          <div className="flex flex-row gap-2">
+      <div className='w-full bg-orange-400 rounded-2xl shadow-sm shadow-black/30 p-1 md:p-5'>
+        <form className='w-full mt-3 pt-3 pb-5 px-1 md:pl-8 md:pr-3 border-b-2 border-black/40'>
+          <div className='flex flex-row gap-2'>
             {comment.usuario?.imagen ? (
               <img
                 src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
@@ -128,7 +128,11 @@ const Comments = ({ recipeId, onNotLogin }) => {
               />
             ))
           ) : (
-            <div className='flex flex-row items-center justify-center py-3'><p className="text-gray-800/70 italic text-3xl font-medium">Aún no hay comentarios! <span className="not-italic">😢</span></p></div>
+            <div className='flex flex-row items-center justify-center py-3'>
+              <p className='text-gray-800/70 text-center italic text-3xl font-medium'>
+                Aún no hay comentarios! <span className='not-italic'>😢</span>
+              </p>
+            </div>
           )}
         </div>
       </div>

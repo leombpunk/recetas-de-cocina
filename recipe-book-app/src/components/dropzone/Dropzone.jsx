@@ -80,7 +80,7 @@ const Dropzone = ({
           isMultiple ? null : (
             <div className='flex flex-row justify-center w-full'>
               <div
-                className='w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
+                className='w-full lg:w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
                 title='Imagen descriptiva del paso'
                 style={{
                   backgroundImage: `url(${filePreload ? 

@@ -44,7 +44,7 @@ const RecipePublicPage = () => {
   const { addNotification } = useContextNotification()
   const { recipe, errors, loading } = useRecipeSearch(id)
   const {
-    loading: likeLoading,
+    // loading: likeLoading,
     errors: likeErrors,
     count,
     handleClickLike,
@@ -52,8 +52,8 @@ const RecipePublicPage = () => {
     setLiked,
   } = useLikes(id)
   const {
-    loading: saveLoading,
-    errors: saveErrors,
+    // loading: saveLoading,
+    // errors: saveErrors,
     save,
     setSave,
     handleClickSave,
@@ -120,7 +120,7 @@ const RecipePublicPage = () => {
         {loading ? (
           <Loader />
         ) : (
-          <section className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
+          <section className='mx-auto max-w-2xl px-1 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             <figure className='w-full'>
               {recipe.imagen ? (
                 <img
@@ -182,7 +182,7 @@ const RecipePublicPage = () => {
                 )}
               </div>
             </div>
-            <div className='w-full flex flex-row gap-3 items-center justify-end mt-5 px-2'>
+            <div className='w-full flex flex-col md:flex-row gap-3 items-start md:items-center justify-end mt-5 px-2'>
               <Link
                 className='flex flex-row items-center gap-3 text-lg hover:underline font-semibold duration-500'
                 title='Mostrar todas las recetas de este usuario'
@@ -203,8 +203,8 @@ const RecipePublicPage = () => {
                 Publicado:{" "}
                 <span>
                   {recipe.updateAt
-                    ? recipe.updateAt
-                    : today.toISOString().split(".").shift().replace("T", " ")}
+                    ? recipe.updateAt.split("T").shift()
+                    : today.toISOString().split("T").shift()}
                 </span>
               </div>
             </div>

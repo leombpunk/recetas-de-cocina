@@ -286,7 +286,7 @@ const RecipeForm = ({
           </div>
         </div>
         <div className='bg-orange-200 rounded-lg mt-4'>
-          <div className='flex flex-col gap-3 items-center p-4 w-full'>
+          <div className='flex flex-col gap-3 items-center p-1 md:p-4 w-full'>
             <Dropzone
               title='Agrega una imagen para la portada de la receta'
               isMultiple={false}
