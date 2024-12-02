@@ -1,8 +1,11 @@
+import * as dotenv from "dotenv"
 import passport from "passport"
 import { Strategy } from "passport-google-oauth20"
 import models from "../models/index.js"
 import { tokenSign } from "../helpers/generateToken.js"
 import { where } from "sequelize"
+
+dotenv.config()
 
 const today = new Date()
 
