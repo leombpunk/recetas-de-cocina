@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import { Sequelize } from 'sequelize'
+import mysql2 from 'mysql2'
 
 dotenv.config()
 
@@ -7,11 +8,15 @@ const host = process.env.HOST
 const username = process.env.DB_USER
 const password = process.env.DB_PASS
 const database = process.env.DB_NAME
+//for deploy
+const dbport = process.env.DB_PORT
 
 const sequelize = new Sequelize(database, username, password, {
     host: host,
     dialect: 'mysql',
-    timezone: '-03:00'
+    port: dbport, //for deploy
+    timezone: '-03:00',
+    dialectModule: mysql2,
 })
 
 const dbConexion = async () => {
