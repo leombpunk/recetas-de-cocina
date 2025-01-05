@@ -1,14 +1,18 @@
+import * as dotenv from 'dotenv'
 import multer from "multer"
 import { extname, join, dirname } from "path"
 import { fileURLToPath } from "url"
 import { existsSync, mkdir } from "fs"
 import { verifyToken } from "../helpers/generateToken.js"
 
+dotenv.config()
+
+const storage = process.env.STORAGE === '1' ? 'cloud' : 'local'
 const MIMETYPES = ["image/jpeg", "image/png", "image/webp"]
 const CURRENT_DIR = dirname(fileURLToPath(import.meta.url))
 
 //agregar otro almacenamiento para guardar las weas del perfil en carpeta avatars
-const almacenamiento = multer.diskStorage({
+const almacenamiento = storage === 'local' ? multer.diskStorage({
   //direccion absoluta del directorio actual
   destination: async (req, file, callback) => {
     let token = req.headers.authorization.split(" ").pop()
@@ -25,9 +29,9 @@ const almacenamiento = multer.diskStorage({
     const filename = `file-${Date.now()}${extension}` //nombre del archivo
     callback(null, filename)
   },
-})
+}) : multer.memoryStorage()
 
-const almacenamientoAvatar = multer.diskStorage({
+const almacenamientoAvatar = storage === 'local' ? multer.diskStorage({
   destination: join(CURRENT_DIR, "../public/images/avatars"), //direccion absoluta del directorio actual
   filename: (req, file, callback) => {
     const { username } = req.params
@@ -35,7 +39,7 @@ const almacenamientoAvatar = multer.diskStorage({
     const filename = `${username}-${Date.now()}${extension}` //nombre del archivo
     callback(null, filename)
   },
-})
+}) : multer.memoryStorage()
 
 //agregar otro upload que ocupe el otro almacenamiento y con otro limite de tamaño para los avatares de perfil
 const upload = multer({

@@ -13,3 +13,4 @@ api-recetas/public/images/*.png
 *.zip
 *.avif
 *.gif
+.codegpt
