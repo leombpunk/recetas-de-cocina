@@ -267,8 +267,9 @@ const createReceta = async (req, res) => {
       comensales = "",
       visibilidad = 0,
       ingredientes = [{ name: "" }],
-      pasos = [{ paso: "", imagen: "" }],
+      pasos = [{ paso: "", imagen: "", urlPublica: ""}],
       imagen = "",
+      urlPublica = "",
       checked = "",
     } = body
     const receta = await models.Receta.findOne({
@@ -292,6 +293,7 @@ const createReceta = async (req, res) => {
             comensales,
             visibilidad,
             imagen,
+            urlPublica,
             checked: 0,
             ingredientes,
             pasos,
@@ -319,7 +321,7 @@ const patchReceta = async (req, res) => {
     const { id } = req.params
     const token = req.headers.authorization.split(" ").pop()
     const tokenData = await verifyToken(token)
-    const { imagen, pasos } = matchedData(req)
+    const { imagen, urlPublica, pasos } = matchedData(req)
     const receta = await models.Receta.findOne({
       where: { id: id, idUsuario: tokenData.id },
     })
@@ -333,10 +335,11 @@ const patchReceta = async (req, res) => {
         // console.log({ pasos })
         receta.pasos = pasos
       }
-      //test
-      // handleResponse(res, 200, "oli", { id, imagen, pasos, receta })
-      // return
-      receta.save()
+      if (urlPublica && urlPublica.length) {
+        // console.log({ urlPublica })
+        receta.urlPublica = urlPublica
+      }
+      await receta.save()
       if (receta.changed()) {
         handleResponse(res, 200, "Receta actaulizada parcialmente", receta)
         return
@@ -429,7 +432,7 @@ const deleteReceta = async (req, res) => {
       console.log({ weas: files })
       //borrar las imágenes
       files.forEach(async (filename) => {
-        fs.unlink(`${publicPath}/${usuario.usuario}/${filename}`, (error) => {
+        fs.unlink(`${publicPath}/${usuario.carpeta}/${filename}`, (error) => {
           if (error) {
             // throw new Error("El archivo que desea borrar no existe")
             console.log("cb: mensaje del metodo fs.unlink mal borrado")

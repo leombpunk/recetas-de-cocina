@@ -47,9 +47,9 @@ const Comment = ({
           to={"#"}
           className='flex flex-row items-center gap-2 text-lg font-semibold hover:underline duration-300'
         >
-          {comment.usuario?.imagen ? (
+          {comment.usuario?.urlPublica ? (
             <img
-              src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
+              src={`${comment.usuario?.urlPublica}`}
               alt='imagen de perfil'
               className='h-8 w-8 rounded-full'
             />

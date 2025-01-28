@@ -2,7 +2,7 @@ import { Fragment } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { UserCircleIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import Loader from "../loader/Loader"
-import { RoutesAPI } from "../../utils/RoutesAPI"
+// import { RoutesAPI } from "../../utils/RoutesAPI"
 
 const LikesDrawer = ({ open, setOpen, loading, likes }) => {
   return (
@@ -70,10 +70,10 @@ const LikesDrawer = ({ open, setOpen, loading, likes }) => {
                               likes.map((like) => (
                                 <li className='flex flex-row items-center gap-4 text-xl font-medium w-full border-2 border-orange-600 rounded-xl px-2 py-1 shadow-md shadow-black/50'>
                                   <picture>
-                                    {like?.usuario?.imagen ? (
+                                    {like?.usuario?.urlPublica ? (
                                       <img
                                         className="h-10 w-10 rounded-full"
-                                        src={`${RoutesAPI.public}/${like?.usuario?.usuario}/${like?.usuario?.imagen}`}
+                                        src={`${like?.usuario?.urlPublica}`}
                                         alt='Avatar de usuario'
                                       />
                                     ) : <UserCircleIcon className='h-10 w-10 rounded-full text-gray-900 bg-gray-300' />}

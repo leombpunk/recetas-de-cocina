@@ -38,6 +38,14 @@ const Usuario = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    urlPublica: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    carpeta: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     createAt: {
       type: DataTypes.DATE,
       allowNull: true,

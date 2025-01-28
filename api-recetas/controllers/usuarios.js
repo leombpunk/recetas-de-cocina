@@ -1,3 +1,4 @@
+import * as dotenv from "dotenv"
 import { unlink, rmdir, rename } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -7,6 +8,11 @@ import { httpError } from "../helpers/handleErrors.js"
 import { compare, encrypt } from "../helpers/handleBcrypt.js"
 import { verifyToken } from "../helpers/generateToken.js"
 import models from "../models/index.js"
+import { deleteUserFolder } from "../helpers/fileStorage.js"
+
+dotenv.config()
+
+const storage = process.env.STORAGE === "1" ? "cloud" : "local"
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -148,13 +154,17 @@ const deleteUsuario = async (req, res) => {
         // )
 
         //elimina la carpeta de datos del usuario
-        rmdir(`${publicPath}/users/${user.usuario}`, (error) => {
-          if (error) {
-            console.log(error)
-          } else {
-            console.log("carpeta borrada")
-          }
-        })
+        if (storage === "cloud") {
+          deleteUserFolder(user)
+        } else {
+          rmdir(`${publicPath}/users/${user.usuario}`, (error) => {
+            if (error) {
+              console.log(error)
+            } else {
+              console.log("carpeta borrada")
+            }
+          })
+        }
         //proceder a borrar todo
         user.destroy({ force: true })
         handleResponse(
@@ -175,7 +185,7 @@ const deleteUsuario = async (req, res) => {
         //borrar imagen de perfin si existe
         if ((user, imagen)) {
           unlink(
-            `${publicPath}/users/${user.usuario}/${user.imagen}`,
+            `${publicPath}/users/${user.carpeta}/${user.imagen}`,
             (error) => {
               if (error) {
                 console.log(error)
@@ -187,7 +197,7 @@ const deleteUsuario = async (req, res) => {
         }
         //cambiar el nombre de la carpeta donde se guardan los archivos
         rename(
-          `${publicPath}/users/${user.usuario}`,
+          `${publicPath}/users/${user.carpeta}`,
           `${publicPath}/users/anonimo${user.id}`,
           (error) => {
             if (error) {
@@ -204,6 +214,7 @@ const deleteUsuario = async (req, res) => {
         user.usuario = `anonimo${user.id}`
         user.contrasena = ""
         user.imagen = null
+        user.urlPublica = null
         user.deleteAt = today.toISOString()
         user.save()
 

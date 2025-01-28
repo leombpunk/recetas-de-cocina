@@ -59,7 +59,7 @@ const useComments = (recipeId) => {
         newComment.usuario = {
           nombres: user.nombres,
           apellidos: user.apellidos,
-          imagen: user.imagen,
+          urlPublica: user.urlPublica, //para qué está esto?
           usuario: user.usuario,
         }
         console.log({ newComment: newComment })

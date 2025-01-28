@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/solid"
 import { useContextUser } from "../../providers/UserProvider"
 import NavigationRoutes from "../../utils/NavigationRoutes"
-import { RoutesAPI } from "../../utils/RoutesAPI"
+// import { RoutesAPI } from "../../utils/RoutesAPI"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function classNames(...classes) {
@@ -116,10 +116,10 @@ const Header = () => {
                       <Menu.Button className='relative flex rounded-full hover:scale-110 duration-500 bg-orange-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-700 focus:ring-offset-2 focus:ring-offset-orange-800'>
                         <span className='absolute -inset-1.5' />
                         <span className='sr-only'>Abrir menu de usuario</span>
-                        {user.imagen ? (
+                        {user.urlPublica ? (
                           <img
                             className='h-10 w-10 rounded-full'
-                            src={`${RoutesAPI.public}/${user.usuario}/${user.imagen}`}
+                            src={`${user.urlPublica}`}
                             alt='imagen de perfil'
                           />
                         ) : (

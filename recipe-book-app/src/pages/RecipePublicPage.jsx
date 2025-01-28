@@ -16,7 +16,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useContextNotification } from "../providers/NotificationProvider"
 import { useContextUser } from "../providers/UserProvider"
-import { RoutesAPI } from "../utils/RoutesAPI"
+// import { RoutesAPI } from "../utils/RoutesAPI"
 import useRecipeSearch from "../hooks/useRecipeSearch"
 import useLikes from "../hooks/useLikes"
 import Loader from "../components/loader/Loader"
@@ -122,9 +122,9 @@ const RecipePublicPage = () => {
         ) : (
           <section className='mx-auto max-w-2xl px-1 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
             <figure className='w-full'>
-              {recipe.imagen ? (
+              {recipe.urlPublica ? (
                 <img
-                  src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${recipe.imagen}`}
+                  src={`${recipe.urlPublica}`}
                   alt='Imagen portada de receta'
                   className='w-full h-[50vh] rounded-2xl object-cover object-top'
                   style={{ aspectRatio: "16/9" }}
@@ -188,9 +188,9 @@ const RecipePublicPage = () => {
                 title='Mostrar todas las recetas de este usuario'
                 to={`${NavigationRoutes.Search}/?username=${recipe.usuario.usuario}`} //agregar el link
               >
-                {recipe.usuario.imagen ? (
+                {recipe.usuario.urlPublica ? (
                   <img
-                    src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${recipe.usuario.imagen}`}
+                    src={`${recipe.usuario.urlPublica}`}
                     alt='imagen perfil'
                     className='h-8 w-8 rounded-full'
                   />
@@ -254,10 +254,10 @@ const RecipePublicPage = () => {
                     className='list-disc list-inside text-lg'
                   >
                     <span>{paso.paso}</span>
-                    {paso.imagen ? (
+                    {paso.urlPublica ? (
                       <img
-                        src={`${RoutesAPI.public}/${recipe.usuario.usuario}/${paso.imagen}`}
-                        alt='imagen del paso'
+                        src={`${paso.urlPublica}`}
+                        alt={`imagen del paso ${index+1}`}
                       />
                     ) : (
                       ""

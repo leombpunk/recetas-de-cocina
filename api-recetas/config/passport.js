@@ -1,9 +1,12 @@
+import * as dotenv from 'dotenv'
 import passport from "passport"
 import { Strategy } from "passport-google-oauth20"
 import models from "../models/index.js"
 import { tokenSign } from "../helpers/generateToken.js"
-import { where } from "sequelize"
+import { createUserFolder } from "../helpers/fileStorage.js"
 
+dotenv.config()
+// const storage = process.env.STORAGE === "0" ? "local" : "cloud"
 const today = new Date()
 
 const passportConfig = passport
@@ -28,11 +31,15 @@ const strategy = new Strategy(
           apellidos: profile.name.familyName,
           mail: profile.emails[0].value,
           createAt: today.toISOString(),
-          usuario: profile.displayName,
+          usuario: profile.displayName.replace(/\s/g, ""),
+          carpeta: "folder",
         },
       })
 
       // console.log({ user })
+      user.carpeta = "folder".concat(user.id)
+      await user.save()
+      createUserFolder(user.dataValues)
       const token = await tokenSign(user)
       callback(null, { user, token })
     } catch (error) {

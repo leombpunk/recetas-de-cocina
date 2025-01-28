@@ -87,9 +87,9 @@ const Comments = ({ recipeId, onNotLogin }) => {
       <div className='w-full bg-orange-400 rounded-2xl shadow-sm shadow-black/30 p-1 md:p-5'>
         <form className='w-full mt-3 pt-3 pb-5 px-1 md:pl-8 md:pr-3 border-b-2 border-black/40'>
           <div className='flex flex-row gap-2'>
-            {comment.usuario?.imagen ? (
+            {comment.usuario?.urlPublica ? (
               <img
-                src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
+                src={`${comment.usuario?.urlPublica}`}
                 alt='imagen de perfil'
                 className='w-11 h-11 rounded-full'
               />

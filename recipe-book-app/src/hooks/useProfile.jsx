@@ -43,8 +43,8 @@ const useProfile = (username) => {
           message: "Imagen de perfil actualizada",
           type: "success",
         })
-        setProfile({ ...profile, imagen: result.data.data.file.filename })
-        setUser({ ...user, imagen: result.data.data.file.filename })
+        setProfile({ ...profile, imagen: result.data.data.file.filename, urlPublica: result.data.data.url })
+        setUser({ ...user, imagen: result.data.data.file.filename, urlPublica: result.data.data.url })
       } else {
         setNotifyUpload({ message: "Apa!! ¿que pasó?", type: "info" })
       }
@@ -71,8 +71,8 @@ const useProfile = (username) => {
           message: "Imagen de perfil eliminada",
           type: "success",
         })
-        setProfile({ ...profile, imagen: null })
-        setUser({ ...user, imagen: null })
+        setProfile({ ...profile, imagen: null, urlPublica: null })
+        setUser({ ...user, imagen: null, urlPublica: null })
       } else {
         setNotifyUpload({ message: "Apa!! ¿que pasó?", type: "info" })
       }

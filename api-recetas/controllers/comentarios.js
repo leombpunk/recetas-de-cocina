@@ -21,7 +21,7 @@ const getComentarios = async (req, res) => {
       include: [
         {
           model: models.Usuario.scope("basicUserData"),
-          attributes: ["nombres", "apellidos", "usuario", "imagen"],
+          attributes: ["nombres", "apellidos", "usuario", "imagen", "urlPublica"],
           required: true,
         },
         {

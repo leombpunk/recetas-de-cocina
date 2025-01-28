@@ -36,7 +36,7 @@ const StepsList = ({
   console.log({ guach: pasos })
 
   const [stepsArray, setStepesArray] = useState(
-    steps.length ? steps : [{ order: "", content: "", image: "" }]
+    steps.length ? steps : [{ order: "", content: "", image: "", urlPublica: "" }]
   )
 
   useEffect(() => {
@@ -49,10 +49,10 @@ const StepsList = ({
   }, [changed])
 
   const addItem = () => {
-    append({ paso: "", imagen: "" })
+    append({ paso: "", imagen: "", urlPublica: "" })
     setStepesArray([
       ...stepsArray,
-      { order: stepsArray.length + 1, content: "", image: "" },
+      { order: stepsArray.length + 1, content: "", image: "", urlPublica: "" },
     ])
   }
   const deleteItem = (list, index) => {
@@ -94,6 +94,7 @@ const StepsList = ({
       console.log(result)
       setChanged(true)
       formData.setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
+      formData.setValue(`pasos.${index}.urlPublica`, `${result?.path || ""}`)
       // saveRecipeLocal(watch())
       return result
     }
@@ -107,6 +108,7 @@ const StepsList = ({
       console.log(result)
       setChanged(true)
       formData.setValue(`pasos.${index}.imagen`, "")
+      formData.setValue(`pasos.${index}.urlPublica`, "")
       // saveRecipeLocal(watch())
       return result
     }
