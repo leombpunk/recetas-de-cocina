@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv'
 import fs from "fs"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
@@ -8,6 +9,10 @@ import { verifyToken } from "../helpers/generateToken.js"
 import { handleResponse } from "../helpers/handleResponse.js"
 import { httpError } from "../helpers/handleErrors.js"
 import models from "../models/index.js"
+
+dotenv.config()
+
+const storage = process.env.STORAGE === '1' ? 'cloud' : 'local'
 
 const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -212,48 +217,6 @@ const getReceta = async (req, res) => {
   }
 }
 
-// const getFullRecetaById = async (req, res) => {
-//   try {
-//     const id = req.params.id
-//     const result = await Receta.getFullRecetaById(id)
-//     if (result) {
-//       const status = 200
-//       const message = ""
-//       handleResponse(res, status, message, result)
-//       return
-//     } else {
-//       const status = 404
-//       const message = "La receta solicitada no existe"
-//       handleResponse(res, status, message, null)
-//       return
-//     }
-//   } catch (error) {
-//     httpError(res, error)
-//     return
-//   }
-// }
-
-// const getRecetasByUsername = async (req, res) => {
-//   try {
-//     const nombreUsuario = req.params.nombreUsuario
-//     const result = await Receta.getFullRecetaByUsername(nombreUsuario)
-//     if (result) {
-//       const status = 200
-//       const message = ""
-//       handleResponse(res, status, message, result)
-//       return
-//     } else {
-//       const status = 404
-//       const message = "La receta solicitada no existe"
-//       handleResponse(res, status, message, null)
-//       return
-//     }
-//   } catch (error) {
-//     httpError(res, error)
-//     return
-//   }
-// }
-
 const createReceta = async (req, res) => {
   try {
     const today = new Date()
@@ -270,17 +233,16 @@ const createReceta = async (req, res) => {
       pasos = [{ paso: "", imagen: "", urlPublica: ""}],
       imagen = "",
       urlPublica = "",
+      almacenamiento = storage,
       checked = "",
     } = body
     const receta = await models.Receta.findOne({
       where: { idUsuario: tokenData.id, checked: 0 },
     })
     if (receta) {
-      const status = 200
-      const message = ""
       receta.ingredientes = JSON.parse(receta.ingredientes)
       receta.pasos = JSON.parse(receta.pasos)
-      handleResponse(res, status, message, receta)
+      handleResponse(res, 200, "", receta)
       return
     } else {
       const result = await sequelize.transaction(async (t) => {
@@ -296,6 +258,7 @@ const createReceta = async (req, res) => {
             urlPublica,
             checked: 0,
             ingredientes,
+            almacenamiento,
             pasos,
             createAt: today.toISOString(),
           },
@@ -303,11 +266,9 @@ const createReceta = async (req, res) => {
         )
         return receta
       })
-      const status = 200
-      const message = ""
       result.ingredientes = JSON.parse(result.ingredientes)
       result.pasos = JSON.parse(result.pasos)
-      handleResponse(res, status, message, result)
+      handleResponse(res, 200, "", result)
       return
     }
   } catch (error) {
@@ -331,13 +292,13 @@ const patchReceta = async (req, res) => {
         // console.log({ imagen })
         receta.imagen = imagen
       }
-      if (pasos && pasos.length) {
-        // console.log({ pasos })
-        receta.pasos = pasos
-      }
       if (urlPublica && urlPublica.length) {
         // console.log({ urlPublica })
         receta.urlPublica = urlPublica
+      }
+      if (pasos && pasos.length) {
+        // console.log({ pasos })
+        receta.pasos = pasos
       }
       await receta.save()
       if (receta.changed()) {

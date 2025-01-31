@@ -117,6 +117,8 @@ const validateVisibility = [
 const validatePatch = [
   check("imagen")
     .exists().isLength({ max: 100 }).optional(),
+  check("urlPublica")
+    .exists().isLength({ max: 200 }).optional(),
   check("pasos.*.paso")
     .exists().optional(),
   check("pasos.*.imagen")

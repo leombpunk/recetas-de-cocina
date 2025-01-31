@@ -42,7 +42,7 @@ const StepsList = ({
   useEffect(() => {
     if (changed) {
       //user el metodo patch para actualizar la db -> mandar pasos
-      handlePatch({imagen: "", pasos: pasos})
+      handlePatch({pasos: pasos})
       setChanged(false)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -190,7 +190,7 @@ const StepsList = ({
                         handleDelete={handleDelete}
                         handleError={handleErrorFile}
                         disabled={!editMode}
-                        filePreload={pasos[index].imagen}
+                        filePreload={{name: pasos[index].imagen, url: pasos[index].urlPublica}}
                         index={index}
                       />
                     </div>

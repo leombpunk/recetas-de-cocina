@@ -11,6 +11,7 @@ const publicPath = join(
   dirname(fileURLToPath(import.meta.url)),
   "../public/images/users"
 )
+const urlPublicPath = "http://localhost:3000/public/users"
 
 //manejo de carpetas de almacenamiento de imagenes
 //tanto para local como en la nube
@@ -94,10 +95,10 @@ const uploadFile = async (user, file, uniqueName = true) => {
           },
           (error, result) => {
             if (error) {
-              // console.log({error})
+              console.log({error})
               reject(error)
             } else {
-              // console.log({result})
+              console.log({result})
               resolve(result)
             }
           }
@@ -107,10 +108,11 @@ const uploadFile = async (user, file, uniqueName = true) => {
     } else {
       const filename = file.originalname
       const path = `${publicPath}/${user.carpeta}/${filename}`
+      const urlPath = `${urlPublicPath}/${user.carpeta}/${filename}`
       const result = new Promise((resolve, reject) => {
         writeFile(path, file.buffer, (error) => {
           if (error) reject({ error, status: false });
-          else resolve({ fileId: filename, file, url: path, status: true });
+          else resolve({ fileId: filename, file, url: urlPath, status: true });
         });
       });
       return result

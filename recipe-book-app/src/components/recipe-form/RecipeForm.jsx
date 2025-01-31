@@ -121,24 +121,24 @@ const RecipeForm = ({
 
   const handlePortadaUpload = async (file) => {
     if (file) {
-      const recipe = getRecipeLocal()
+      // const recipe = getRecipeLocal()
       const result = await uploadFiles(data.id, file)
       console.log(result)
       setValue("imagen", `${result?.filename || ""}`)
-      setValue("urlPublica", `${result?.url || ""}`)
-      saveRecipeLocal(watch())
+      setValue("urlPublica", `${result?.path || ""}`)
+      // saveRecipeLocal(watch())
       return result
     }
   }
 
   const handlePortadaDelete = async (filename) => {
     if (filename) {
-      const recipe = getRecipeLocal()
+      // const recipe = getRecipeLocal()
       const result = await deleteFiles(data.id, filename)
       console.log(result)
       setValue("imagen", "")
       setValue("urlPublica", "")
-      saveRecipeLocal(watch())
+      // saveRecipeLocal(watch())
       return result
     }
   }
@@ -207,10 +207,13 @@ const RecipeForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirm, cancel])
 
-  //para ocupar el patch de imagen de portada y pasos
-  useState(() => {
+  //para ocupar el patch de imagen de portada
+  useEffect(() => {
     //equisde
-  }, [imagen, pasos])
+    console.log("useEffect de imagen")
+    console.log({ imagen: imagen, urlPublica: urlPublica })
+    handlePatch({ imagen: imagen, urlPublica: urlPublica })
+  }, [imagen, urlPublica])
 
   return (
     <>
@@ -300,7 +303,7 @@ const RecipeForm = ({
               handleDelete={handlePortadaDelete}
               handleError={handleErrorFile}
               disabled={!editMode}
-              filePreload={getValues("urlPublica")}
+              filePreload={{name: getValues("imagen"), url: getValues("urlPublica")}}
             />
             {errors?.urlPublica && (
               <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>

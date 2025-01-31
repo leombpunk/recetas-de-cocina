@@ -2,8 +2,8 @@
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import useDropzone from "./useDropzone"
 import { useEffect } from "react"
-import { RoutesAPI } from "../../utils/RoutesAPI"
-import { useContextUser } from "../../providers/UserProvider"
+// import { RoutesAPI } from "../../utils/RoutesAPI"
+// import { useContextUser } from "../../providers/UserProvider"
 
 //manejar el tamaño del dropzone
 /**
@@ -30,7 +30,7 @@ const Dropzone = ({
   filePreload,
   index = undefined,
 }) => {
-  const {user} = useContextUser()
+  // const {user} = useContextUser()
   const {
     ref,
     files,
@@ -49,7 +49,7 @@ const Dropzone = ({
     //comprobar si filePreload es distinto de null
     if (filePreload) {
       console.log("estoy en filepreload")
-      handleDelete(filePreload, index)
+      handleDelete(filePreload.name, index)
     }
     //o si files es distinto de null
     if (files) {
@@ -62,6 +62,7 @@ const Dropzone = ({
     if (files === null) {
       // handleDelete()
     } else {
+      console.log({ files })
       handleFiles(files)
       //funciona, pero debería comprobar si index es distinto de undefined
       //para enviarlo o no como parámetro de la función
@@ -76,15 +77,15 @@ const Dropzone = ({
   return (
     <>
       <figure className='w-full'>
-        {files || filePreload ? (
+        {files || filePreload.name ? (
           isMultiple ? null : (
             <div className='flex flex-row justify-center w-full'>
               <div
                 className='w-full lg:w-9/12 h-96 bg-cover bg-center rounded-lg border border-gray-500 border-dashed'
                 title='Imagen descriptiva del paso'
                 style={{
-                  backgroundImage: `url(${filePreload ? 
-                    RoutesAPI.public.concat("/",user.usuario,"/", filePreload) :
+                  backgroundImage: `url(${filePreload.name ? 
+                    /*RoutesAPI.public.concat("/",user.usuario,"/", filePreload)*/ filePreload.url :
                     URL.createObjectURL(files)
                   }`,
                   filter: `${!disabled ? "none" : "grayscale(100%)"}`,

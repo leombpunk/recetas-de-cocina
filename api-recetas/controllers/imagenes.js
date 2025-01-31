@@ -35,33 +35,31 @@ const uploadProfileImg = async (req, res) => {
           where: { id: usuario.id },
         })
         if (exist) {
-          if (exist.imagen) {
-            //recuperar el archivo de la memoria
-            const { file } = req
-            file.originalname = "avatar".concat("_", usuario.usuario, extname(originalname))
-            await uploadFile(exist, file, false)
-              .then(async (result) => {
-                console.log({result})
-                exist.imagen = result.fileId
-                exist.urlPublica = result.url
-                await exist.save({ fields: ["imagen", "urlPublica"] })
-                  handleResponse(res, 200, "Imagen de perfil actualizada", {
-                    file: {
-                      filename: exist.imagen,
-                      size,
-                      mimetype,
-                      encoding,
-                      path: exist.urlPublica,
-                    },
-                  })
-                  return
-              })
-              .catch((error) => {
-                console.log({error})
-                handleResponse(res, 400, "No se puedo almacenar la imagen")
+          //recuperar el archivo de la memoria
+          const { file } = req
+          file.originalname = "avatar".concat("_", usuario.usuario, extname(originalname))
+          await uploadFile(exist, file, false)
+            .then(async (result) => {
+              console.log({result})
+              exist.imagen = result.fileId
+              exist.urlPublica = result.url
+              await exist.save({ fields: ["imagen", "urlPublica"] })
+                handleResponse(res, 200, "Imagen de perfil actualizada", {
+                  file: {
+                    filename: exist.imagen,
+                    size,
+                    mimetype,
+                    encoding,
+                    path: exist.urlPublica,
+                  },
+                })
                 return
-              })
-          }
+            })
+            .catch((error) => {
+              console.log({error})
+              handleResponse(res, 400, "No se puedo almacenar la imagen")
+              return
+            })
         } else {
           handleResponse(res, 400, "El usuario no existe")
           return
@@ -142,25 +140,32 @@ const uploadRecetaImg = async (req, res) => {
         const { filename, originalname, size, mimetype, encoding } = req.file
         const { file } = req
         file.originalname = "receta".concat("_", now, extname(originalname))
-        await uploadFile(usuario, file, false)
-          .then((result) => {
-            console.log({result})
-            handleResponse(res, 200, "Imagen guardada", {
-              file: {
-                filename: result.fileId,
-                size,
-                mimetype,
-                encoding,
-                path: result.url,
-              },
+        const user = await models.Usuario.findOne({ where: { id: usuario.id } })
+        if (user) {
+          await uploadFile(user, file, false)
+            .then((result) => {
+              console.log({result})
+              handleResponse(res, 200, "Imagen guardada", {
+                file: {
+                  filename: result.fileId,
+                  size,
+                  mimetype,
+                  encoding,
+                  path: result.url,
+                },
+              })
+              return
             })
-            return
-          })
-          .catch((error) => {
-            console.log({error})
-            handleResponse(res, 400, "No se puedo almacenar la imagen")
-            return
-          })
+            .catch((error) => {
+              console.log({error})
+              handleResponse(res, 400, "No se puedo almacenar la imagen")
+              return
+            })
+
+        } else {
+          handleResponse(res, 400, "El usuario no existe")
+          return
+        }
         //si se pudo guardar enviar el mensaje de imagen guardada
         return
       } else {
