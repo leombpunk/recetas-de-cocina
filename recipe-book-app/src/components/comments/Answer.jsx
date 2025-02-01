@@ -59,9 +59,9 @@ const Answer = ({ commentId, comment, isHidden = true }) => {
                 </span>
               </p>
               <div className='flex flex-row gap-2 items-start w-full'>
-                {comment.usuario?.imagen ? (
+                {comment.usuario?.urlPublica ? (
                   <img
-                    src={`${RoutesAPI.public}/${comment.usuario?.usuario}/${comment.usuario?.imagen}`}
+                    src={`${comment.usuario?.urlPublica}`}
                     alt='imagen de perfil'
                     className='h-8 w-8 rounded-full'
                   />

@@ -1,12 +1,11 @@
 import { Router } from 'express'
-import { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg, publicFolder } from '../controllers/imagenes.js'
+import { uploadProfileImg, uploadRecetaImg, deleteProfileImg, deleteRecetaImg } from '../controllers/imagenes.js'
 import { checkAuth } from '../middlewares/auth.js'
 import { checkReceta } from '../middlewares/receta.js'
 
 const router = Router()
 
 //para recetas
-// router.use('/public', publicFolder)
 router.post('/receta/:idReceta', checkAuth, checkReceta, uploadRecetaImg)
 router.delete('/receta/:idReceta/:filename', checkAuth, checkReceta, deleteRecetaImg)
 

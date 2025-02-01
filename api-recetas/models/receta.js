@@ -19,8 +19,16 @@ const Receta = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    urlPublica: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     visibilidad: {
       type: DataTypes.TINYINT,
+      allowNull: false,
+    },
+    almacenamiento: {
+      type: DataTypes.ENUM("local", "cloud"),
       allowNull: false,
     },
     idUsuario: {

@@ -4,6 +4,7 @@ import { handleResponse } from "../helpers/handleResponse.js"
 import { tokenSign, verifyToken } from "../helpers/generateToken.js"
 import { encrypt, compare } from "../helpers/handleBcrypt.js"
 import models from "../models/index.js"
+import { createUserFolder } from '../helpers/fileStorage.js'
 
 const login = async (req, res) => {
   try {
@@ -48,9 +49,14 @@ const registro = async (req, res) => {
       contrasena: contraHash,
       mail,
       createAt: today.toISOString(),
+      carpeta: "folder",
     })
 
     if (user) {
+      user.carpeta = "folder".concat(user.id)
+      await user.save()
+      //crear la carpeta para almacenar las imagenes del usuario
+      createUserFolder(user)
       const token = await tokenSign(user)
       delete user.dataValues.id
       delete user.dataValues.contrasena

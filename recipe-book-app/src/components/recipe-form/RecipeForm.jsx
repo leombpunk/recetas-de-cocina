@@ -70,11 +70,12 @@ const RecipeForm = ({
       id: 0,
       titulo: "",
       imagen: "",
+      urlPublica: "",
       detalle: "",
       comensales: "",
       duracion: "",
       ingredientes: [{ name: "" }],
-      pasos: [{ paso: "", imagen: "" }],
+      pasos: [{ paso: "", imagen: "", urlPublica: "" }],
       checked: 0,
       visibilidad: 0,
     },
@@ -82,6 +83,7 @@ const RecipeForm = ({
       id: data.id,
       titulo: data.titulo,
       imagen: data.imagen,
+      urlPublica: data.urlPublica,
       detalle: data.detalle,
       comensales: data.comensales,
       duracion: data.duracion,
@@ -110,31 +112,33 @@ const RecipeForm = ({
   //realiza un focusout (onBlur) en el formulario de receta, si es diferente
   //a lo guardado en localStorage lo actualiza y replica en el back, si no
   //pues naa
-  const [imagen, pasos] = useWatch({
+  const [imagen, urlPublica, pasos] = useWatch({
     control: control,
-    name: ["imagen", "pasos"],
+    name: ["imagen", "urlPublica", "pasos"],
   }) // only re-render at the custom hook level, when firstName changes
 
-  console.log([imagen, pasos])
+  console.log([imagen, urlPublica, pasos])
 
   const handlePortadaUpload = async (file) => {
     if (file) {
-      const recipe = getRecipeLocal()
+      // const recipe = getRecipeLocal()
       const result = await uploadFiles(data.id, file)
       console.log(result)
       setValue("imagen", `${result?.filename || ""}`)
-      saveRecipeLocal(watch())
+      setValue("urlPublica", `${result?.path || ""}`)
+      // saveRecipeLocal(watch())
       return result
     }
   }
 
   const handlePortadaDelete = async (filename) => {
     if (filename) {
-      const recipe = getRecipeLocal()
+      // const recipe = getRecipeLocal()
       const result = await deleteFiles(data.id, filename)
       console.log(result)
       setValue("imagen", "")
-      saveRecipeLocal(watch())
+      setValue("urlPublica", "")
+      // saveRecipeLocal(watch())
       return result
     }
   }
@@ -203,10 +207,13 @@ const RecipeForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirm, cancel])
 
-  //para ocupar el patch de imagen de portada y pasos
-  useState(() => {
+  //para ocupar el patch de imagen de portada
+  useEffect(() => {
     //equisde
-  }, [imagen, pasos])
+    console.log("useEffect de imagen")
+    console.log({ imagen: imagen, urlPublica: urlPublica })
+    handlePatch({ imagen: imagen, urlPublica: urlPublica })
+  }, [imagen, urlPublica])
 
   return (
     <>
@@ -296,12 +303,12 @@ const RecipeForm = ({
               handleDelete={handlePortadaDelete}
               handleError={handleErrorFile}
               disabled={!editMode}
-              filePreload={getValues("imagen")}
+              filePreload={{name: getValues("imagen"), url: getValues("urlPublica")}}
             />
-            {errors?.imagen && (
+            {errors?.urlPublica && (
               <span className='flex flex-row gap-1 items-center italic text-left text-red-600 font-semibold w-full pl-1'>
                 <ExclamationCircleIcon className='h-6 w-6' />
-                {errors.imagen.message}
+                {errors.urlPublica.message}
               </span>
             )}
             <input

@@ -23,6 +23,10 @@ const validateCreate = [
     .exists()
     .isLength({ max: 100 })
     .optional(),
+  check("urlPublica")
+    .exists()
+    .isLength({ max: 200 })
+    .optional(),
   check("visibilidad")
     .exists()
     .isNumeric()
@@ -39,6 +43,10 @@ const validateCreate = [
   check("pasos.*.imagen")
     .exists()
     .isLength({ max: 100 })
+    .optional(),
+  check("pasos.*.urlPublica")
+    .exists()
+    .isLength({ max: 200 })
     .optional(),
   (request, response, next) => {
     validateResult(request, response, next)
@@ -60,6 +68,10 @@ const validateReceta = [
     .exists().isLength({ max: 500 }).not().isEmpty(),
   check("imagen")
     .exists().isLength({ max: 100 }).not().isEmpty(),
+  check("urlPublica")
+    .exists()
+    .isLength({ max: 200 })
+    .not().isEmpty(),
   check("visibilidad")
     .exists()
     .not()
@@ -76,6 +88,10 @@ const validateReceta = [
   check("pasos.*.imagen")
     .exists()
     .isLength({ max: 100 })
+    .optional(),
+  check("pasos.*.urlPublica")
+    .exists()
+    .isLength({ max: 200 })
     .optional(),
   (request, response, next) => {
     validateResult(request, response, next)
@@ -101,11 +117,17 @@ const validateVisibility = [
 const validatePatch = [
   check("imagen")
     .exists().isLength({ max: 100 }).optional(),
+  check("urlPublica")
+    .exists().isLength({ max: 200 }).optional(),
   check("pasos.*.paso")
     .exists().optional(),
   check("pasos.*.imagen")
     .exists()
     .isLength({ max: 100 })
+    .optional(),
+  check("pasos.*.urlPublica")
+    .exists()
+    .isLength({ max: 200 })
     .optional(),
   (request, response, next) => {
     validateResult(request, response, next)

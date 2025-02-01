@@ -2,11 +2,12 @@ const recipeStruct = {
   id: 0,
   titulo: "",
   imagen: "",
+  urlPublica: "",
   detalle: "",
   comensales: "",
   duracion: "",
-  ingredientes: [{name:""}], //[{ orden: 0, ingrediente: "", cantidad: "" }]
-  pasos: [{ paso: "", imagen: "" }], //[{ orden: 0, paso: "", imagen: "" }]
+  ingredientes: [{ name: "" }], //[{ orden: 0, ingrediente: "", cantidad: "" }]
+  pasos: [{ paso: "", imagen: "", urlPublica: "" }], //[{ orden: 0, paso: "", imagen: "" }]
   checked: 0,
   visibilidad: 0,
 }
@@ -15,6 +16,7 @@ const dictionary = [
   "id",
   "titulo",
   "imagen",
+  "urlPublica",
   "detalle",
   "comensales",
   "duracion",

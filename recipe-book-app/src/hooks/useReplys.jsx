@@ -92,7 +92,7 @@ const useReplys = () => {
           createAt: result.data.data.createAt,
           usuario: {
             usuario: user.usuario,
-            imagen: user.imagen,
+            urlPublica: user.urlPublica,
             nombres: user.nombres,
             apellidos: user.apellidos,
           },

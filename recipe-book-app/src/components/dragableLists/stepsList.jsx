@@ -36,23 +36,23 @@ const StepsList = ({
   console.log({ guach: pasos })
 
   const [stepsArray, setStepesArray] = useState(
-    steps.length ? steps : [{ order: "", content: "", image: "" }]
+    steps.length ? steps : [{ order: "", content: "", image: "", urlPublica: "" }]
   )
 
   useEffect(() => {
     if (changed) {
       //user el metodo patch para actualizar la db -> mandar pasos
-      handlePatch({imagen: "", pasos: pasos})
+      handlePatch({pasos: pasos})
       setChanged(false)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changed])
 
   const addItem = () => {
-    append({ paso: "", imagen: "" })
+    append({ paso: "", imagen: "", urlPublica: "" })
     setStepesArray([
       ...stepsArray,
-      { order: stepsArray.length + 1, content: "", image: "" },
+      { order: stepsArray.length + 1, content: "", image: "", urlPublica: "" },
     ])
   }
   const deleteItem = (list, index) => {
@@ -94,6 +94,7 @@ const StepsList = ({
       console.log(result)
       setChanged(true)
       formData.setValue(`pasos.${index}.imagen`, `${result?.filename || ""}`)
+      formData.setValue(`pasos.${index}.urlPublica`, `${result?.path || ""}`)
       // saveRecipeLocal(watch())
       return result
     }
@@ -107,6 +108,7 @@ const StepsList = ({
       console.log(result)
       setChanged(true)
       formData.setValue(`pasos.${index}.imagen`, "")
+      formData.setValue(`pasos.${index}.urlPublica`, "")
       // saveRecipeLocal(watch())
       return result
     }
@@ -188,7 +190,7 @@ const StepsList = ({
                         handleDelete={handleDelete}
                         handleError={handleErrorFile}
                         disabled={!editMode}
-                        filePreload={pasos[index].imagen}
+                        filePreload={{name: pasos[index].imagen, url: pasos[index].urlPublica}}
                         index={index}
                       />
                     </div>

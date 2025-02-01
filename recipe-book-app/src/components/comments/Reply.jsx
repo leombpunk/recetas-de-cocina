@@ -45,9 +45,9 @@ const Reply = ({
             to={"#"}
             className='flex flex-row items-center gap-2 text-lg font-semibold hover:underline duration-300'
           >
-            {replyData.usuario?.imagen ? (
+            {replyData.usuario?.urlPublica ? (
               <img
-                src={`${RoutesAPI.public}/${replyData.usuario?.usuario}/${replyData.usuario?.imagen}`}
+                src={`${replyData.usuario?.urlPublica}`}
                 alt='imagen de perfil'
                 className='h-8 w-8 rounded-full'
               />

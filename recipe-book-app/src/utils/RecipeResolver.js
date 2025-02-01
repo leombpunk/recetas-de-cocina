@@ -9,6 +9,11 @@ const recipeSchema = yup.object({
     .string()
     .max(100, "La imagen no es valida")
     .required("La imagen pra la receta es requerida"),
+  urlPublica: yup
+    .string()
+    .max(200, "La url es demaisado larga")
+    .url("La url no es valida")
+    .required("La url para la imagen es requerida"),
   detalle: yup
     .string()
     .max(500, "EL detalle no debe superar los 500 caracteres")
@@ -39,6 +44,11 @@ const recipeSchema = yup.object({
       imagen: yup
         .string()
         .max(100, "Este campo no debe superar los 100 caracteres")
+        .notRequired(),
+      urlPublica: yup
+        .string()
+        .max(200, "La url es demaisado larga")
+        .url("La url no es valida")
         .notRequired(),
     })
   ),

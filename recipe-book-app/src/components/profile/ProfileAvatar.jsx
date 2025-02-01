@@ -4,7 +4,7 @@ import {
   TrashIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline"
-import { RoutesAPI } from "../../utils/RoutesAPI"
+// import { RoutesAPI } from "../../utils/RoutesAPI"
 import CustomModal from '../modals/CustomModal'
 
 const ProfileAvatar = ({ profile, resources }) => {
@@ -44,9 +44,9 @@ const ProfileAvatar = ({ profile, resources }) => {
         <div className='flex flex-row gap-4 items-start'>
           <div className='flex flex-col justify-center items-center gap-3'>
             <picture>
-              {profile.imagen ? (
+              {profile.urlPublica ? (
                 <img
-                  src={`${RoutesAPI.public}/${profile.usuario}/${profile.imagen}`}
+                  src={`${profile.urlPublica}`}
                   alt='soy tu imagen de perfil'
                   className='w-36 h-36 bg-gray-200 rounded-full border border-gray-500 shadow-md shadow-black/50'
                 />
