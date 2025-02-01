@@ -1,12 +1,9 @@
 import * as dotenv from "dotenv"
-import * as dotenv from 'dotenv'
 import passport from "passport"
 import { Strategy } from "passport-google-oauth20"
 import models from "../models/index.js"
 import { tokenSign } from "../helpers/generateToken.js"
 import { createUserFolder } from "../helpers/fileStorage.js"
-
-dotenv.config()
 
 dotenv.config()
 // const storage = process.env.STORAGE === "0" ? "local" : "cloud"
