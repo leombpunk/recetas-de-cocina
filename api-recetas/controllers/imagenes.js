@@ -203,7 +203,6 @@ const deleteRecetaImg = async (req, res) => {
 }
 
 export {
-  // publicFolder,
   uploadProfileImg,
   uploadRecetaImg,
   deleteProfileImg,
