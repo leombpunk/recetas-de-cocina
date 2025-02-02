@@ -22,7 +22,7 @@ body {
 } */
 
 .background-searchbar {
-  background-image: url('D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/background-buscador-recetas.avif');
+  background-image: url('../src/assets/images/background-buscador-recetas.avif');
   /* position: relative; */
   /* opacity: 0.50; */
 }
