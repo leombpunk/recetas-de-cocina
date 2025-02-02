@@ -1,5 +1,5 @@
-const urlAPI = 'http://localhost:3001'
-// const urlAPI = '' //url de producción
+// const urlAPI = 'http://localhost:3001'
+const urlAPI = 'https://recipe-app-omega-rose.vercel.app' //url de producción
 
 const RoutesAPI = {
     auth: `${urlAPI}/auth`,
