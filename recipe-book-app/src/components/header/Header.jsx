@@ -18,6 +18,7 @@ import { useContextUser } from "../../providers/UserProvider"
 import NavigationRoutes from "../../utils/NavigationRoutes"
 // import { RoutesAPI } from "../../utils/RoutesAPI"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import logo from '../../assets/images/cooking-book-logo_8.png'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -65,7 +66,7 @@ const Header = () => {
                 >
                   <img
                     className='h-8 w-auto hover:scale-110 duration-500'
-                    src={require("D:/Dev/recetas-de-cocina/recipe-book-app/src/assets/images/cooking-book-logo (8).png")}
+                    src={logo}
                     alt='Cooking Book App'
                   />
                   <span className='pacifico-regular text-2xl hidden md:block'>
