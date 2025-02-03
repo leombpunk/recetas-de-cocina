@@ -1,6 +1,6 @@
 # App Libro de Recetas
 
-> diseño de la app
+> Diseño de la app
 
 ## FrontEnd
 
@@ -19,15 +19,62 @@
 
 ## Descripción
 
-La aplicación es un libro de recetas de cocina, puedes buscar recetas de cocina (tuyas como también las de otros usuarios de la app), registrarte y creas tus propias recetas para que las puedas llevar donde quieras
-y darle una sorpresa a tus seres queridos, pareja, amigos, etc. Disfruta de la app.
+La aplicación es un libro de recetas de cocina, puedes buscar recetas de cocina (tuyas como también las de otros usuarios de la app), registrarte y creas tus propias recetas para que las puedas llevar donde quieras y darle una sorpresa a tus seres queridos, pareja, amigos, etc. Disfruta de la app.
 
-## Ejecución
+## Características
 
-> Tanto para el front como para el back
-> 
-> Instalar mysql y ejecutar el script de la DB 
+- **Registro de Usuarios**: Los usuarios pueden registrarse y crear una cuenta.
+- **Autenticación**: Inicio de sesión seguro para los usuarios registrados.
+- **Creación de Recetas**: Los usuarios pueden crear, editar y eliminar sus propias recetas.
+- **Búsqueda de Recetas**: Los usuarios pueden buscar recetas por nombre, ingredientes, etc.
+- **Favoritos**: Los usuarios pueden marcar recetas como favoritas para acceder a ellas fácilmente.
+- **Comentarios**: Los usuarios pueden comentar en las recetas de otros usuarios.
+- **Subida de Imágenes**: Los usuarios pueden subir imágenes de sus recetas.
 
-`` npm install ``
+## Instalación
 
-`` npm start ``
+1. Clona el repositorio:
+    ```bash
+    git clone https://github.com/tu-usuario/recetas-de-cocina.git
+    ```
+2. Navega al directorio del proyecto:
+    ```bash
+    cd recetas-de-cocina
+    ```
+3. Instala las dependencias del servidor:
+    ```bash
+    cd api-recetas
+    npm install
+    ```
+4. Instala las dependencias del cliente:
+    ```bash
+    cd recipe-book-app
+    npm install
+    ```
+
+## Uso
+
+1. Inicia el servidor:
+    ```bash
+    cd api-recetas
+    npm start
+    ```
+2. Inicia la aplicación cliente:
+    ```bash
+    cd recipe-book-app
+    npm start
+    ```
+
+## Contribución
+
+Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz commit (`git commit -am 'Agrega nueva funcionalidad'`).
+4. Sube tus cambios a tu fork (`git push origin feature/nueva-funcionalidad`).
+5. Crea un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
