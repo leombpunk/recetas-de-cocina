@@ -31,6 +31,10 @@ La aplicación es un libro de recetas de cocina, puedes buscar recetas de cocina
 - **Comentarios**: Los usuarios pueden comentar en las recetas de otros usuarios.
 - **Subida de Imágenes**: Los usuarios pueden subir imágenes de sus recetas.
 
+## Nota importante: 
+
+🚧  El script de la base de datos no esta incluido en el repositorio!
+
 ## Instalación
 
 1. Clona el repositorio:
