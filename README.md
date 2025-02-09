@@ -39,7 +39,7 @@ La aplicación es un libro de recetas de cocina, puedes buscar recetas de cocina
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/tu-usuario/recetas-de-cocina.git
+    git clone https://github.com/leombpunk/recetas-de-cocina.git
     ```
 2. Navega al directorio del proyecto:
     ```bash
