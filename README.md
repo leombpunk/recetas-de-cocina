@@ -33,7 +33,7 @@ La aplicación es un libro de recetas de cocina, puedes buscar recetas de cocina
 
 ## Nota importante: 
 
-🚧  El script de la base de datos no esta incluido en el repositorio!
+🚧  El script de la base de datos esta incluido en el repositorio!
 
 ## Instalación
 
