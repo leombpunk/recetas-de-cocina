@@ -16,7 +16,8 @@ const strategy = new Strategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_SECRET_CLIENT,
-    callbackURL: "http://localhost:3001/auth/google/callback",
+    // callbackURL: "http://localhost:3001/auth/google/callback",
+    callbackURL: `${process.env.VERCEL_URL}/auth/google/callback`,
   },
   async function (accessToken, refreshToken, profile, callback) {
     //hace las weas
@@ -52,7 +53,8 @@ const strategy = new Strategy(
 const  linkStrategy = new Strategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_SECRET_CLIENT,
-  callbackURL: "http://localhost:3001/usuarios/perfil/google/callback",
+  // callbackURL: "http://localhost:3001/usuarios/perfil/google/callback",
+  callbackURL: `${process.env.VERCEL_URL}/usuarios/perfil/google/callback`,
 },
 async function (accessToken, refreshToken, profile, callback) {
   //hace las weas
