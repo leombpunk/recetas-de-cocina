@@ -7,6 +7,7 @@ import { createUserFolder } from "../helpers/fileStorage.js"
 
 dotenv.config()
 // const storage = process.env.STORAGE === "0" ? "local" : "cloud"
+console.log("Redirect URI:", `${process.env.VERCEL_URL}/auth/google/callback`)
 const today = new Date()
 
 const passportConfig = passport
