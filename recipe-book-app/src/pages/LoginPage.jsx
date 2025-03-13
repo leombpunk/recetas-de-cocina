@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className='bg-gradient-to-tl from-orange-300 to-orange-700 w-full py-16 px-4'>
+      <div className='min-h-screen bg-gradient-to-tl from-orange-300 to-orange-700 w-full py-16 px-4'>
         <div className='flex flex-col items-center justify-center'>
           <picture>
             <img
